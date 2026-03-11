@@ -3,6 +3,7 @@ import { useEffect, useState } from 'react';
 import { supabase } from '../../lib/supabase';
 import { Calendar } from 'lucide-react';
 import ReactMarkdown from "react-markdown";
+import remarkGfm from 'remark-gfm';
 
 export function NewsDetail() {
   const { slug } = useParams();
@@ -78,7 +79,7 @@ export function NewsDetail() {
         )}
 
         {/* Content */}<div className="prose prose-lg max-w-none prose-headings:text-[#191919] prose-a:text-[#AE8737]">
-  <ReactMarkdown>
+  <ReactMarkdown remarkPlugins={[remarkGfm]}>
     {article.content}
   </ReactMarkdown>
 </div>
