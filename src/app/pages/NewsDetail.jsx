@@ -78,9 +78,18 @@ export function NewsDetail() {
           />
         )}
 
-        {/* Content */}<div className="prose prose-lg max-w-none prose-headings:text-[#191919] prose-a:text-[#AE8737]">
+        {/* Content */}
+<div
+  className="prose prose-lg max-w-none 
+  prose-headings:text-[#191919] 
+  prose-a:text-[#AE8737]
+  prose-p:mb-6
+  prose-li:mb-2
+  prose-ol:list-decimal
+  prose-ul:list-disc"
+>
   <ReactMarkdown remarkPlugins={[remarkGfm]}>
-    {article.content}
+    {article.content?.replace(/\n/g, "\n\n")}
   </ReactMarkdown>
 </div>
 
