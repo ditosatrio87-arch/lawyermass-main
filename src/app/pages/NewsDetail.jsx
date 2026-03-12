@@ -1,9 +1,9 @@
-import { useParams } from 'react-router-dom';
-import { useEffect, useState } from 'react';
-import { supabase } from '../../lib/supabase';
-import { Calendar } from 'lucide-react';
+import { useParams } from "react-router-dom";
+import { useEffect, useState } from "react";
+import { supabase } from "../../lib/supabase";
+import { Calendar } from "lucide-react";
 import ReactMarkdown from "react-markdown";
-import remarkGfm from 'remark-gfm';
+import remarkGfm from "remark-gfm";
 
 export function NewsDetail() {
   const { slug } = useParams();
@@ -12,13 +12,13 @@ export function NewsDetail() {
   useEffect(() => {
     const fetchArticle = async () => {
       const { data, error } = await supabase
-        .from('news')
-        .select('*')
-        .eq('slug', slug)
+        .from("news")
+        .select("*")
+        .eq("slug", slug)
         .single();
 
       if (error) {
-        console.error('Error fetching article:', error);
+        console.error(error);
       } else {
         setArticle(data);
       }
@@ -35,18 +35,7 @@ export function NewsDetail() {
     );
   }
 
-  // ======================
-  // HANDLE IMAGE SOURCE
-  // ======================
-  const imageSrc =
-    article.image_url || article.image || null;
-
-  // ======================
-  // FORMAT CONTENT PARAGRAPH
-  // ======================
-  const paragraphs = article.content
-    ? article.content.split('\n').filter(p => p.trim() !== '')
-    : [];
+  const imageSrc = article.image_url || article.image || null;
 
   return (
     <section className="py-24 bg-white">
@@ -61,10 +50,10 @@ export function NewsDetail() {
         <div className="flex items-center gap-2 text-[#AE8737] mb-8">
           <Calendar className="w-4 h-4" />
           <span className="text-sm">
-            {new Date(article.date).toLocaleDateString('id-ID', {
-              day: 'numeric',
-              month: 'long',
-              year: 'numeric'
+            {new Date(article.date).toLocaleDateString("id-ID", {
+              day: "numeric",
+              month: "long",
+              year: "numeric",
             })}
           </span>
         </div>
@@ -74,22 +63,64 @@ export function NewsDetail() {
           <img
             src={imageSrc}
             alt={article.title}
-            className="w-full h-[400px] object-cover rounded-lg mb-8 shadow-sm"
+            className="w-full h-[400px] object-cover rounded-lg mb-10 shadow-sm"
           />
         )}
 
-        {/* Content */}
-<div className="prose prose-lg max-w-none 
-prose-headings:text-[#191919] 
-prose-a:text-[#AE8737] 
-prose-ol:list-decimal 
-prose-ul:list-disc 
-prose-li:marker:text-black 
-prose-p:mb-6">
-  <ReactMarkdown remarkPlugins={[remarkGfm]}>
-    {article.content?.replace(/\n/g, "\n\n")}
-  </ReactMarkdown>
-</div>
+        {/* CONTENT */}
+        <div className="text-slate-700 text-[17px] leading-relaxed">
+
+          <ReactMarkdown
+            remarkPlugins={[remarkGfm]}
+            components={{
+
+              p: ({ children }) => (
+                <p className="mb-6 leading-relaxed">{children}</p>
+              ),
+
+              h2: ({ children }) => (
+                <h2 className="text-2xl font-semibold mt-10 mb-4 text-[#191919]">
+                  {children}
+                </h2>
+              ),
+
+              h3: ({ children }) => (
+                <h3 className="text-xl font-semibold mt-8 mb-3 text-[#191919]">
+                  {children}
+                </h3>
+              ),
+
+              ul: ({ children }) => (
+                <ul className="list-disc pl-6 mb-6 space-y-2">
+                  {children}
+                </ul>
+              ),
+
+              ol: ({ children }) => (
+                <ol className="list-decimal pl-6 mb-6 space-y-2">
+                  {children}
+                </ol>
+              ),
+
+              li: ({ children }) => (
+                <li className="leading-relaxed">{children}</li>
+              ),
+
+              a: ({ href, children }) => (
+                <a
+                  href={href}
+                  className="text-[#AE8737] underline hover:opacity-80"
+                  target="_blank"
+                >
+                  {children}
+                </a>
+              ),
+            }}
+          >
+            {article.content}
+          </ReactMarkdown>
+
+        </div>
 
       </div>
     </section>
