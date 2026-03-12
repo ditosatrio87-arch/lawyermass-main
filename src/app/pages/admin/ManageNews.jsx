@@ -1,6 +1,6 @@
 import { supabase } from '../../../lib/supabase';
 import React, { useState, useEffect, useRef } from 'react';
-import { Plus, Edit2, Trash2, X, Search, Filter, Calendar, Image as ImageIcon, Eye, Check, AlertCircle } from 'lucide-react';
+import { Plus, Edit2, Trash2, X, Search, Filter, Calendar, Image as ImageIcon, Eye, Check, AlertCircle, Undo2, Redo2 } from 'lucide-react';
 import { Card, CardContent } from '../../components/ui/card';
 import { Button } from '../../components/ui/button';
 
@@ -12,6 +12,8 @@ export function ManageNews({ articles, setArticles }) {
   const [imageFile, setImageFile] = useState(null);
   const [imagePreview, setImagePreview] = useState('');
   const textareaRef = useRef(null);
+  const [undoStack, setUndoStack] = useState([]);
+  const [redoStack, setRedoStack] = useState([]);
 
   const fetchArticles = async () => {
 
@@ -71,15 +73,53 @@ useEffect(() => {
   }, []);
 
   const handleInputChange = (e) => {
-    const { name, value, type, checked } = e.target;
-    setFormData(prev => ({
-      ...prev,
-      [name]: type === 'checkbox' ? checked : value
-    }));
-  };
+  const { name, value, type, checked } = e.target;
+
+  if (name === "content") {
+    setUndoStack(prev => [...prev, formData.content]);
+    setRedoStack([]);
+  }
+
+  setFormData(prev => ({
+    ...prev,
+    [name]: type === 'checkbox' ? checked : value
+  }));
+};
   // ============================
 // TOOLBAR FUNCTIONS
 // ============================
+
+const handleUndo = () => {
+
+  if (undoStack.length === 0) return;
+
+  const previous = undoStack[undoStack.length - 1];
+
+  setUndoStack(prev => prev.slice(0, -1));
+
+  setRedoStack(prev => [...prev, formData.content]);
+
+  setFormData(prev => ({
+    ...prev,
+    content: previous
+  }));
+};
+
+const handleRedo = () => {
+
+  if (redoStack.length === 0) return;
+
+  const next = redoStack[redoStack.length - 1];
+
+  setRedoStack(prev => prev.slice(0, -1));
+
+  setUndoStack(prev => [...prev, formData.content]);
+
+  setFormData(prev => ({
+    ...prev,
+    content: next
+  }));
+};
 
 const insertMarkdown = (before, after = "") => {
 
@@ -415,6 +455,22 @@ const addLink = () => insertMarkdown("[text](https://)");
             <div>
               <label className="block text-sm font-medium text-[#191919] mb-1">Content</label>
 <div className="flex flex-wrap gap-2 mb-2">
+
+<button
+type="button"
+onClick={handleUndo}
+className="px-3 py-1 border border-slate-300 rounded text-sm hover:bg-slate-100"
+> 
+<Undo2size={16} />
+</button>
+
+<button
+type="button"
+onClick={handleRedo}
+className="px-3 py-1 border border-slate-300 rounded text-sm hover:bg-slate-100"
+> 
+<Redo2size={16} />
+</button>
 
 <button
 type="button"
