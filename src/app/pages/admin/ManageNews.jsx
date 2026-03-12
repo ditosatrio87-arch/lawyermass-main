@@ -131,6 +131,9 @@ const insertMarkdown = (before, after = "") => {
 
   const selected = formData.content.substring(start, end);
 
+  setUndoStack(prev => [...prev, formData.content]);
+  setRedoStack([]);
+
   const newText =
     formData.content.substring(0, start) +
     before +
@@ -461,7 +464,7 @@ type="button"
 onClick={handleUndo}
 className="px-3 py-1 border border-slate-300 rounded text-sm hover:bg-slate-100"
 > 
-<Undo2size={16} />
+<Undo2 size={16} />
 </button>
 
 <button
@@ -469,7 +472,7 @@ type="button"
 onClick={handleRedo}
 className="px-3 py-1 border border-slate-300 rounded text-sm hover:bg-slate-100"
 > 
-<Redo2size={16} />
+<Redo2 size={16} />
 </button>
 
 <button
