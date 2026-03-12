@@ -169,7 +169,9 @@ const addLink = () => insertMarkdown("[text](https://)");
     slug: formData.slug,
     category: formData.category,
     summary: formData.summary,
-    content: formData.content.replace(/\n/g, "\n\n"),
+    content: formData.content
+  .replace(/(\d+)\./g, "$1. ")
+  .replace(/\n/g, "\n\n"),
     image_url: formData.image,   // penting: nama kolom di DB
     status: formData.status,
     featured: formData.featured,
