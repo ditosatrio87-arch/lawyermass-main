@@ -102,13 +102,19 @@ const insertMarkdown = (before, after = "") => {
     ...prev,
     content: newText
   }));
+
+  setTimeout(() => {
+    textarea.focus();
+    textarea.selectionStart = textarea.selectionEnd =
+      start + before.length + selected.length + after.length;
+  }, 0);
 };
 
-const addHeading = () => insertMarkdown("\n## ");
+const addHeading = () => insertMarkdown("\n\n## ");
 const addBold = () => insertMarkdown("**", "**");
 const addItalic = () => insertMarkdown("*", "*");
-const addBullet = () => insertMarkdown("\n- ");
-const addNumber = () => insertMarkdown("\n1. ");
+const addBullet = () => insertMarkdown("\n\n- ");
+const addNumber = () => insertMarkdown("\n\n1. ");
 const addLink = () => insertMarkdown("[text](https://)");
 
   const handleImageChange = async (e) => {
@@ -163,7 +169,7 @@ const addLink = () => insertMarkdown("[text](https://)");
     slug: formData.slug,
     category: formData.category,
     summary: formData.summary,
-    content: formData.content,
+    content: formData.content.replace(/\n/g, "\n\n"),
     image_url: formData.image,   // penting: nama kolom di DB
     status: formData.status,
     featured: formData.featured,
