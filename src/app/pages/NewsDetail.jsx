@@ -101,10 +101,11 @@ export function NewsDetail() {
       {children}
     </ol>
   ),
-
-  li: ({ children }) => (
-    <li className="leading-relaxed">{children}</li>
-  ),
+li: ({ children }) => (
+  <li className="leading-relaxed [&>p]:mb-0">
+    {children}
+  </li>
+),
 
   a: ({ href, children }) => (
     <a
