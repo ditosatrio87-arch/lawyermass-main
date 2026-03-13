@@ -27,7 +27,7 @@ export function Berita() {
 
   return (
     <section className="py-24 bg-white">
-      <div className="container mx-auto px-6">
+      <div className="container mx-auto px-6 max-w-7xl">
         <div className="text-center mb-16">
           <div className="inline-block w-12 h-1 bg-[#AE8737] mb-6"></div>
           <h2 className="mb-4 text-[#191919]">Berita & Insight Hukum</h2>
@@ -36,7 +36,7 @@ export function Berita() {
           </p>
         </div>
 
-        <div className="grid md:grid-cols-3 gap-8 max-w-6xl mx-auto">
+        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-10 max-w-7xl mx-auto">
           {news.map((article) => (
             <Card
               key={article.id}
@@ -50,17 +50,28 @@ export function Berita() {
                 />
               </div>
 
-              <CardContent className="p-6">
-                <div className="flex items-center gap-2 text-[#AE8737] mb-4">
+              <CardContent className="p-6 flex flex-col">
+                <div className="flex items-center gap-3 mb-4 text-sm">
+
+              <span className="bg-[#AE8737]/10 text-[#AE8737] px-2 py-1 rounded">
+              {article.category}
+              </span>
+
+              <div className="flex items-center gap-1 text-slate-500">
+              <Calendar className="w-4 h-4" />
+              {article.date}
+              </div>
+
+              </div>
                   <Calendar className="w-4 h-4" />
                   <span className="text-sm">{article.date}</span>
                 </div>
 
-                <h3 className="mb-3 text-[#191919] leading-snug">
+                <h3 className="mb-3 text-[#191919] leading-snug font-semibold group-hover:text-[#AE8737] transition">
                   {article.title}
                 </h3>
 
-                <p className="text-slate-600 mb-5 leading-relaxed">
+                <p className="text-slate-600 mb-5 leading-relaxed line-clamp-3">
                   {article.summary}
                 </p>
 
