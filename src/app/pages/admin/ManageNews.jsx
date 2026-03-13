@@ -48,7 +48,7 @@ useEffect(() => {
   const [formData, setFormData] = useState({
     title: '',
     slug: '',
-    category: 'Corporate Law',
+    category: 'Legal Insight',
     summary: '',
     content: '',
     image: '',
@@ -282,7 +282,7 @@ const addLink = () => insertMarkdown("[text](https://)");
     setFormData({
       title: '',
       slug: '',
-      category: 'Corporate Law',
+      category: 'Legal Insight',
       summary: '',
       content: '',
       image: '',
@@ -302,12 +302,8 @@ const addLink = () => insertMarkdown("[text](https://)");
   });
 
   const categories = [
-    'Corporate Law',
-    'Litigation',
-    'Intellectual Property',
-    'Real Estate',
-    'Family Law',
-    'Labor Law'
+    'Legal Insight',
+    'General Insight'
   ];
 
   if (showForm) {
