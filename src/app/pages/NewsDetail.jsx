@@ -75,29 +75,29 @@ export function NewsDetail() {
             components={{
 
               p: ({ children }) => (
-                <p className="mb-6 leading-relaxed">{children}</p>
+                <p className="mb-3 leading-relaxed">{children}</p>
               ),
 
               h2: ({ children }) => (
-                <h2 className="text-2xl font-semibold mt-10 mb-4 text-[#191919]">
+                <h2 className="text-2xl font-semibold mt-8 mb-4 text-[#191919]">
                   {children}
                 </h2>
               ),
 
               h3: ({ children }) => (
-                <h3 className="text-xl font-semibold mt-8 mb-3 text-[#191919]">
+                <h3 className="text-xl font-semibold mt-6 mb-2 text-[#191919]">
                   {children}
                 </h3>
               ),
 
               ul: ({ children }) => (
-                <ul className="list-disc pl-6 mb-6 space-y-2">
+                <ul className="list-disc pl-6 mb-4 space-y-1">
                   {children}
                 </ul>
               ),
 
               ol: ({ children }) => (
-                <ol className="list-decimal pl-6 mb-6 space-y-2">
+                <ol className="list-decimal pl-6 mb-6 space-y-1">
                   {children}
                 </ol>
               ),
