@@ -1,8 +1,10 @@
 import { supabase } from '../../../lib/supabase';
+console.log(import.meta.env.VITE_OPENAI_API_KEY)
 import React, { useState, useEffect, useRef } from 'react';
 import { Plus, Edit2, Trash2, X, Search, Filter, Calendar, Image as ImageIcon, Eye, Check, AlertCircle, Undo2, Redo2 } from 'lucide-react';
 import { Card, CardContent } from '../../components/ui/card';
 import { Button } from '../../components/ui/button';
+import OpenAI from "openai";
 
 export function ManageNews({ articles, setArticles }) {
   const [showForm, setShowForm] = useState(false);
@@ -48,7 +50,7 @@ useEffect(() => {
   const [formData, setFormData] = useState({
     title: '',
     slug: '',
-    category: 'Corporate Law',
+    category: 'Legal Insight',
     summary: '',
     content: '',
     image: '',
@@ -159,6 +161,48 @@ const addItalic = () => insertMarkdown("*", "*");
 const addBullet = () => insertMarkdown("\n\n- ");
 const addNumber = () => insertMarkdown("\n\n1. ");
 const addLink = () => insertMarkdown("[text](https://)");
+const handleGenerateSummary = async () => {
+
+  if (!formData.content) {
+    alert("Content must be filled first");
+    return;
+  }
+
+  try {
+
+    const client = new OpenAI({
+      apiKey: import.meta.env.VITE_OPENAI_API_KEY,
+      dangerouslyAllowBrowser: true
+    });
+
+    const response = await client.chat.completions.create({
+      model: "gpt-4.1-mini",
+      messages: [
+        {
+          role: "system",
+          content: "You are a professional legal article editor."
+        },
+        {
+          role: "user",
+          content: `Create a concise professional summary (2 sentences max) for this article:\n\n${formData.content}`
+        }
+      ],
+      max_tokens: 120
+    });
+
+    const summary = response.choices[0].message.content;
+
+    setFormData(prev => ({
+      ...prev,
+      summary: summary
+    }));
+
+  } catch (error) {
+    console.error(error);
+    alert("Failed to generate summary");
+  }
+
+};
 
   const handleImageChange = async (e) => {
   const file = e.target.files[0];
@@ -212,9 +256,7 @@ const addLink = () => insertMarkdown("[text](https://)");
     slug: formData.slug,
     category: formData.category,
     summary: formData.summary,
-    content: formData.content
-  .replace(/(\d+)\./g, "$1. ")
-  .replace(/\n/g, "\n\n"),
+    content: formData.content,
     image_url: formData.image,   // penting: nama kolom di DB
     status: formData.status,
     featured: formData.featured,
@@ -282,7 +324,7 @@ const addLink = () => insertMarkdown("[text](https://)");
     setFormData({
       title: '',
       slug: '',
-      category: 'Corporate Law',
+      category: 'Legal Insight',
       summary: '',
       content: '',
       image: '',
@@ -302,12 +344,8 @@ const addLink = () => insertMarkdown("[text](https://)");
   });
 
   const categories = [
-    'Corporate Law',
-    'Litigation',
-    'Intellectual Property',
-    'Real Estate',
-    'Family Law',
-    'Labor Law'
+    'Legal Insight',
+    'General Insight'
   ];
 
   if (showForm) {
@@ -443,17 +481,32 @@ const addLink = () => insertMarkdown("[text](https://)");
             </div>
 
             <div>
-              <label className="block text-sm font-medium text-[#191919] mb-1">Summary</label>
-              <textarea
-                name="summary"
-                value={formData.summary}
-                onChange={handleInputChange}
-                rows="3"
-                className="w-full px-4 py-2 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#AE8737] focus:border-transparent transition-shadow"
-                placeholder="Brief summary of the article..."
-                required
-              />
-            </div>
+
+  <div className="flex justify-between items-center mb-1">
+    <label className="block text-sm font-medium text-[#191919]">
+      Summary
+    </label>
+
+    <button
+      type="button"
+      onClick={handleGenerateSummary}
+      className="text-xs px-3 py-1 bg-[#AE8737]/10 text-[#AE8737] rounded hover:bg-[#AE8737]/20"
+    >
+      ✨ Generate AI Summary
+    </button>
+  </div>
+
+  <textarea
+    name="summary"
+    value={formData.summary}
+    onChange={handleInputChange}
+    rows="3"
+    className="w-full px-4 py-2 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#AE8737] focus:border-transparent transition-shadow"
+    placeholder="Brief summary of the article..."
+    required
+  />
+
+</div>
 
             <div>
               <label className="block text-sm font-medium text-[#191919] mb-1">Content</label>
