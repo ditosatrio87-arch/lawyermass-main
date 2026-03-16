@@ -152,7 +152,7 @@ export function StafKaryawan() {
         <div className="text-center mb-16">
           <div className="inline-block w-12 h-1 bg-[#AE8737] mb-6"></div>
           <h2 className="mb-4 text-[#191919]">Staf & Karyawan</h2>
-          <p className="text-gray-300 max-w-2xl mx-auto text-lg">
+          <p className="text-gray-700 max-w-2xl mx-auto text-lg">
             Tim profesional yang berdedikasi mendukung operasional M.A.S Law Firm
           </p>
         </div>
