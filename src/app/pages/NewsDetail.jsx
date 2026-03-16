@@ -1,7 +1,7 @@
 import { useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { supabase } from "../../lib/supabase";
-import { Calendar } from "lucide-react";
+import { Calendar, Clock } from "lucide-react";
 import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
 
@@ -29,7 +29,7 @@ export function NewsDetail() {
 
   if (!article) {
     return (
-      <div className="py-24 text-center">
+      <div className="py-32 text-center">
         <p className="text-slate-500">Loading article...</p>
       </div>
     );
@@ -37,73 +37,98 @@ export function NewsDetail() {
 
   const imageSrc = article.image_url || article.image || null;
 
-  return (
-    <section className="py-24 bg-white">
-      <div className="container mx-auto px-6 max-w-4xl">
+  // reading time
+  const words = article.content?.split(" ").length || 0;
+  const readingTime = Math.ceil(words / 200);
 
-        {/* Title */}
-        <h1 className="text-3xl md:text-4xl font-bold text-[#191919] mb-4 leading-tight">
+  return (
+    <section className="bg-white py-20">
+
+      <div className="max-w-3xl mx-auto px-6">
+
+        {/* CATEGORY */}
+        {article.category && (
+          <div className="mb-6">
+            <span className="text-xs tracking-widest uppercase font-semibold text-[#AE8737] bg-[#AE8737]/10 px-3 py-1 rounded-full">
+              {article.category}
+            </span>
+          </div>
+        )}
+
+        {/* TITLE */}
+        <h1 className="text-4xl md:text-5xl font-bold text-[#191919] leading-tight mb-6">
           {article.title}
         </h1>
 
-        {/* Date */}
-        <div className="flex items-center gap-2 text-[#AE8737] mb-8">
-          <Calendar className="w-4 h-4" />
-          <span className="text-sm">
+        {/* META */}
+        <div className="flex flex-wrap items-center gap-6 text-sm text-slate-500 mb-10">
+
+          <div className="flex items-center gap-2">
+            <Calendar className="w-4 h-4 text-[#AE8737]" />
             {new Date(article.date).toLocaleDateString("id-ID", {
               day: "numeric",
               month: "long",
               year: "numeric",
             })}
-          </span>
+          </div>
+
+          <div className="flex items-center gap-2">
+            <Clock className="w-4 h-4 text-[#AE8737]" />
+            {readingTime} min read
+          </div>
+
         </div>
 
-        {/* Image */}
+        {/* HERO IMAGE */}
         {imageSrc && (
-          <img
-            src={imageSrc}
-            alt={article.title}
-            className="w-full h-[400px] object-cover rounded-lg mb-10 shadow-sm"
-          />
+          <div className="mb-12 overflow-hidden rounded-xl shadow-sm">
+            <img
+              src={imageSrc}
+              alt={article.title}
+              className="w-full h-[420px] object-cover"
+            />
+          </div>
         )}
 
-        {/* CONTENT */}
-        <div className="text-slate-700 text-[17px] leading-relaxed">
+        {/* ARTICLE BODY */}
+        <article className="text-[18px] leading-relaxed text-slate-700">
 
           <ReactMarkdown
             remarkPlugins={[remarkGfm]}
             components={{
 
               p: ({ children }) => (
-                <p className="mb-6 leading-relaxed">{children}</p>
+                <p className="mb-4">{children}</p>
               ),
 
               h2: ({ children }) => (
-                <h2 className="text-2xl font-semibold mt-10 mb-4 text-[#191919]">
+                <h2 className="text-2xl font-semibold mt-10 mb-3 text-[#191919]">
                   {children}
                 </h2>
               ),
 
               h3: ({ children }) => (
-                <h3 className="text-xl font-semibold mt-8 mb-3 text-[#191919]">
+                <h3 className="text-xl font-semibold mt-8 mb-2 text-[#191919]">
                   {children}
                 </h3>
               ),
 
               ul: ({ children }) => (
-                <ul className="list-disc pl-6 mb-6 space-y-2">
+                <ul className="list-disc pl-6 mb-4 space-y-1">
                   {children}
                 </ul>
               ),
 
               ol: ({ children }) => (
-                <ol className="list-decimal pl-6 mb-6 space-y-2">
+                <ol className="list-decimal pl-6 mb-4 space-y-1">
                   {children}
                 </ol>
               ),
 
               li: ({ children }) => (
-                <li className="leading-relaxed">{children}</li>
+                <li className="leading-relaxed [&>p]:mb-0">
+                  {children}
+                </li>
               ),
 
               a: ({ href, children }) => (
@@ -111,16 +136,23 @@ export function NewsDetail() {
                   href={href}
                   className="text-[#AE8737] underline hover:opacity-80"
                   target="_blank"
+                  rel="noreferrer"
                 >
                   {children}
                 </a>
+              ),
+
+              blockquote: ({ children }) => (
+                <blockquote className="border-l-4 border-[#AE8737] pl-4 italic my-6 text-slate-600">
+                  {children}
+                </blockquote>
               ),
             }}
           >
             {article.content}
           </ReactMarkdown>
 
-        </div>
+        </article>
 
       </div>
     </section>

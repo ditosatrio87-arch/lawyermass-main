@@ -38,7 +38,7 @@ export function ManajerOperasional() {
         <div className="text-center mb-16">
           <div className="inline-block w-12 h-1 bg-[#AE8737] mb-6"></div>
           <h2 className="mb-4 text-black">Manajer Operasional</h2>
-          <p className="text-gray-600 max-w-2xl mx-auto text-lg">
+          <p className="text-gray-700 max-w-2xl mx-auto text-lg">
             Memastikan keunggulan operasional dan efisiensi layanan M.A.S Law Firm
           </p>
         </div>
@@ -78,7 +78,7 @@ export function ManajerOperasional() {
 
               {/* Card Info */}
               <div className="p-6 text-center bg-[#1a1a1a] border-t-2 border-[#AE8737]">
-                <h3 className="text-2xl font-bold text-[#191919] mb-2">{manager.name}</h3>
+                <h3 className="text-2xl font-bold text-[#191919] text-white mb-2">{manager.name}</h3>
                 <p className="text-[#AE8737] font-semibold text-base mb-1">{manager.title}</p>
                 <p className="text-gray-400 text-sm mb-4">{manager.specialty}</p>
                 <p className="text-gray-500 text-sm line-clamp-3">{manager.bio}</p>

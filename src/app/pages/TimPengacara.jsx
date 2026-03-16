@@ -82,7 +82,7 @@ return (
 <div className="inline-block w-12 h-1 bg-[#AE8737] mb-6"></div>
 <h2 className="mb-4 text-[#191919]">Tim Pengacara Kami</h2>
 
-<p className="text-gray-300 max-w-2xl mx-auto text-lg">
+<p className="text-gray-700 max-w-2xl mx-auto text-lg">
 Profesional hukum berpengalaman yang berdedikasi melindungi kepentingan Anda
 </p>
 </div>
