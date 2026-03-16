@@ -38,7 +38,7 @@ export function ManajerOperasional() {
         <div className="text-center mb-16">
           <div className="inline-block w-12 h-1 bg-[#AE8737] mb-6"></div>
           <h2 className="mb-4 text-black">Manajer Operasional</h2>
-          <p className="text-gray-600 max-w-2xl mx-auto text-lg">
+          <p className="text-gray-700 max-w-2xl mx-auto text-lg">
             Memastikan keunggulan operasional dan efisiensi layanan M.A.S Law Firm
           </p>
         </div>
