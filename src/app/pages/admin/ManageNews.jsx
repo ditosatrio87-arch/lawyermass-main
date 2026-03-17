@@ -280,7 +280,6 @@ const handleImproveTitle = () => {
   }));
 
 };
-
   const handleImageChange = async (e) => {
   const file = e.target.files[0];
   if (!file) return;
@@ -445,29 +444,17 @@ const handleImproveTitle = () => {
             <div className="grid md:grid-cols-2 gap-6">
               <div className="space-y-4">
                 <div>
-  <div className="flex justify-between items-center mb-1">
-    <label className="block text-sm font-medium text-[#191919]">
-      Title
-    </label>
-
-    <button
-      type="button"
-      onClick={handleImproveTitle}
-      className="text-xs px-3 py-1 bg-[#AE8737]/10 text-[#AE8737] rounded hover:bg-[#AE8737]/20"
-    >
-      ✨ Improve Title
-    </button>
-  </div>
-
-  <input
-    type="text"
-    name="title"
-    value={formData.title}
-    onChange={handleInputChange}
-    className="w-full px-4 py-2 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#AE8737]"
-    required
-  />
-</div>
+                  <label className="block text-sm font-medium text-[#191919] mb-1">Title</label>
+                  <input
+                    type="text"
+                    name="title"
+                    value={formData.title}
+                    onChange={handleInputChange}
+                    className="w-full px-4 py-2 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#AE8737] focus:border-transparent transition-shadow"
+                    required
+                    placeholder="Enter article title"
+                  />
+                </div>
                 
                 <div>
                   <label className="block text-sm font-medium text-[#191919] mb-1">Slug</label>
