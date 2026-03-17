@@ -443,8 +443,7 @@ const handleImproveTitle = () => {
           <form onSubmit={handleSubmit} className="space-y-6">
             <div className="grid md:grid-cols-2 gap-6">
               <div className="space-y-4">
-                <div>
-                  <div className="flex justify-between items-center mb-1">
+                <div className="flex justify-between items-center mb-1">
   <label className="block text-sm font-medium text-[#191919]">
     Title
   </label>
