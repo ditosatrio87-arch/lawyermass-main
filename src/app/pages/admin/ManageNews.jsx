@@ -253,13 +253,13 @@ const handleImproveTitle = () => {
   let newTitle = "";
 
   if (isGuide) {
-    newTitle = Cara Menghadapi ${detectedTopic} di Tahun 2026 Agar Lebih Aman;
+    newTitle = `Cara Menghadapi ${detectedTopic} di Tahun 2026 Agar Lebih Aman`;
   } else if (isProblem) {
-    newTitle = ${detectedTopic} Bisa Jadi Masalah Serius? Ini yang Harus Diperhatikan;
+    newTitle = `${detectedTopic} Bisa Jadi Masalah Serius? Ini yang Harus Diperhatikan`;
   } else if (isTrend) {
-    newTitle = Tren ${detectedTopic} 2026: Peluang dan Tantangan yang Perlu Dipahami;
+    newTitle = `Tren ${detectedTopic} 2026: Peluang dan Tantangan yang Perlu Dipahami`;
   } else {
-    newTitle = ${detectedTopic} di Tahun 2026: Strategi dan Insight Penting;
+    newTitle = `${detectedTopic} di Tahun 2026: Strategi dan Insight Penting`;
   }
 
   // ===== TAMBAH HOOK =====
