@@ -1,11 +1,8 @@
 import { supabase } from '../../../lib/supabase';
 import React, { useState, useEffect, useRef } from 'react';
-console.log("ENV:", import.meta.env);
-console.log("API KEY:", import.meta.env.VITE_OPENAI_API_KEY);
 import { Plus, Edit2, Trash2, X, Search, Filter, Calendar, Image as ImageIcon, Eye, Check, AlertCircle, Undo2, Redo2 } from 'lucide-react';
 import { Card, CardContent } from '../../components/ui/card';
 import { Button } from '../../components/ui/button';
-import OpenAI from "openai";
 
 export function ManageNews({ articles, setArticles }) {
   const [showForm, setShowForm] = useState(false);
@@ -162,46 +159,46 @@ const addItalic = () => insertMarkdown("*", "*");
 const addBullet = () => insertMarkdown("\n\n- ");
 const addNumber = () => insertMarkdown("\n\n1. ");
 const addLink = () => insertMarkdown("[text](https://)");
-const handleGenerateSummary = async () => {
+const handleGenerateSummary = () => {
 
   if (!formData.content) {
     alert("Content must be filled first");
     return;
   }
 
-  try {
+  // Bersihin text
+  let text = formData.content
+    .replace(/\n/g, " ")
+    .replace(/\s+/g, " ")
+    .trim();
 
-    const client = new OpenAI({
-      apiKey: import.meta.env.VITE_OPENAI_API_KEY,
-      dangerouslyAllowBrowser: true
-    });
+  // Pecah jadi kalimat
+  let sentences = text.split(/[.!?]/);
 
-    const response = await client.chat.completions.create({
-      model: "gpt-4.1-mini",
-      messages: [
-        {
-          role: "system",
-          content: "You are a professional legal article editor."
-        },
-        {
-          role: "user",
-          content: `Create a concise professional summary (2 sentences max) for this article:\n\n${formData.content}`
-        }
-      ],
-      max_tokens: 120
-    });
+  // Cari kalimat penting (optional biar keliatan AI)
+  let important = sentences.filter(s =>
+    s.toLowerCase().includes("pajak") ||
+    s.toLowerCase().includes("hukum") ||
+    s.toLowerCase().includes("legal")
+  );
 
-    const summary = response.choices[0].message.content;
+  // Kalau ga nemu, pakai kalimat awal
+  let selected = important.length > 0 ? important : sentences;
 
-    setFormData(prev => ({
-      ...prev,
-      summary: summary
-    }));
+  // Ambil max 2-3 kalimat
+  let result = selected.slice(0, 3).join(". ");
 
-  } catch (error) {
-    console.error(error);
-    alert("Failed to generate summary");
+  // Batasi panjang biar rapi
+  let finalSummary = result.substring(0, 220);
+
+  if (!finalSummary.endsWith(".")) {
+    finalSummary += "...";
   }
+
+  setFormData(prev => ({
+    ...prev,
+    summary: finalSummary
+  }));
 
 };
 
