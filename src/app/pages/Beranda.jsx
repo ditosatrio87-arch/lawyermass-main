@@ -1,8 +1,14 @@
-import { ArrowRight, Scale, Building2, ShieldCheck, FileText } from 'lucide-react';
-import { Button } from '../components/ui/button';
-import { Link } from 'react-router-dom';
-import heroBackground from '/hero.jpg';
-import { VisiMisi } from '../components/VisiMisi';
+import {
+  ArrowRight,
+  Scale,
+  Building2,
+  ShieldCheck,
+  FileText,
+} from "lucide-react";
+import { Button } from "../components/ui/button";
+import { Link } from "react-router-dom";
+import heroBackground from "/hero.jpg";
+import { VisiMisi } from "../components/VisiMisi";
 
 export function Beranda() {
   return (
@@ -10,7 +16,7 @@ export function Beranda() {
       {/* HERO SECTION */}
       <section className="relative bg-white py-28 md:py-36">
         {/* Background Image */}
-        <div 
+        <div
           className="absolute inset-0 bg-cover bg-center"
           style={{ backgroundImage: `url(${heroBackground})` }}
         ></div>
@@ -20,7 +26,7 @@ export function Beranda() {
 
         <div className="container mx-auto px-6 text-center relative z-10">
           <div className="inline-block mb-6 px-4 py-2 bg-[#AE8737]/10 border border-[#AE8737]/20 rounded-full backdrop-blur-md">
-            <span className="text-white text-sm tracking-wide">
+            <span className="text-[#AE8737] text-sm tracking-wide">
               Dipercaya oleh Perusahaan Terkemuka
             </span>
           </div>
@@ -30,15 +36,15 @@ export function Beranda() {
           </h1>
 
           <p className="mb-10 max-w-2xl mx-auto text-lg text-white/90 leading-relaxed">
-            Konsultan hukum terpercaya dengan pengalaman di bidang hukum korporasi,
-            pendaftaran merek, dan pendirian perusahaan.
+            Konsultan hukum terpercaya dengan pengalaman di bidang hukum
+            korporasi, pendaftaran merek, dan pendirian perusahaan.
           </p>
 
           <div className="flex flex-col items-center">
             <div className="flex flex-wrap gap-4 justify-center">
-              <a 
-                href="https://heyzine.com/flip-book/e301844c27.html#page/2" 
-                target="_blank" 
+              <a
+                href="https://heyzine.com/flip-book/e301844c27.html#page/2"
+                target="_blank"
                 rel="noopener noreferrer"
               >
                 <Button
@@ -60,7 +66,7 @@ export function Beranda() {
               </Link>
             </div>
 
-            <p className="mt-6 text-sm text-white-300 text-sm leading-relaxed font-light tracking-wide max-w-md mx-auto">
+            <p className="mt-6 text-sm text-gray-300 font-light tracking-wide max-w-md mx-auto">
               Jelajahi profil lengkap dan keunggulan firma kami.
             </p>
           </div>
@@ -70,7 +76,6 @@ export function Beranda() {
       {/* SERVICE SECTION */}
       <section className="py-24 bg-white text-black">
         <div className="container mx-auto px-6">
-
           {/* Title */}
           <div className="text-center mb-16">
             <div className="w-12 h-1 bg-[#AE8737] mx-auto mb-6"></div>
@@ -85,7 +90,6 @@ export function Beranda() {
 
           {/* Services Grid */}
           <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
-
             {/* Corporate Lawyer */}
             <Link
               to="/layanan-kami"
@@ -96,7 +100,8 @@ export function Beranda() {
                 Corporate Law
               </h3>
               <p className="text-slate-300 text-sm leading-relaxed">
-                Pendampingan hukum profesional untuk perusahaan dan aktivitas bisnis.
+                Pendampingan hukum profesional untuk perusahaan dan aktivitas
+                bisnis.
               </p>
             </Link>
 
@@ -110,7 +115,8 @@ export function Beranda() {
                 Pendirian Perusahaan
               </h3>
               <p className="text-slate-300 text-sm leading-relaxed">
-                Layanan pendirian PT, PT PMA, dan legalitas usaha secara profesional.
+                Layanan pendirian PT, PT PMA, dan legalitas usaha secara
+                profesional.
               </p>
             </Link>
 
@@ -124,7 +130,8 @@ export function Beranda() {
                 Pendaftaran Haki
               </h3>
               <p className="text-slate-300 text-sm leading-relaxed">
-                Perlindungan hukum atas merek dan kekayaan intelektual bisnis Anda.
+                Perlindungan hukum atas merek dan kekayaan intelektual bisnis
+                Anda.
               </p>
             </Link>
 
@@ -141,7 +148,6 @@ export function Beranda() {
                 Penyelesaian sengketa secara profesional dan strategis.
               </p>
             </Link>
-
           </div>
 
           {/* Button */}
@@ -155,13 +161,11 @@ export function Beranda() {
               </Button>
             </Link>
           </div>
-
         </div>
       </section>
 
       {/* VISI MISI */}
       <VisiMisi />
-
     </>
   );
 }
