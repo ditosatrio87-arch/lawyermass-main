@@ -272,7 +272,7 @@ const handleImproveTitle = () => {
 
   const randomHook = hooks[Math.floor(Math.random() * hooks.length)];
 
-  const finalTitle = ${newTitle} — ${randomHook};
+  const finalTitle = `${newTitle} — ${randomHook}`;
 
   setFormData(prev => ({
     ...prev,
