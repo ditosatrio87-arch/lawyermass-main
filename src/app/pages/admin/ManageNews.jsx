@@ -1,7 +1,7 @@
 import { supabase } from '../../../lib/supabase';
 import React, { useState, useEffect, useRef } from 'react';
-
-console.log("API KEY:", import.meta.env.VITE_OPENAI_API_KEY)
+console.log("ENV:", import.meta.env);
+console.log("API KEY:", import.meta.env.VITE_OPENAI_API_KEY);
 import { Plus, Edit2, Trash2, X, Search, Filter, Calendar, Image as ImageIcon, Eye, Check, AlertCircle, Undo2, Redo2 } from 'lucide-react';
 import { Card, CardContent } from '../../components/ui/card';
 import { Button } from '../../components/ui/button';
