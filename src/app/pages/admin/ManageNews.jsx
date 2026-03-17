@@ -178,7 +178,7 @@ const handleGenerateSummary = () => {
   const keywords = [
     "pajak", "hukum", "legal", "peraturan",
     "undang", "pasal", "pengadilan",
-    "perusahaan", "kontrak", "hak", "kewajiban"
+    "perusahaan", "kontrak", "hak", "kewajiban", "diatur dalam", "penting", "berdasarkan", "menurut", "dalam hal ini", "wajib", "dilarang", "diizinkan", "tanggung jawab", "gugatan", "putusan", "putusan pengadilan", "putusan hakim", "pajak", "perdata", "pidana", "administrasi", "perdata", "pidana", "administrasi", "perdata", "pidana", "administrasi", "memahami", "mengatur", "mengatur tentang", "berkaitan dengan", "berkaitan dengan", "berkaitan dengan", "berkaitan dengan", "berkaitan dengan", "berkaitan dengan", "berkaitan dengan", "berkaitan dengan", "berkaitan dengan", "berkaitan dengan", "berkaitan dengan", "berkaitan dengan", "berkaitan dengan", "berkaitan dengan", "peran", "fungsi", "tujuan", "sasaran", "manfaat", "dampak", "konsekuensi", "implikasi", "tantangan", "peluang", "strategi", "langkah", "upaya", "solusi", "rekomendasi", "mempengaruhi", "penting", "krusial", "esensial", "fundamental", "utama", "kunci", "signifikan", "berat", "berpengaruh", "berdampak", "berkontribusi", "berperan", "berfungsi", "bertujuan", "bermanfaat", "berdampak", "menghadapi", "mengatasi", "menyelesaikan", "mengurangi", "menghilangkan", "meningkatkan", "memperkuat", "memperbaiki", "memperjelas", "mempertegas", "memperluas", "memperdalam", "memperkuat", "memperbaiki", "memperjelas", "mempertegas", "memperluas", "memperdalam"
   ];
 
   // Scoring tiap kalimat
