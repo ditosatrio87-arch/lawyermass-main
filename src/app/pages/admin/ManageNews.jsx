@@ -166,29 +166,41 @@ const handleGenerateSummary = () => {
     return;
   }
 
-  // Bersihin text
   let text = formData.content
     .replace(/\n/g, " ")
     .replace(/\s+/g, " ")
     .trim();
 
-  // Pecah jadi kalimat
-  let sentences = text.split(/[.!?]/);
+  // Pecah kalimat
+  let sentences = text.split(/[.!?]/).filter(s => s.length > 20);
 
-  // Cari kalimat penting (optional biar keliatan AI)
-  let important = sentences.filter(s =>
-    s.toLowerCase().includes("pajak") ||
-    s.toLowerCase().includes("hukum") ||
-    s.toLowerCase().includes("legal")
-  );
+  // Kata penting (bisa kamu tambah)
+  const keywords = [
+    "pajak", "hukum", "legal", "peraturan",
+    "undang", "pasal", "pengadilan",
+    "perusahaan", "kontrak", "hak", "kewajiban"
+  ];
 
-  // Kalau ga nemu, pakai kalimat awal
-  let selected = important.length > 0 ? important : sentences;
+  // Scoring tiap kalimat
+  let scored = sentences.map(sentence => {
+    let score = 0;
+    keywords.forEach(k => {
+      if (sentence.toLowerCase().includes(k)) score++;
+    });
 
-  // Ambil max 2-3 kalimat
-  let result = selected.slice(0, 3).join(". ");
+    return { sentence, score };
+  });
 
-  // Batasi panjang biar rapi
+  // Urutkan dari paling penting
+  scored.sort((a, b) => b.score - a.score);
+
+  // Ambil top 3 kalimat terbaik
+  let selected = scored.slice(0, 3).map(s => s.sentence);
+
+  // Gabungkan
+  let result = selected.join(". ");
+
+  // Limit panjang
   let finalSummary = result.substring(0, 220);
 
   if (!finalSummary.endsWith(".")) {
