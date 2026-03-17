@@ -214,6 +214,73 @@ const handleGenerateSummary = () => {
 
 };
 
+const handleImproveTitle = () => {
+
+  if (!formData.content && !formData.title) {
+    alert("Isi content atau title dulu");
+    return;
+  }
+
+  let text = (formData.content || formData.title)
+    .toLowerCase()
+    .replace(/\n/g, " ");
+
+  // ===== KEYWORD DETECTION =====
+  const topics = [
+    { key: "pajak", label: "Pajak" },
+    { key: "hukum", label: "Hukum" },
+    { key: "legal", label: "Legal" },
+    { key: "bisnis", label: "Bisnis" },
+    { key: "umkm", label: "UMKM" },
+    { key: "perusahaan", label: "Perusahaan" },
+    { key: "kontrak", label: "Kontrak" },
+  ];
+
+  let detectedTopic = "Bisnis";
+
+  topics.forEach(t => {
+    if (text.includes(t.key)) {
+      detectedTopic = t.label;
+    }
+  });
+
+  // ===== STYLE DETECTION =====
+  let isTrend = text.includes("tren") || text.includes("meningkat");
+  let isProblem = text.includes("masalah") || text.includes("risiko");
+  let isGuide = text.includes("cara") || text.includes("bagaimana");
+
+  // ===== TEMPLATE GENERATOR =====
+  let newTitle = "";
+
+  if (isGuide) {
+    newTitle = Cara Menghadapi ${detectedTopic} di Tahun 2026 Agar Lebih Aman;
+  } else if (isProblem) {
+    newTitle = ${detectedTopic} Bisa Jadi Masalah Serius? Ini yang Harus Diperhatikan;
+  } else if (isTrend) {
+    newTitle = Tren ${detectedTopic} 2026: Peluang dan Tantangan yang Perlu Dipahami;
+  } else {
+    newTitle = ${detectedTopic} di Tahun 2026: Strategi dan Insight Penting;
+  }
+
+  // ===== TAMBAH HOOK =====
+  const hooks = [
+    "Ini Penjelasan Lengkapnya",
+    "Wajib Diketahui Pelaku Usaha",
+    "Jangan Sampai Salah Langkah",
+    "Simak Penjelasannya",
+  ];
+
+  const randomHook = hooks[Math.floor(Math.random() * hooks.length)];
+
+  const finalTitle = ${newTitle} — ${randomHook};
+
+  setFormData(prev => ({
+    ...prev,
+    title: finalTitle
+  }));
+
+};
+
   const handleImageChange = async (e) => {
   const file = e.target.files[0];
   if (!file) return;
@@ -378,17 +445,29 @@ const handleGenerateSummary = () => {
             <div className="grid md:grid-cols-2 gap-6">
               <div className="space-y-4">
                 <div>
-                  <label className="block text-sm font-medium text-[#191919] mb-1">Title</label>
-                  <input
-                    type="text"
-                    name="title"
-                    value={formData.title}
-                    onChange={handleInputChange}
-                    className="w-full px-4 py-2 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#AE8737] focus:border-transparent transition-shadow"
-                    required
-                    placeholder="Enter article title"
-                  />
-                </div>
+  <div className="flex justify-between items-center mb-1">
+    <label className="block text-sm font-medium text-[#191919]">
+      Title
+    </label>
+
+    <button
+      type="button"
+      onClick={handleImproveTitle}
+      className="text-xs px-3 py-1 bg-[#AE8737]/10 text-[#AE8737] rounded hover:bg-[#AE8737]/20"
+    >
+      ✨ Improve Title
+    </button>
+  </div>
+
+  <input
+    type="text"
+    name="title"
+    value={formData.title}
+    onChange={handleInputChange}
+    className="w-full px-4 py-2 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#AE8737]"
+    required
+  />
+</div>
                 
                 <div>
                   <label className="block text-sm font-medium text-[#191919] mb-1">Slug</label>
