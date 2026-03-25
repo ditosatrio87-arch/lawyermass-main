@@ -107,6 +107,22 @@ export function Footer() {
                 </span>
               </Link>
 
+              <a
+                href="https://lynk.id/maslawfirm"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="flex items-center gap-3 group hover:text-white transition-colors"
+              >
+                <MessageCircle className="w-5 h-5 text-[#AE8737] group-hover:scale-110 transition-transform" />
+                <span>
+                  Konsultasi & Layanan Cepat
+                </span>
+              </a>
+
+              <p className="text-xs text-slate-500 leading-relaxed">
+                Akses seluruh layanan hukum kami, konsultasi, dan informasi cepat dalam satu halaman.
+              </p>
+
               <p className="text-xs text-slate-500 leading-relaxed">
                 Cek keaslian dokumen resmi yang diterbitkan oleh
                 M.A.S Law Firm secara online.
