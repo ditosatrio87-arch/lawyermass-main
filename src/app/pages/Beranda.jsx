@@ -8,7 +8,7 @@ import {
 import { Button } from "../components/ui/button";
 import { Link } from "react-router-dom";
 // import heroBackground from "../hero.jpg"; // File is in public folder
-import { VisiMisi } from "../components/VisiMisi";
+import VisiMisi from "../components/VisiMisi";
 
 export function Beranda() {
   return (
