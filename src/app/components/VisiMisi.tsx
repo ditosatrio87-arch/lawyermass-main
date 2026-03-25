@@ -1,20 +1,3 @@
-import { Compass, Gavel } from 'lucide-react';
-import { motion } from 'motion/react';
-
-export function VisiMisi() {
-  const visiItems = [
-    "Menjadi partner terpercaya bagi klien dalam perlindungan dan pengembangan hukum.",
-    "Memberikan pelayanan hukum sepenuh hati yang profesional, transparan, dan berintegritas.",
-    "Menjadi mitra strategis dalam mendukung kepastian, perlindungan, dan pengembangan hukum bagi individu, UMKM, dan perusahaan."
-  ];
-
-  const misiItems = [
-    "Memberikan layanan hukum yang berfokus pada perlindungan hak dan kepentingan hukum klien secara bertanggung jawab.",
-    "Mendampingi klien sebagai mitra strategis dalam setiap proses pengambilan keputusan hukum yang berkelanjutan.",
-    "Mendorong pengembangan hukum melalui edukasi, inovasi layanan, dan peningkatan literasi hukum masyarakat."
-  ];
-
-  return (
     <section className="py-24 bg-white">
       <div className="container mx-auto px-6">
 
@@ -111,5 +94,3 @@ export function VisiMisi() {
 
       </div>
     </section>
-  );
-}
