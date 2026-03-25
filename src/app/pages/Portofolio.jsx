@@ -2,9 +2,9 @@ import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { X } from 'lucide-react';
 
-import portfolioImg1 from '/pendirian%pt%pma.jpeg';
-import portfolioImg2 from '/klien%internasional.jpeg';
-import portfolioImg3 from '/pendampingan%pemeriksaan%bpjs%ketenagakerjaan.jpeg';
+import portfolioImg1 from '/pendirian pt pma.jpeg';
+import portfolioImg2 from '/klien internasional.jpeg';
+import portfolioImg3 from '/pendampingan pemeriksaan bpjs ketenagakerjaan.jpeg';
 import portfolioImg4 from '/mediator.jpeg';
 
 export function Portofolio() {
@@ -65,7 +65,7 @@ export function Portofolio() {
         <div className="text-center mb-16">
           <div className="w-12 h-1 bg-[#AE8737] mx-auto mb-6"></div>
           <h2 className="text-3xl font-bold mb-4">Rekam Jejak & Portofolio</h2>
-          <p className="text-slate-300 max-w-2xl mx-auto">
+          <p className="text-slate-600 max-w-2xl mx-auto">
             Dipercaya oleh klien dari berbagai industri
           </p>
         </div>
@@ -122,7 +122,7 @@ export function Portofolio() {
         {/* Close Button */}
         <button
           onClick={() => setSelectedCase(null)}
-          className="absolute top-4 right-4 z-10 bg-black/70 hover:bg-black text-[#191919] p-2 rounded-full transition"
+          className="absolute top-4 right-4 z-10 bg-black/70 hover:bg-black text-white p-2 rounded-full transition"
         >
           <X className="w-5 h-5" />
         </button>
