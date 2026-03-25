@@ -1,130 +1,166 @@
-import { useEffect, useState } from 'react'
-import { Calendar, ArrowRight } from 'lucide-react'
-import { Card, CardContent } from '../components/ui/card'
-import { supabase } from '../../lib/supabase'
-import { Link } from 'react-router-dom'
+import {
+  ArrowRight,
+  Scale,
+  Building2,
+  ShieldCheck,
+  FileText,
+} from "lucide-react";
+import { Button } from "../components/ui/button";
+import { Link } from "react-router-dom";
+// import heroBackground from "../hero.jpg"; // File is in public folder
+import { VisiMisi } from "../components/VisiMisi";
 
-export function Berita() {
-
-  const [news, setNews] = useState([])
-
-  useEffect(() => {
-
-    const fetchNews = async () => {
-
-      const { data, error } = await supabase
-        .from('news')
-        .select('*')
-        .eq('status', 'Published')
-        .order('date', { ascending: false })
-
-      if (error) {
-        console.error('Error fetching news:', error)
-      } else {
-        setNews(data || [])
-      }
-
-    }
-
-    fetchNews()
-
-  }, [])
-
+export function Beranda() {
   return (
+    <>
+      <section className="relative bg-white py-28 md:py-36">
+        {/* Background Image */}
+        <div
+          className="absolute inset-0 bg-cover bg-center"
+          style={{ backgroundImage: `url(/hero.jpg)` }}
+        ></div>
 
-    <section className="py-24 bg-white">
+        {/* Dark Overlay (50% opacity) */}
+        <div className="absolute inset-0 bg-black/50"></div>
 
-      <div className="container mx-auto px-6 max-w-7xl">
-
-        <div className="text-center mb-16">
-
-          <div className="inline-block w-12 h-1 bg-[#AE8737] mb-6"></div>
-
-          <h2 className="mb-4 text-[#191919]">
-            Berita & Insight Hukum
-          </h2>
-
-          <p className="text-slate-600 max-w-2xl mx-auto text-lg">
-            Tetap terinformasi dengan perkembangan terbaru dalam hukum korporasi dan merek dagang
+        <div className="container mx-auto px-6 text-center relative z-10">
+          <div className="inline-block mb-6 px-4 py-2 bg-[#AE8737]/10 border border-[#AE8737]/20 rounded-full backdrop-blur-md">
+            <span className="text-[#AE8737] text-sm tracking-wide">
+              Dipercaya oleh Perusahaan Terkemuka
+            </span>
+          </div>
+          <h1 className="mb-6 max-w-4xl mx-auto leading-tight text-white">
+            Solusi Hukum Profesional untuk Kesuksesan Bisnis Anda
+          </h1>
+          <p className="mb-10 max-w-2xl mx-auto text-lg text-white/90 leading-relaxed">
+            Konsultan hukum terpercaya dengan pengalaman di bidang hukum
+            korporasi, pendaftaran merek, dan pendirian perusahaan.
           </p>
-
-        </div>
-
-
-        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-10 items-stretch">
-
-          {news.map((article) => (
-
-            <Card
-              key={article.id}
-              className="border border-slate-200 shadow-sm hover:shadow-xl transition-all duration-300 overflow-hidden group"
-            >
-
-              <div className="aspect-[16/10] overflow-hidden bg-slate-100">
-
-                <img
-                  src={article.image_url}
-                  alt={article.title}
-                  className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
-                />
-
-              </div>
-
-
-              <CardContent className="p-6 flex flex-col h-full">
-
-                <div className="flex items-center gap-3 mb-4 text-sm">
-
-                  <span className="bg-[#AE8737]/10 text-[#AE8737] px-2 py-1 rounded">
-                    {article.category}
-                  </span>
-
-                  <div className="flex items-center gap-1 text-slate-500">
-
-                    <Calendar className="w-4 h-4" />
-                    <span>{article.date}</span>
-
-                  </div>
-
-                </div>
-
-
-                <h3 className="mb-3 text-[#191919] font-semibold leading-snug line-clamp-2 min-h-[48px]">
-
-                  {article.title}
-
-                </h3>
-
-
-                <p className="text-slate-600 mb-5 leading-relaxed line-clamp-3 min-h-[72px]">
-
-                  {article.summary}
-
-                </p>
-
-
-                <Link
-                  to={`/news/${article.slug}`}
-                  className="mt-auto text-[#AE8737] hover:text-[#8f6e2d] inline-flex items-center gap-1 font-medium"
+          <div className="flex flex-col items-center">
+            <div className="flex flex-wrap gap-4 justify-center">
+              <a
+                href="https://heyzine.com/flip-book/e301844c27.html#page/2"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                <Button
+                  size="lg"
+                  className="bg-[#AE8737] hover:bg-[#8f6e2d] text-white px-8 shadow-lg shadow-[#AE8737]/20"
                 >
-
-                  Baca Selengkapnya
-                  <ArrowRight className="w-4 h-4" />
-
-                </Link>
-
-              </CardContent>
-
-            </Card>
-
-          ))}
-
+                  Our Company Profile <ArrowRight className="ml-2 w-5 h-5" />
+                </Button>
+              </a>
+              <Link to="/layanan-kami">
+                <Button
+                  size="lg"
+                  variant="outline"
+                  className="bg-transparent border-2 border-white text-white hover:bg-white hover:text-[#191919] px-8"
+                >
+                  Lihat Layanan
+                </Button>
+              </Link>
+            </div>
+            {/* Informative Sub-text */}
+            <p className="mt-6 text-sm text-gray-300 font-light tracking-wide max-w-md mx-auto">
+              Jelajahi profil lengkap dan keunggulan firma kami.
+            </p>
+          </div>
         </div>
+      </section>
 
-      </div>
+      {/* SERVICE SECTION */}
+      <section className="py-24 bg-white text-black">
+        <div className="container mx-auto px-6">
+          {/* Title */}
+          <div className="text-center mb-16">
+            <div className="w-12 h-1 bg-[#AE8737] mx-auto mb-6"></div>
+            <h2 className="text-3xl font-bold mb-4">
+              Layanan Hukum Profesional
+            </h2>
+            <p className="text-slate-700 max-w-2xl mx-auto">
+              Kami menyediakan layanan hukum strategis untuk membantu bisnis
+              berkembang secara aman dan sesuai regulasi yang berlaku.
+            </p>
+          </div>
 
-    </section>
+          {/* Services Grid */}
+          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
+            {/* Corporate Lawyer */}
+            <Link
+              to="/layanan-kami"
+              className="group bg-[#252525] p-8 rounded-lg border border-[#2f2f2f] hover:border-[#AE8737] transition duration-300"
+            >
+              <Scale className="w-10 h-10 text-[#AE8737] mb-4" />
+              <h3 className="text-xl font-semibold mb-2 text-white group-hover:text-[#AE8737]">
+                Corporate Law
+              </h3>
+              <p className="text-slate-300 text-sm leading-relaxed">
+                Pendampingan hukum profesional untuk perusahaan dan aktivitas
+                bisnis.
+              </p>
+            </Link>
 
-  )
+            {/* Company Establishment */}
+            <Link
+              to="/layanan-kami"
+              className="group bg-[#252525] p-8 rounded-lg border border-[#2f2f2f] hover:border-[#AE8737] transition duration-300"
+            >
+              <Building2 className="w-10 h-10 text-[#AE8737] mb-4" />
+              <h3 className="text-xl font-semibold mb-2 text-white group-hover:text-[#AE8737]">
+                Pendirian Perusahaan
+              </h3>
+              <p className="text-slate-300 text-sm leading-relaxed">
+                Layanan pendirian PT, PT PMA, dan legalitas usaha secara
+                profesional.
+              </p>
+            </Link>
 
+            {/* Trademark */}
+            <Link
+              to="/layanan-kami"
+              className="group bg-[#252525] p-8 rounded-lg border border-[#2f2f2f] hover:border-[#AE8737] transition duration-300"
+            >
+              <ShieldCheck className="w-10 h-10 text-[#AE8737] mb-4" />
+              <h3 className="text-xl font-semibold mb-2 text-white group-hover:text-[#AE8737]">
+                Pendaftaran Haki
+              </h3>
+              <p className="text-slate-300 text-sm leading-relaxed">
+                Perlindungan hukum atas merek dan kekayaan intelektual bisnis
+                Anda.
+              </p>
+            </Link>
+
+            {/* Business Contract */}
+            <Link
+              to="/layanan-kami"
+              className="group bg-[#252525] p-8 rounded-lg border border-[#2f2f2f] hover:border-[#AE8737] transition duration-300"
+            >
+              <FileText className="w-10 h-10 text-[#AE8737] mb-4" />
+              <h3 className="text-xl font-semibold text-white mb-2 group-hover:text-[#AE8737]">
+                Litigasi & Mediasi
+              </h3>
+              <p className="text-slate-300 text-sm leading-relaxed">
+                Penyelesaian sengketa secara profesional dan strategis.
+              </p>
+            </Link>
+          </div>
+
+          {/* Button */}
+          <div className="text-center mt-14">
+            <Link to="/layanan-kami">
+              <Button
+                size="lg"
+                className="bg-[#AE8737] hover:bg-[#8f6e2d] text-[#191919] px-8"
+              >
+                Lihat Semua Layanan
+              </Button>
+            </Link>
+          </div>
+        </div>
+      </section>
+
+      {/* VISI MISI */}
+      <VisiMisi />
+    </>
+  );
 }
