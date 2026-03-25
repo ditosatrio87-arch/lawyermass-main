@@ -7,21 +7,20 @@ import {
 } from "lucide-react";
 import { Button } from "../components/ui/button";
 import { Link } from "react-router-dom";
-import heroBackground from "/hero.jpg";
+// import heroBackground from "../hero.jpg"; // File is in public folder
 import { VisiMisi } from "../components/VisiMisi";
 
 export function Beranda() {
   return (
     <>
-      {/* HERO SECTION */}
       <section className="relative bg-white py-28 md:py-36">
         {/* Background Image */}
         <div
           className="absolute inset-0 bg-cover bg-center"
-          style={{ backgroundImage: `url(${heroBackground})` }}
+          style={{ backgroundImage: `url(/hero.jpg)` }}
         ></div>
 
-        {/* Overlay */}
+        {/* Dark Overlay (50% opacity) */}
         <div className="absolute inset-0 bg-black/50"></div>
 
         <div className="container mx-auto px-6 text-center relative z-10">
@@ -30,16 +29,13 @@ export function Beranda() {
               Dipercaya oleh Perusahaan Terkemuka
             </span>
           </div>
-
           <h1 className="mb-6 max-w-4xl mx-auto leading-tight text-white">
             Solusi Hukum Profesional untuk Kesuksesan Bisnis Anda
           </h1>
-
           <p className="mb-10 max-w-2xl mx-auto text-lg text-white/90 leading-relaxed">
             Konsultan hukum terpercaya dengan pengalaman di bidang hukum
             korporasi, pendaftaran merek, dan pendirian perusahaan.
           </p>
-
           <div className="flex flex-col items-center">
             <div className="flex flex-wrap gap-4 justify-center">
               <a
@@ -54,18 +50,17 @@ export function Beranda() {
                   Our Company Profile <ArrowRight className="ml-2 w-5 h-5" />
                 </Button>
               </a>
-
               <Link to="/layanan-kami">
                 <Button
                   size="lg"
                   variant="outline"
-                  className="bg-transparent border-2 border-white text-white hover:bg-[#ffffff00] hover:text-white px-8"
+                  className="bg-transparent border-2 border-white text-white hover:bg-white hover:text-[#191919] px-8"
                 >
                   Lihat Layanan
                 </Button>
               </Link>
             </div>
-
+            {/* Informative Sub-text */}
             <p className="mt-6 text-sm text-gray-300 font-light tracking-wide max-w-md mx-auto">
               Jelajahi profil lengkap dan keunggulan firma kami.
             </p>
@@ -82,7 +77,7 @@ export function Beranda() {
             <h2 className="text-3xl font-bold mb-4">
               Layanan Hukum Profesional
             </h2>
-            <p className="text-slate-300 max-w-2xl mx-auto">
+            <p className="text-slate-700 max-w-2xl mx-auto">
               Kami menyediakan layanan hukum strategis untuk membantu bisnis
               berkembang secara aman dan sesuai regulasi yang berlaku.
             </p>
