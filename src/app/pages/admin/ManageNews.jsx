@@ -36,27 +36,6 @@ export function ManageNews({ articles, setArticles }) {
   }
 
   // FETCH DATA
-  const fetchArticles = async () => {
-
-  // AUTO PUBLISH
-  const now = new Date().toISOString();
-
-  const { data: scheduledData, error: scheduledError } = await supabase
-    .from('news')
-    .select('*')
-    .eq('status', 'Scheduled')
-    .lte('date', now);
-
-  if (!scheduledError && scheduledData.length > 0) {
-    const ids = scheduledData.map(item => item.id);
-
-    await supabase
-      .from('news')
-      .update({ status: 'Published' })
-      .in('id', ids);
-  }
-
-  // FETCH DATA
   const { data, error } = await supabase
     .from('news')
     .select(`
