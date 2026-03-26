@@ -17,6 +17,52 @@ export function ManageNews({ articles, setArticles }) {
 
   const fetchArticles = async () => {
 
+  // ==============================
+  // AUTO PUBLISH SCHEDULED POST
+  // ==============================
+  const now = new Date().toISOString();
+
+  const { data: scheduledData, error: scheduledError } = await supabase
+    .from('news')
+    .select('*')
+    .eq('status', 'Scheduled')
+    .lte('date', now);
+
+  if (!scheduledError && scheduledData.length > 0) {
+    const ids = scheduledData.map(item => item.id);
+
+    await supabase
+      .from('news')
+      .update({ status: 'Published' })
+      .in('id', ids);
+  }
+
+  // ==============================
+  // FETCH DATA NORMAL
+  // ==============================
+  const { data, error } = await supabase
+    .from('news')
+    .select(`
+      *,
+      admin_profiles!news_created_by_fkey (
+        name
+      )
+    `)
+    .order('created_at', { ascending: false });
+
+  if (error) {
+    console.error(error);
+    return;
+  }
+
+  const formatted = data.map(article => ({
+    ...article,
+    author_name: article.admin_profiles?.name || "-"
+  }));
+
+  setArticles(formatted);
+};
+
   const { data, error } = await supabase
     .from('news')
     .select(`
@@ -546,7 +592,8 @@ const handleImproveTitle = () => {
                       className="w-full px-4 py-2 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#AE8737] focus:border-transparent transition-shadow"
                     >
                       <option value="Draft">Draft</option>
-                      <option value="Published">Published</option>
+<option value="Scheduled">Scheduled</option>
+<option value="Published">Published</option>
                     </select>
                   </div>
                 </div>
