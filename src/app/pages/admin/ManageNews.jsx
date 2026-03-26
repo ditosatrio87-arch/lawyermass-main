@@ -17,9 +17,7 @@ export function ManageNews({ articles, setArticles }) {
 
   const fetchArticles = async () => {
 
-  // ==============================
-  // AUTO PUBLISH SCHEDULED POST
-  // ==============================
+  // AUTO PUBLISH
   const now = new Date().toISOString();
 
   const { data: scheduledData, error: scheduledError } = await supabase
@@ -37,9 +35,7 @@ export function ManageNews({ articles, setArticles }) {
       .in('id', ids);
   }
 
-  // ==============================
-  // FETCH DATA NORMAL
-  // ==============================
+  // FETCH DATA
   const { data, error } = await supabase
     .from('news')
     .select(`
