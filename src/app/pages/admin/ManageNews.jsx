@@ -36,6 +36,27 @@ export function ManageNews({ articles, setArticles }) {
   }
 
   // FETCH DATA
+  const fetchArticles = async () => {
+
+  // AUTO PUBLISH
+  const now = new Date().toISOString();
+
+  const { data: scheduledData, error: scheduledError } = await supabase
+    .from('news')
+    .select('*')
+    .eq('status', 'Scheduled')
+    .lte('date', now);
+
+  if (!scheduledError && scheduledData.length > 0) {
+    const ids = scheduledData.map(item => item.id);
+
+    await supabase
+      .from('news')
+      .update({ status: 'Published' })
+      .in('id', ids);
+  }
+
+  // FETCH DATA
   const { data, error } = await supabase
     .from('news')
     .select(`
@@ -57,30 +78,6 @@ export function ManageNews({ articles, setArticles }) {
   }));
 
   setArticles(formatted);
-};
-
-  const { data, error } = await supabase
-    .from('news')
-    .select(`
-      *,
-      admin_profiles!news_created_by_fkey (
-        name
-      )
-    `)
-    .order('created_at', { ascending: false });
-
-  if (error) {
-    console.error(error);
-    return;
-  }
-
-  const formatted = data.map(article => ({
-    ...article,
-    author_name: article.admin_profiles?.name || "-"
-  }));
-
-  setArticles(formatted);
-
 };
 
 useEffect(() => {
@@ -109,10 +106,6 @@ useEffect(() => {
       setFormData(prev => ({ ...prev, slug }));
     }
   }, [formData.title, editingArticle]);
-
-  useEffect(() => {
-    fetchArticles();
-  }, []);
 
   const handleInputChange = (e) => {
   const { name, value, type, checked } = e.target;
