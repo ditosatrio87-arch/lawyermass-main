@@ -96,10 +96,9 @@ export function Admin() {
 
   return (
     <div className="min-h-screen bg-gray-50 flex">
-
       {/* Mobile Toggle */}
-      <button 
-        className="lg:hidden fixed top-4 right-4 z-50 p-2 bg-white text-[#191919] rounded-md"
+      <button
+        className="lg:hidden fixed top-4 right-4 z-50 p-2 bg-gray-300 text-[#191919] rounded-md"
         onClick={() => setSidebarOpen(!sidebarOpen)}
       >
         {sidebarOpen ? <X /> : <Menu />}
@@ -108,21 +107,22 @@ export function Admin() {
       {/* ===============================
           SIDEBAR
       =============================== */}
-      <aside className={`
-        fixed lg:sticky top-0 left-0 h-screen w-64 bg-white text-[#191919] flex flex-col justify-between
+      <aside
+        className={`
+        fixed lg:sticky top-0 left-0 h-screen w-64 bg-gray-100 text-[#191919] flex flex-col justify-between
         transform transition-transform duration-300 z-40
-        ${sidebarOpen ? 'translate-x-0' : '-translate-x-full lg:translate-x-0'}
-      `}>
-
+        ${sidebarOpen ? "translate-x-0" : "-translate-x-full lg:translate-x-0"}
+      `}
+      >
         <div>
-          <div className="p-6 border-b border-[#2a2a2a]">
+          <div className="p-6 border-b border-[#2a2a2a] bg-gray-200">
             <h1 className="text-lg font-bold text-[#AE8737]">ADMIN PANEL</h1>
             <p className="text-xs text-slate-400">M.A.S. Law Firm</p>
           </div>
 
           <nav className="p-4">
             <ul className="space-y-2">
-              {sidebarItems.map(item => {
+              {sidebarItems.map((item) => {
                 const Icon = item.icon;
                 return (
                   <li key={item.id}>
@@ -133,8 +133,8 @@ export function Admin() {
                       }}
                       className={`w-full flex items-center gap-3 px-4 py-3 rounded-lg transition hover:text-white ${
                         activeTab === item.id
-                          ? 'bg-[#AE8737]'
-                          : 'hover:bg-[#2a2a2a]'
+                          ? "bg-[#AE8737]"
+                          : "hover:bg-[#2a2a2a]"
                       }`}
                     >
                       <Icon className="w-5 h-5" />
@@ -150,7 +150,7 @@ export function Admin() {
         <div className="p-4 border-t border-[#2a2a2a]">
           <button
             onClick={handleSignOut}
-            className="w-full flex items-center justify-center gap-2 py-2 rounded bg-red-500/10 hover:bg-red-500/20"
+            className="w-full flex items-center justify-center gap-2 py-2 rounded-lg bg-red-400/50 hover:bg-red-400"
           >
             <LogOut className="w-4 h-4" />
             Sign Out
@@ -162,7 +162,6 @@ export function Admin() {
           MAIN CONTENT
       =============================== */}
       <main className="flex-1 p-4 lg:p-8 overflow-y-auto">
-
         {loading && (
           <div className="text-center py-20 text-slate-500">
             Loading data...
@@ -171,36 +170,34 @@ export function Admin() {
 
         {!loading && (
           <>
-            {activeTab === 'dashboard' && (
+            {activeTab === "dashboard" && (
               <DashboardOverview
                 articles={newsArticles}
                 documents={documents}
               />
             )}
 
-            {activeTab === 'news' && (
+            {activeTab === "news" && (
               <ManageNews
                 articles={newsArticles}
                 setArticles={setNewsArticles}
               />
             )}
 
-            {activeTab === 'verification' && (
+            {activeTab === "verification" && (
               <DocumentVerification
                 documents={documents}
                 setDocuments={setDocuments}
               />
             )}
 
-            {activeTab === 'settings' && (
-              <SiteSettings />
-            )}
+            {activeTab === "settings" && <SiteSettings />}
           </>
         )}
       </main>
 
       {sidebarOpen && (
-        <div 
+        <div
           className="fixed inset-0 bg-black/50 lg:hidden"
           onClick={() => setSidebarOpen(false)}
         />
