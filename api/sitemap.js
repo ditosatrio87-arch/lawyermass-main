@@ -37,6 +37,6 @@ export default async function handler(req, res) {
 
   </urlset>`;
 
-  res.setHeader("Content-Type", "application/xml");
+  res.setHeader("Content-Type", "text/xml");
   res.status(200).send(sitemap);
 }
