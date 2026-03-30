@@ -61,9 +61,9 @@ export function Berita() {
                   {article.title}
                 </h3>
 
-                <p className="text-slate-600 mb-5 leading-relaxed">
-                  {article.summary}
-                </p>
+                <p className="text-slate-600 mb-5 leading-relaxed line-clamp-3 min-h-[72px]">
+  {article.summary}
+</p>
 
                 <Link
                   to={`/news/${article.slug}`}
