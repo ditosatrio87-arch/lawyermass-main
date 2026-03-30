@@ -1,3 +1,3 @@
-export default function handler(req, res) {
-  res.status(200).send("Sitemap jalan");
-}
+<url>
+  <loc>https://lawyermas.com/news/slug-artikel</loc>
+</url>
