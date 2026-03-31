@@ -427,11 +427,11 @@ const handleImproveTitle = () => {
     setImagePreview('');
   };
 
-  const filteredArticles = (articles || []).filter(...)
-    const matchesSearch = article.title.toLowerCase().includes(searchTerm.toLowerCase());
-    const matchesStatus = filterStatus === 'All' || article.status === filterStatus;
-    return matchesSearch && matchesStatus;
-  });
+  const filteredArticles = (articles || []).filter(article => {
+  const matchesSearch = article.title.toLowerCase().includes(searchTerm.toLowerCase());
+  const matchesStatus = filterStatus === 'All' || article.status === filterStatus;
+  return matchesSearch && matchesStatus;
+});
 
   const categories = [
     'Legal Insight',
