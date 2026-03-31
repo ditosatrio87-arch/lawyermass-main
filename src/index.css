@@ -1,19 +1,21 @@
 /* ================= ADMIN THEME ================= */
 body.admin-theme {
   background: linear-gradient(135deg, #ff9ecf, #ffd6ec);
-  font-family: "Comic Sans MS", cursive;
+  body.admin-theme {
+  font-family: 'Poppins', sans-serif;
+}
 }
 
 body.admin-theme {
   background: 
     linear-gradient(rgba(255, 182, 193, 0.7), rgba(255, 105, 180, 0.7)),
-    url("https://i.imgur.com/8Km9tLL.png");
+    url("/bg-admin.jpg");
 
   background-size: cover;
   background-position: center;
   background-attachment: fixed;
 
-  font-family: "Comic Sans MS", cursive;
+  font-family: 'Poppins', sans-serif;
 }
 
 /* Card */
