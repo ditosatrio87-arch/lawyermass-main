@@ -4,7 +4,7 @@ import { Plus, Edit2, Trash2, X, Search, Filter, Calendar, Image as ImageIcon, E
 import { Card, CardContent } from '../../components/ui/card';
 import { Button } from '../../components/ui/button';
 
-export function ManageNews()
+export function ManageNews() {
 const [articles, setArticles] = useState([]);
   const [showForm, setShowForm] = useState(false);
   const [editingArticle, setEditingArticle] = useState(null);
@@ -447,7 +447,7 @@ const handleImproveTitle = () => {
             <h3 className="text-xl font-bold text-[#191919]">
               {editingArticle ? 'Edit Article' : 'Add New Article'}
             </h3>
-            <button
+            <button</button>
               onClick={() => { setShowForm(false); resetForm(); }}
               className="text-slate-400 hover:text-slate-600 transition-colors"
             >
