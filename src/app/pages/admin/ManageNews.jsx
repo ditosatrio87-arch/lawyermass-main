@@ -4,7 +4,7 @@ import { Plus, Edit2, Trash2, X, Search, Filter, Calendar, Image as ImageIcon, E
 import { Card, CardContent } from '../../components/ui/card';
 import { Button } from '../../components/ui/button';
 
-export function ManageNews({ articles, setArticles }) {
+export function ManageNews() {
   const [showForm, setShowForm] = useState(false);
   const [editingArticle, setEditingArticle] = useState(null);
   const [searchTerm, setSearchTerm] = useState('');
@@ -427,7 +427,7 @@ const handleImproveTitle = () => {
     setImagePreview('');
   };
 
-  const filteredArticles = articles.filter(article => {
+  const filteredArticles = (articles || []).filter(...)
     const matchesSearch = article.title.toLowerCase().includes(searchTerm.toLowerCase());
     const matchesStatus = filterStatus === 'All' || article.status === filterStatus;
     return matchesSearch && matchesStatus;
