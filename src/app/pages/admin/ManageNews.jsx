@@ -4,7 +4,8 @@ import { Plus, Edit2, Trash2, X, Search, Filter, Calendar, Image as ImageIcon, E
 import { Card, CardContent } from '../../components/ui/card';
 import { Button } from '../../components/ui/button';
 
-export function ManageNews() {
+export function ManageNews()
+const [articles, setArticles] = useState([]);
   const [showForm, setShowForm] = useState(false);
   const [editingArticle, setEditingArticle] = useState(null);
   const [searchTerm, setSearchTerm] = useState('');
@@ -26,7 +27,7 @@ export function ManageNews() {
     .eq('status', 'Scheduled')
     .lte('date', now);
 
-  if (!scheduledError && scheduledData.length > 0) {
+  if (!scheduledError && scheduledData && scheduledData.length > 0)
     const ids = scheduledData.map(item => item.id);
 
     await supabase
@@ -427,11 +428,11 @@ const handleImproveTitle = () => {
     setImagePreview('');
   };
 
-  const filteredArticles = (articles || []).filter(article => {
-  const matchesSearch = article.title.toLowerCase().includes(searchTerm.toLowerCase());
-  const matchesStatus = filterStatus === 'All' || article.status === filterStatus;
-  return matchesSearch && matchesStatus;
-});
+  const filteredArticles = articles.filter(article => {
+    const matchesSearch = article.title.toLowerCase().includes(searchTerm.toLowerCase());
+    const matchesStatus = filterStatus === 'All' || article.status === filterStatus;
+    return matchesSearch && matchesStatus;
+  });
 
   const categories = [
     'Legal Insight',
