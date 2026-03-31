@@ -1,43 +1,110 @@
-/* ================= ADMIN THEME ================= */
+/* ================= ADMIN THEME ROMANCE ================= */
 body.admin-theme {
-  background: linear-gradient(135deg, #ff9ecf, #ffd6ec);
-  body.admin-theme {
   font-family: 'Poppins', sans-serif;
-}
-}
 
-body.admin-theme {
-  background: 
-    linear-gradient(rgba(255, 182, 193, 0.7), rgba(255, 105, 180, 0.7)),
-    url("/bg-admin.jpg");
+  background:
+    radial-gradient(circle at 20% 20%, rgba(255, 182, 193, 0.5), transparent 40%),
+    radial-gradient(circle at 80% 80%, rgba(255, 105, 180, 0.5), transparent 40%),
+    linear-gradient(135deg, #ffe4ec, #ffd6e7);
 
-  background-size: cover;
-  background-position: center;
   background-attachment: fixed;
-
-  font-family: 'Poppins', sans-serif;
+  overflow-x: hidden;
 }
 
-/* Card */
+/* 💖 LOVE PATTERN OVERLAY */
+body.admin-theme::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  background-image: url("https://www.transparenttextures.com/patterns/hearts.png");
+  opacity: 0.08;
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* 💎 CARD GLASS EFFECT */
 body.admin-theme .shadow-sm,
-body.admin-theme .shadow-md {
-  background: rgba(255, 255, 255, 0.7) !important;
-  backdrop-filter: blur(10px);
-  border-radius: 20px;
+body.admin-theme .shadow-md,
+body.admin-theme .border {
+  background: rgba(255, 255, 255, 0.75) !important;
+  backdrop-filter: blur(14px);
+  border-radius: 18px;
+  border: 1px solid rgba(255, 192, 203, 0.4);
+  box-shadow: 0 10px 25px rgba(255, 105, 180, 0.2);
 }
 
-/* Sidebar */
+/* 🌸 SIDEBAR */
 body.admin-theme aside {
   background: linear-gradient(180deg, #ff6ec7, #ffb6e6) !important;
   color: white;
+  box-shadow: 4px 0 20px rgba(255, 105, 180, 0.3);
 }
 
-/* Button active */
+/* ✨ SIDEBAR TITLE */
+body.admin-theme aside h1 {
+  color: white;
+  letter-spacing: 1px;
+}
+
+/* 💗 ACTIVE MENU */
 body.admin-theme .bg-\[\#AE8737\] {
-  background: #ff4da6 !important;
+  background: linear-gradient(135deg, #ff4da6, #ff85c1) !important;
+  color: white;
+  box-shadow: 0 0 12px rgba(255, 105, 180, 0.6);
 }
 
-/* Hover */
+/* 💫 BUTTON STYLE */
+body.admin-theme button {
+  transition: all 0.25s ease;
+}
+
+/* 💥 BUTTON HOVER */
 body.admin-theme button:hover {
   transform: scale(1.05);
+  box-shadow: 0 0 10px rgba(255, 105, 180, 0.5);
+}
+
+/* 💖 TITLE GLOW */
+body.admin-theme h1,
+body.admin-theme h2,
+body.admin-theme h3 {
+  color: #ff4da6;
+  text-shadow: 0 0 6px rgba(255, 105, 180, 0.3);
+}
+
+/* 🌈 INPUT STYLE */
+body.admin-theme input,
+body.admin-theme textarea,
+body.admin-theme select {
+  border-radius: 10px;
+  border: 1px solid #ffc0cb;
+}
+
+body.admin-theme input:focus,
+body.admin-theme textarea:focus,
+body.admin-theme select:focus {
+  outline: none;
+  border-color: #ff4da6;
+  box-shadow: 0 0 8px rgba(255, 105, 180, 0.4);
+}
+
+/* ✨ SCROLLBAR (BONUS ALAY 😆) */
+body.admin-theme ::-webkit-scrollbar {
+  width: 8px;
+}
+
+body.admin-theme ::-webkit-scrollbar-thumb {
+  background: linear-gradient(#ff6ec7, #ffb6e6);
+  border-radius: 10px;
+}
+
+/* 💘 FLOATING LOVE ANIMATION (HALUS) */
+@keyframes floatLove {
+  0% { transform: translateY(0px); opacity: 0.6; }
+  50% { transform: translateY(-10px); opacity: 1; }
+  100% { transform: translateY(0px); opacity: 0.6; }
+}
+
+body.admin-theme .love-float {
+  animation: floatLove 3s ease-in-out infinite;
 }
