@@ -17,19 +17,14 @@ import { ScrollToTop } from "./components/ScrollToTop.jsx";
 import { Login } from "./pages/Login.tsx";
 import { ProtectedRoute } from "./components/ProtectedRoute.tsx";
 
-// Admin pages
-import { DashboardOverview } from "./pages/admin/DashboardOverview.jsx";
-import { ManageNews } from "./pages/admin/ManageNews.jsx";
-import { DocumentVerification } from "./pages/admin/DocumentVerification.jsx";
-import { SiteSettings } from "./pages/admin/SiteSettings.jsx";
-
 export default function App() {
   return (
     <BrowserRouter>
       <ScrollToTop />
 
       <Routes>
-        {/* LOGIN */}
+
+        {/* ================= LOGIN ================= */}
         <Route path="/login" element={<Login />} />
 
         {/* ================= ADMIN ================= */}
@@ -40,12 +35,7 @@ export default function App() {
               <Admin />
             </ProtectedRoute>
           }
-        >
-          <Route index element={<DashboardOverview />} />
-          <Route path="news" element={<ManageNews />} />
-          <Route path="document-verification" element={<DocumentVerification />} />
-          <Route path="settings" element={<SiteSettings />} />
-        </Route>
+        />
 
         {/* ================= PUBLIC ================= */}
         <Route path="/" element={<Layout />}>
@@ -61,6 +51,7 @@ export default function App() {
           <Route path="sitemap" element={<Sitemap />} />
           <Route path="verify" element={<VerifyDocument />} />
         </Route>
+
       </Routes>
     </BrowserRouter>
   );
