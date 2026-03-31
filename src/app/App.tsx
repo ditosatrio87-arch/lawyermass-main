@@ -17,6 +17,12 @@ import { ScrollToTop } from "./components/ScrollToTop.jsx";
 import { Login } from "./pages/Login.tsx";
 import { ProtectedRoute } from "./components/ProtectedRoute.tsx";
 
+// ADMIN SUB PAGES
+import { DashboardOverview } from "./pages/admin/DashboardOverview.jsx";
+import { ManageNews } from "./pages/admin/ManageNews.jsx";
+import { DocumentVerification } from "./pages/admin/DocumentVerification.jsx";
+import { SiteSettings } from "./pages/admin/SiteSettings.jsx";
+
 export default function App() {
   return (
     <BrowserRouter>
@@ -35,7 +41,15 @@ export default function App() {
               <Admin />
             </ProtectedRoute>
           }
-        />
+        >
+          {/* default dashboard */}
+          <Route index element={<DashboardOverview />} />
+
+          {/* sub pages */}
+          <Route path="news" element={<ManageNews />} />
+          <Route path="document-verification" element={<DocumentVerification />} />
+          <Route path="settings" element={<SiteSettings />} />
+        </Route>
 
         {/* ================= PUBLIC ================= */}
         <Route path="/" element={<Layout />}>
