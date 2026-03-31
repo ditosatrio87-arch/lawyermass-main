@@ -27,7 +27,7 @@ const [articles, setArticles] = useState([]);
     .eq('status', 'Scheduled')
     .lte('date', now);
 
-  if (!scheduledError && scheduledData && scheduledData.length > 0)
+  if (!scheduledError && scheduledData && scheduledData.length > 0) {
     const ids = scheduledData.map(item => item.id);
 
     await supabase
