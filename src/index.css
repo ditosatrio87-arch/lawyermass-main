@@ -1,0 +1,29 @@
+/* ================= ADMIN THEME ================= */
+body.admin-theme {
+  background: linear-gradient(135deg, #ff9ecf, #ffd6ec);
+  font-family: "Comic Sans MS", cursive;
+}
+
+/* Card */
+body.admin-theme .shadow-sm,
+body.admin-theme .shadow-md {
+  background: rgba(255, 255, 255, 0.7) !important;
+  backdrop-filter: blur(10px);
+  border-radius: 20px;
+}
+
+/* Sidebar */
+body.admin-theme aside {
+  background: linear-gradient(180deg, #ff6ec7, #ffb6e6) !important;
+  color: white;
+}
+
+/* Button active */
+body.admin-theme .bg-\[\#AE8737\] {
+  background: #ff4da6 !important;
+}
+
+/* Hover */
+body.admin-theme button:hover {
+  transform: scale(1.05);
+}
