@@ -6,6 +6,10 @@ import { Link } from 'react-router-dom';
 
 export function Berita() {
   const [news, setNews] = useState([]);
+  const [searchTerm, setSearchTerm] = useState('');
+  const [currentIndex, setCurrentIndex] = useState(0);
+
+  const itemsPerPage = 4;
 
   useEffect(() => {
     const fetchNews = async () => {
@@ -26,55 +30,138 @@ export function Berita() {
     fetchNews();
   }, []);
 
+  // =========================
+  // FILTER SEARCH
+  // =========================
+  const filteredNews = news.filter((article) =>
+    article.title.toLowerCase().includes(searchTerm.toLowerCase())
+  );
+
+  // =========================
+  // SLIDER CONTROL
+  // =========================
+  const nextSlide = () => {
+    if (currentIndex + itemsPerPage < filteredNews.length) {
+      setCurrentIndex(currentIndex + itemsPerPage);
+    }
+  };
+
+  const prevSlide = () => {
+    if (currentIndex - itemsPerPage >= 0) {
+      setCurrentIndex(currentIndex - itemsPerPage);
+    }
+  };
+
   return (
     <section className="py-24 bg-white">
       <div className="container mx-auto px-6">
-        <div className="text-center mb-16">
+
+        {/* HEADER */}
+        <div className="text-center mb-12">
           <div className="inline-block w-12 h-1 bg-[#AE8737] mb-6"></div>
-          <h2 className="mb-4 text-[#191919]">Berita & Insight Hukum</h2>
+          <h2 className="mb-4 text-[#191919] text-2xl font-bold">
+            Berita & Insight Hukum
+          </h2>
           <p className="text-slate-600 max-w-2xl mx-auto text-lg">
             Tetap terinformasi dengan perkembangan terbaru dalam hukum korporasi dan merek dagang
           </p>
         </div>
 
-        <div className="grid md:grid-cols-3 gap-8 max-w-6xl mx-auto">
-          {news.map((article) => (
-            <Card
-              key={article.id}
-              className="border border-slate-200 shadow-sm hover:shadow-xl transition-all duration-300 overflow-hidden group"
+        {/* SEARCH */}
+        <div className="flex justify-center mb-10">
+          <input
+            type="text"
+            placeholder="Cari artikel..."
+            value={searchTerm}
+            onChange={(e) => {
+              setSearchTerm(e.target.value);
+              setCurrentIndex(0);
+            }}
+            className="w-full max-w-md px-4 py-2 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#AE8737]"
+          />
+        </div>
+
+        {/* SLIDER */}
+        <div className="relative max-w-6xl mx-auto">
+
+          {/* LEFT BUTTON */}
+          {currentIndex > 0 && (
+            <button
+              onClick={prevSlide}
+              className="absolute -left-5 top-1/2 -translate-y-1/2 bg-white shadow-md p-3 rounded-full z-10 hover:scale-110 transition"
             >
-              <div className="aspect-[16/10] overflow-hidden bg-slate-100">
-                <img
-                  src={article.image_url}
-                  alt={article.title}
-                  className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
-                />
-              </div>
+              ‹
+            </button>
+          )}
 
-              <CardContent className="p-6">
-                <div className="flex items-center gap-2 text-[#AE8737] mb-4">
-                  <Calendar className="w-4 h-4" />
-                  <span className="text-sm">{article.date}</span>
-                </div>
+          {/* RIGHT BUTTON */}
+          {currentIndex + itemsPerPage < filteredNews.length && (
+            <button
+              onClick={nextSlide}
+              className="absolute -right-5 top-1/2 -translate-y-1/2 bg-white shadow-md p-3 rounded-full z-10 hover:scale-110 transition"
+            >
+              ›
+            </button>
+          )}
 
-                <h3 className="mb-3 text-[#191919] leading-snug">
-                  {article.title}
-                </h3>
+          {/* GRID */}
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
 
-                <p className="text-slate-600 mb-5 leading-relaxed line-clamp-3 min-h-[72px]">
-  {article.summary}
-</p>
-
-                <Link
-                  to={`/news/${article.slug}`}
-                  className="text-[#AE8737] hover:text-[#8f6e2d] inline-flex items-center gap-1 font-medium"
+            {filteredNews
+              .slice(currentIndex, currentIndex + itemsPerPage)
+              .map((article) => (
+                <Card
+                  key={article.id}
+                  className="border border-slate-200 shadow-sm hover:shadow-xl transition-all duration-300 overflow-hidden group"
                 >
-                  Baca Selengkapnya
-                  <ArrowRight className="w-4 h-4" />
-                </Link>
-              </CardContent>
-            </Card>
-          ))}
+                  <div className="aspect-[16/10] overflow-hidden bg-slate-100">
+                    <img
+                      src={article.image_url}
+                      alt={article.title}
+                      className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                    />
+                  </div>
+
+                  <CardContent className="p-6 flex flex-col justify-between h-full">
+
+                    <div>
+                      <div className="flex items-center gap-2 text-[#AE8737] mb-3">
+                        <Calendar className="w-4 h-4" />
+                        <span className="text-sm">
+                          {new Date(article.date).toLocaleDateString('id-ID')}
+                        </span>
+                      </div>
+
+                      <h3 className="mb-3 text-[#191919] leading-snug font-semibold">
+                        {article.title}
+                      </h3>
+
+                      <p className="text-slate-600 mb-5 leading-relaxed line-clamp-3 min-h-[72px]">
+                        {article.summary}
+                      </p>
+                    </div>
+
+                    <Link
+                      to={/news/${article.slug}}
+                      className="text-[#AE8737] hover:text-[#8f6e2d] inline-flex items-center gap-1 font-medium mt-auto"
+                    >
+                      Baca Selengkapnya
+                      <ArrowRight className="w-4 h-4" />
+                    </Link>
+
+                  </CardContent>
+                </Card>
+              ))}
+
+          </div>
+
+          {/* EMPTY STATE */}
+          {filteredNews.length === 0 && (
+            <p className="text-center text-slate-500 mt-10">
+              Artikel tidak ditemukan 😢
+            </p>
+          )}
+
         </div>
       </div>
     </section>
