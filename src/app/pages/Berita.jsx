@@ -142,7 +142,7 @@ export function Berita() {
                     </div>
 
                     <Link
-                      to={/news/${article.slug}}
+                      to={`/news/${article.slug}`}
                       className="text-[#AE8737] hover:text-[#8f6e2d] inline-flex items-center gap-1 font-medium mt-auto"
                     >
                       Baca Selengkapnya
