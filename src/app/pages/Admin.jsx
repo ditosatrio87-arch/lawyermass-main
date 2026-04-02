@@ -58,7 +58,7 @@ export function Admin() {
       const { data: docData } = await supabase
         .from("documents")
         .select("*")
-        .order("issueDate", { ascending: false });
+        .order("issue_date", { ascending: false });
 
       setNewsArticles(newsData || []);
       setDocuments(docData || []);

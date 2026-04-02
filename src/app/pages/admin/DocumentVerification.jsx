@@ -82,12 +82,9 @@ export function DocumentVerification() {
       }
 
       // Ambil URL
-      const { data } = supabase.storage
-        .from("document-files")
-        .getPublicUrl(`documents/${fileName}`);
-
-      uploadedUrls.push(data.publicUrl);
-    }
+      const { data } = await supabase.storage
+  .from("document-files")
+  .getPublicUrl(`documents/${fileName}`);
 
     // Simpan ke state
     setFormData((prev) => ({
@@ -162,10 +159,10 @@ export function DocumentVerification() {
   // FILTER
   // ======================
   const filteredDocs = documents.filter(
-    (doc) =>
-      doc.code.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      doc.clientName.toLowerCase().includes(searchTerm.toLowerCase())
-  );
+  (doc) =>
+    (doc.code || "").toLowerCase().includes(searchTerm.toLowerCase()) ||
+    (doc.clientName || "").toLowerCase().includes(searchTerm.toLowerCase())
+);
 
   return (
     <div className="space-y-6">
@@ -236,7 +233,7 @@ export function DocumentVerification() {
 
                   <td>
                     {doc.files?.map((file, i) => (
-                      <a key={i} href={file} target="_blank">
+                      <a key={i} href={file} target="_blank" rel="noopener noreferrer">
                         <Eye className="w-4 inline mr-1" />
                       </a>
                     ))}
