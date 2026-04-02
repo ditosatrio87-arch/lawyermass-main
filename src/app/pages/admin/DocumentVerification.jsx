@@ -56,7 +56,7 @@ export function DocumentVerification() {
 
     // validasi size (5MB)
     if (file.size > 5 * 1024 * 1024) {
-      alert(${file.name} terlalu besar (max 5MB));
+      alert(`${file.name} terlalu besar (max 5MB)`);
       continue;
     }
 
