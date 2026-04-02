@@ -222,7 +222,6 @@ export function DocumentVerification() {
                     File {i + 1}
                   </a>
                 ))}
-                ))}
               </div>
 
               <Button type="submit">
