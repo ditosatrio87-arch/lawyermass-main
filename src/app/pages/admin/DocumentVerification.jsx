@@ -82,11 +82,11 @@ export function DocumentVerification() {
       }
 
       // Ambil URL
-      const { data } = supabase.storage
+      const publicUrlResult = supabase.storage
         .from("document-files")
         .getPublicUrl(`documents/${fileName}`);
-      if (data && data.publicUrl) {
-        uploadedUrls.push(data.publicUrl);
+      if (publicUrlResult && publicUrlResult.data && publicUrlResult.data.publicUrl) {
+        uploadedUrls.push(publicUrlResult.data.publicUrl);
       }
     }
 
@@ -199,6 +199,14 @@ export function DocumentVerification() {
             <form onSubmit={handleSubmit} className="space-y-4">
 
               <input name="code" value={formData.code} onChange={handleInputChange} placeholder="Code" className="w-full border p-2 rounded" />
+
+              {/* File upload */}
+              <input
+                type="file"
+                multiple
+                onChange={handleFileUpload}
+                className="w-full border p-2 rounded"
+              />
 
               {/* Preview files */}
               <div className="flex flex-wrap gap-2">
