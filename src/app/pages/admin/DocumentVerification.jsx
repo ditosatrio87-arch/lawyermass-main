@@ -172,15 +172,6 @@ export function DocumentVerification() {
     doc.clientName.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
-  const docTypes = [
-    'Notarial Deed',
-    'Legal Opinion',
-    'Contract Agreement',
-    'Power of Attorney',
-    'Court Decision',
-    'Memorandum of Understanding'
-  ];
-
   return (
     <div className="space-y-6">
       {/* HEADER */}
@@ -225,17 +216,6 @@ export function DocumentVerification() {
                 required
               />
 
-              <select
-                name="type"
-                value={formData.type}
-                onChange={handleInputChange}
-                className="w-full border p-2 rounded"
-              >
-                {docTypes.map(t => (
-                  <option key={t}>{t}</option>
-                ))}
-              </select>
-
               <input
                 type="date"
                 name="issueDate"
@@ -244,21 +224,12 @@ export function DocumentVerification() {
                 className="w-full border p-2 rounded"
               />
 
-              <select
-                name="status"
-                value={formData.status}
-                onChange={handleInputChange}
-                className="w-full border p-2 rounded"
-              >
-                <option>Valid</option>
-                <option>Revoked</option>
-              </select>
-
               {/* Upload */}
               <input
                 type="file"
-                accept=".pdf"
+                multiple
                 onChange={handleFileUpload}
+                className="w-full border p-2 rounded"
               />
 
               {formData.fileUrl && (
@@ -304,7 +275,6 @@ export function DocumentVerification() {
               <tr>
                 <th className="text-left p-2">Code</th>
                 <th className="text-left p-2">Client</th>
-                <th className="text-left p-2">Status</th>
                 <th className="text-left p-2">Files</th>
                 <th className="text-left p-2">Actions</th>
               </tr>
