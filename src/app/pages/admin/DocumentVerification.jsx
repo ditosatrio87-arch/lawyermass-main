@@ -205,18 +205,18 @@ export function DocumentVerification() {
 
               {/* Preview files */}
               <div className="flex flex-wrap gap-2">
-                {formData.files?.map((file, i) => (
-                  <a
-                    key={i}
-                    href={file}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="text-xs bg-pink-100 px-2 py-1 rounded"
-                  >
-                    File {i + 1}
-                  </a>
-                ))}
-              </div>
+  {formData.files?.map((file, i) => (
+    <a
+      key={i}
+      href={file}
+      target="_blank"
+      rel="noopener noreferrer"
+      className="text-xs bg-pink-100 px-2 py-1 rounded"
+    >
+      File {i + 1}
+    </a>
+  ))}
+</div>
                     href={file}
                     target="_blank"
                     rel="noopener noreferrer"
