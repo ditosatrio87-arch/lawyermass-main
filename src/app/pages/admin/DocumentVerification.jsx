@@ -67,7 +67,7 @@ export function DocumentVerification() {
 
     const { error } = await supabase.storage
       .from('document-files')
-      .upload(documents/${fileName}, file);
+      .upload(`documents/${fileName}, file);
 
     if (error) {
       console.error(error);
