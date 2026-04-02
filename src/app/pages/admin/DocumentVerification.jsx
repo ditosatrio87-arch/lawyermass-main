@@ -77,14 +77,14 @@ export function DocumentVerification() {
 
       if (error) {
         console.error(error);
-        alert(Upload gagal: ${file.name});
+        alert(`Upload gagal: ${file.name}`);
         continue;
       }
 
       // Ambil URL
       const { data } = supabase.storage
         .from("document-files")
-        .getPublicUrl(documents/${fileName});
+        .getPublicUrl(`documents/${fileName}`);
 
       uploadedUrls.push(data.publicUrl);
     }
