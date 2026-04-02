@@ -82,9 +82,13 @@ export function DocumentVerification() {
       }
 
       // Ambil URL
-      const { data } = await supabase.storage
-  .from("document-files")
-  .getPublicUrl(`documents/${fileName}`);
+      const { data } = supabase.storage
+        .from("document-files")
+        .getPublicUrl(`documents/${fileName}`);
+      if (data && data.publicUrl) {
+        uploadedUrls.push(data.publicUrl);
+      }
+    }
 
     // Simpan ke state
     setFormData((prev) => ({
@@ -92,7 +96,9 @@ export function DocumentVerification() {
       files: [...(prev.files || []), ...uploadedUrls],
     }));
 
-    alert("Upload selesai");
+    if (uploadedUrls.length > 0) {
+      alert("Upload selesai");
+    }
   };
 
   // ======================
@@ -106,16 +112,25 @@ export function DocumentVerification() {
       ...formData,
     };
 
+    let error = null;
     if (editingDoc) {
-      await supabase
+      const { error: updateError } = await supabase
         .from("documents")
         .update(payload)
         .eq("id", editingDoc.id);
+      error = updateError;
     } else {
-      await supabase.from("documents").insert([payload]);
+      const { error: insertError } = await supabase.from("documents").insert([payload]);
+      error = insertError;
     }
 
     setLoading(false);
+
+    if (error) {
+      alert("Failed to save document: " + error.message);
+      return;
+    }
+
     setShowForm(false);
     setEditingDoc(null);
     resetForm();
@@ -128,12 +143,16 @@ export function DocumentVerification() {
   const handleDelete = async (id) => {
     if (!window.confirm("Hapus dokumen ini?")) return;
 
-    await supabase.from("documents").delete().eq("id", id);
+  const handleDelete = async (id) => {
+    if (!window.confirm("Hapus dokumen ini?")) return;
+
+    const { error } = await supabase.from("documents").delete().eq("id", id);
+    if (error) {
+      alert("Failed to delete document: " + error.message);
+      return;
+    }
     fetchDocuments();
   };
-
-  // ======================
-  // EDIT
   // ======================
   const handleEdit = (doc) => {
     setFormData({
@@ -184,16 +203,28 @@ export function DocumentVerification() {
 
               <input name="code" value={formData.code} onChange={handleInputChange} placeholder="Code" className="w-full border p-2 rounded" />
 
-              <input name="clientName" value={formData.clientName} onChange={handleInputChange} placeholder="Client" className="w-full border p-2 rounded" />
-
-              <input type="file" multiple onChange={handleFileUpload} />
-
               {/* Preview files */}
               <div className="flex flex-wrap gap-2">
                 {formData.files?.map((file, i) => (
-                  <a key={i} href={file} target="_blank" className="text-xs bg-pink-100 px-2 py-1 rounded">
+                  <a
+                    key={i}
+                    href={file}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="text-xs bg-pink-100 px-2 py-1 rounded"
+                  >
                     File {i + 1}
                   </a>
+                ))}
+              </div>
+                    href={file}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="text-xs bg-pink-100 px-2 py-1 rounded"
+                  >
+                    File {i + 1}
+                  </a>
+                ))}
                 ))}
               </div>
 
@@ -218,6 +249,15 @@ export function DocumentVerification() {
       <Card>
         <CardContent className="p-6">
           <table className="w-full">
+            <thead>
+              <tr>
+                <th className="text-left p-2">Code</th>
+                <th className="text-left p-2">Client</th>
+                <th className="text-left p-2">Status</th>
+                <th className="text-left p-2">Files</th>
+                <th className="text-left p-2">Actions</th>
+              </tr>
+            </thead>
             <tbody>
               {filteredDocs.map((doc) => (
                 <tr key={doc.id}>
