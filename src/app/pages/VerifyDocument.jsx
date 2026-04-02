@@ -150,7 +150,7 @@ export function VerifyDocument() {
           <img
             key={index}
             src={file}
-            alt={file-${index}}
+            alt={`file-${index}`}
             className="w-32 h-32 object-cover rounded-lg border"
           />
         ) : (
