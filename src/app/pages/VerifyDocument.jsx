@@ -138,6 +138,54 @@ export function VerifyDocument() {
                   </span>
                 </p>
 
+                {(() => {
+  const files =
+    result.files && result.files.length > 0
+      ? result.files
+      : result.fileUrl
+      ? [result.fileUrl]
+      : [];
+
+  return files.length > 0 && (
+    <div className="mt-4 space-y-2">
+      <p className="font-semibold text-[#191919]">Dokumen:</p>
+
+      <div className="flex flex-wrap gap-3">
+        {files.map((file, index) => {
+          if (!file) return null;
+
+          const isImage = /\.(jpg|jpeg|png|webp)$/i.test(file);
+
+          return isImage ? (
+            <a
+              key={index}
+              href={file}
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              <img
+                src={file}
+                alt={file-${index}}
+                className="w-32 h-32 object-cover rounded-lg border hover:scale-105 transition"
+              />
+            </a>
+          ) : (
+            <a
+              key={index}
+              href={file}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center gap-2 text-[#AE8737] font-medium border px-3 py-2 rounded-lg hover:bg-[#AE8737]/10"
+            >
+              <FileText className="w-4 h-4" />
+              Download File {index + 1}
+            </a>
+          );
+        })}
+      </div>
+    </div>
+  );
+})()}
                 {(result.files || (result.fileUrl ? [result.fileUrl] : [])).length > 0 && (
   <div className="mt-4 space-y-2">
     <p className="font-semibold text-[#191919]">Dokumen:</p>
