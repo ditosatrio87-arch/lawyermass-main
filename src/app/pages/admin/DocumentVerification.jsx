@@ -143,9 +143,6 @@ export function DocumentVerification() {
   const handleDelete = async (id) => {
     if (!window.confirm("Hapus dokumen ini?")) return;
 
-  const handleDelete = async (id) => {
-    if (!window.confirm("Hapus dokumen ini?")) return;
-
     const { error } = await supabase.from("documents").delete().eq("id", id);
     if (error) {
       alert("Failed to delete document: " + error.message);
