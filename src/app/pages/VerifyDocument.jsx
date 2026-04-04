@@ -204,9 +204,7 @@ export function VerifyDocument() {
                     )
                   );
                 })()}
-                {(result.files || (result.fileUrl ? [result.fileUrl] : []))
-                  .length > 0 && (
-                  <div className="mt-4 space-y-2">
+        
                     <p className="font-semibold text-[#191919]">Dokumen:</p>
 
                     <div className="flex flex-wrap gap-3">
