@@ -205,9 +205,6 @@ export function VerifyDocument() {
                   );
                 })()}
                 
-                    </div>
-                  </div>
-                )}
               </div>
 
               {/* QR */}
