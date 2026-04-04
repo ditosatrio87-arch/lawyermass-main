@@ -1,9 +1,15 @@
-import { useState, useEffect } from 'react';
-import { supabase } from '../../lib/supabase';
-import { Search, CheckCircle, XCircle, FileText, ShieldCheck } from 'lucide-react';
+import { useState, useEffect } from "react";
+import { supabase } from "../../lib/supabase";
+import {
+  Search,
+  CheckCircle,
+  XCircle,
+  FileText,
+  ShieldCheck,
+} from "lucide-react";
 
 export function VerifyDocument() {
-  const [code, setCode] = useState('');
+  const [code, setCode] = useState("");
   const [result, setResult] = useState(null);
   const [loading, setLoading] = useState(false);
   const [notFound, setNotFound] = useState(false);
@@ -11,7 +17,7 @@ export function VerifyDocument() {
   // Ambil code dari URL jika ada (?code=XXX)
   useEffect(() => {
     const params = new URLSearchParams(window.location.search);
-    const urlCode = params.get('code');
+    const urlCode = params.get("code");
     if (urlCode) {
       setCode(urlCode);
       verifyDocument(urlCode);
@@ -24,9 +30,9 @@ export function VerifyDocument() {
     setNotFound(false);
 
     const { data, error } = await supabase
-      .from('documents')
-      .select('*')
-      .eq('code', docCode.toUpperCase())
+      .from("documents")
+      .select("*")
+      .eq("code", docCode.toUpperCase())
       .single();
 
     if (error || !data) {
@@ -49,7 +55,6 @@ export function VerifyDocument() {
   return (
     <section className="min-h-screen bg-gradient-to-b from-slate-50 to-white py-24">
       <div className="max-w-3xl mx-auto px-6">
-
         {/* Header */}
         <div className="text-center mb-12">
           <div className="inline-flex items-center justify-center w-14 h-14 bg-[#AE8737]/10 rounded-xl mb-4">
@@ -59,7 +64,8 @@ export function VerifyDocument() {
             Verifikasi Keaslian Dokumen
           </h1>
           <p className="text-slate-600 max-w-xl mx-auto">
-            Masukkan kode dokumen untuk memastikan keaslian dokumen resmi yang diterbitkan oleh MAS Law Firm.
+            Masukkan kode dokumen untuk memastikan keaslian dokumen resmi yang
+            diterbitkan oleh MAS Law Firm.
           </p>
         </div>
 
@@ -110,7 +116,6 @@ export function VerifyDocument() {
         {/* Result */}
         {result && (
           <div className="bg-white shadow-2xl rounded-2xl p-8 border border-green-200">
-
             {/* Status */}
             <div className="flex items-center gap-3 mb-6">
               <CheckCircle className="w-7 h-7 text-green-600" />
@@ -120,103 +125,117 @@ export function VerifyDocument() {
             </div>
 
             <div className="grid md:grid-cols-2 gap-8 text-sm text-slate-700">
-
               {/* Info Dokumen */}
               <div className="space-y-2">
-                <p><b>Kode:</b> {result.code}</p>
-                <p><b>Nama Klien:</b> {result.clientName}</p>
-                <p><b>Jenis:</b> {result.type}</p>
-                <p><b>Tanggal Terbit:</b> {result.issueDate}</p>
                 <p>
-                  <b>Status:</b>{' '}
-                  <span className={
-                    result.status === 'Valid'
-                      ? 'text-green-600 font-semibold'
-                      : 'text-red-600 font-semibold'
-                  }>
+                  <b>Kode:</b> {result.code}
+                </p>
+                <p>
+                  <b>Nama Klien:</b> {result.clientName}
+                </p>
+                <p>
+                  <b>Jenis:</b> {result.type}
+                </p>
+                <p>
+                  <b>Tanggal Terbit:</b> {result.issueDate}
+                </p>
+                <p>
+                  <b>Status:</b>{" "}
+                  <span
+                    className={
+                      result.status === "Valid"
+                        ? "text-green-600 font-semibold"
+                        : "text-red-600 font-semibold"
+                    }
+                  >
                     {result.status}
                   </span>
                 </p>
 
                 {(() => {
-  const files =
-    result.files && result.files.length > 0
-      ? result.files
-      : result.fileUrl
-      ? [result.fileUrl]
-      : [];
+                  const files =
+                    result.files && result.files.length > 0
+                      ? result.files
+                      : result.fileUrl
+                        ? [result.fileUrl]
+                        : [];
 
-  return files.length > 0 && (
-    <div className="mt-4 space-y-2">
-      <p className="font-semibold text-[#191919]">Dokumen:</p>
+                  return (
+                    files.length > 0 && (
+                      <div className="mt-4 space-y-2">
+                        <p className="font-semibold text-[#191919]">Dokumen:</p>
 
-      <div className="flex flex-wrap gap-3">
-        {files.map((file, index) => {
-          if (!file) return null;
+                        <div className="flex flex-wrap gap-3">
+                          {files.map((file, index) => {
+                            if (!file) return null;
 
-          const isImage = /\.(jpg|jpeg|png|webp)$/i.test(file);
+                            const isImage = /\.(jpg|jpeg|png|webp)$/i.test(
+                              file,
+                            );
 
-          return isImage ? (
-            <a
-              key={index}
-              href={file}
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              <img
-                src={file}
-                alt={`file-${index}`}
-                className="w-32 h-32 object-cover rounded-lg border hover:scale-105 transition"
-              />
-            </a>
-          ) : (
-            <a
-              key={index}
-              href={file}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="inline-flex items-center gap-2 text-[#AE8737] font-medium border px-3 py-2 rounded-lg hover:bg-[#AE8737]/10"
-            >
-              <FileText className="w-4 h-4" />
-              Download File {index + 1}
-            </a>
-          );
-        })}
-      </div>
-    </div>
-  );
-})()}
-                {(result.files || (result.fileUrl ? [result.fileUrl] : [])).length > 0 && (
-  <div className="mt-4 space-y-2">
-    <p className="font-semibold text-[#191919]">Dokumen:</p>
+                            return isImage ? (
+                              <a
+                                key={index}
+                                href={file}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                              >
+                                <img
+                                  src={file}
+                                  alt={`file-${index}`}
+                                  className="w-32 h-32 object-cover rounded-lg border hover:scale-105 transition"
+                                />
+                              </a>
+                            ) : (
+                              <a
+                                key={index}
+                                href={file}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className="inline-flex items-center gap-2 text-[#AE8737] font-medium border px-3 py-2 rounded-lg hover:bg-[#AE8737]/10"
+                              >
+                                <FileText className="w-4 h-4" />
+                                Download File {index + 1}
+                              </a>
+                            );
+                          })}
+                        </div>
+                      </div>
+                    )
+                  );
+                })()}
+                {(result.files || (result.fileUrl ? [result.fileUrl] : []))
+                  .length > 0 && (
+                  <div className="mt-4 space-y-2">
+                    <p className="font-semibold text-[#191919]">Dokumen:</p>
 
-    <div className="flex flex-wrap gap-3">
-      {(result.files || [result.fileUrl]).map((file, index) => {
-        const isImage = file.match(/\.(jpg|jpeg|png|webp)$/i);
+                    <div className="flex flex-wrap gap-3">
+                      {(result.files || [result.fileUrl]).map((file, index) => {
+                        const isImage = file.match(/\.(jpg|jpeg|png|webp)$/i);
 
-        return isImage ? (
-          <img
-            key={index}
-            src={file}
-            alt={`file-${index}`}
-            className="w-32 h-32 object-cover rounded-lg border"
-          />
-        ) : (
-          <a
-            key={index}
-            href={file}
-            target="_blank"
-            rel="noreferrer"
-            className="inline-flex items-center gap-2 text-[#AE8737] font-medium border px-3 py-2 rounded-lg hover:bg-[#AE8737]/10"
-          >
-            <FileText className="w-4 h-4" />
-            File {index + 1}
-          </a>
-        );
-      })}
-    </div>
-  </div>
-)}
+                        return isImage ? (
+                          <img
+                            key={index}
+                            src={file}
+                            alt={`file-${index}`}
+                            className="w-32 h-32 object-cover rounded-lg border"
+                          />
+                        ) : (
+                          <a
+                            key={index}
+                            href={file}
+                            target="_blank"
+                            rel="noreferrer"
+                            className="inline-flex items-center gap-2 text-[#AE8737] font-medium border px-3 py-2 rounded-lg hover:bg-[#AE8737]/10"
+                          >
+                            <FileText className="w-4 h-4" />
+                            File {index + 1}
+                          </a>
+                        );
+                      })}
+                    </div>
+                  </div>
+                )}
               </div>
 
               {/* QR */}
@@ -235,11 +254,9 @@ export function VerifyDocument() {
                   Scan untuk membuka halaman verifikasi langsung
                 </p>
               </div>
-
             </div>
           </div>
         )}
-
       </div>
     </section>
   );
