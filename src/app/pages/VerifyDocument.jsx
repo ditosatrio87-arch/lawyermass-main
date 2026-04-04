@@ -204,33 +204,7 @@ export function VerifyDocument() {
                     )
                   );
                 })()}
-        
-                    <p className="font-semibold text-[#191919]">Dokumen:</p>
-
-                    <div className="flex flex-wrap gap-3">
-                      {(result.files || [result.fileUrl]).map((file, index) => {
-                        const isImage = file.match(/\.(jpg|jpeg|png|webp)$/i);
-
-                        return isImage ? (
-                          <img
-                            key={index}
-                            src={file}
-                            alt={`file-${index}`}
-                            className="w-32 h-32 object-cover rounded-lg border"
-                          />
-                        ) : (
-                          <a
-                            key={index}
-                            href={file}
-                            target="_blank"
-                            rel="noreferrer"
-                            className="inline-flex items-center gap-2 text-[#AE8737] font-medium border px-3 py-2 rounded-lg hover:bg-[#AE8737]/10"
-                          >
-                            <FileText className="w-4 h-4" />
-                            File {index + 1}
-                          </a>
-                        );
-                      })}
+                
                     </div>
                   </div>
                 )}
