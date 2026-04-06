@@ -130,6 +130,34 @@ export function DocumentVerification() {
     fetchDocuments();
   };
 
+  const { data: existing } = await supabase
+  .from('documents')
+  .select('id')
+  .eq('code', formData.code)
+  .single();
+
+if (existing) {
+  alert('Code sudah ada, coba lagi');
+  setLoading(false);
+  return;
+}
+
+  const generateCode = async () => {
+  const { count, error } = await supabase
+    .from('documents')
+    .select('*', { count: 'exact', head: true });
+
+  if (error) {
+    console.error(error);
+    return '';
+  }
+
+  const year = new Date().getFullYear();
+  const number = String((count || 0) + 1).padStart(3, '0');
+
+  return DOC-${year}-${number};
+};
+
   // ======================
   // DELETE
   // ======================
@@ -184,11 +212,17 @@ export function DocumentVerification() {
         </div>
 
         <Button
-          onClick={() => setShowForm(true)}
-          className="bg-[#AE8737] text-[#191919]"
-        >
-          <Plus className="w-4 h-4 mr-2" />
-          Add Document
+  onClick={async () => {
+    const code = await generateCode();
+
+    setFormData(prev => ({
+      ...prev,
+      code
+    }));
+
+    setShowForm(true);
+  }}
+  className="bg-[#AE8737] text-[#191919]"
         </Button>
       </div>
 
@@ -199,13 +233,11 @@ export function DocumentVerification() {
             <form onSubmit={handleSubmit} className="space-y-4">
 
               <input
-                name="code"
-                placeholder="DOC-2026-001"
-                value={formData.code}
-                onChange={handleInputChange}
-                className="w-full border p-2 rounded"
-                required
-              />
+  name="code"
+  value={formData.code}
+  readOnly
+  className="w-full border p-2 rounded bg-gray-100 cursor-not-allowed"
+/>
 
               <input
                 name="clientName"
