@@ -1,13 +1,31 @@
 import { useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { supabase } from "../../lib/supabase";
-import { Calendar, Clock } from "lucide-react";
+import { Calendar, Clock, ArrowUp } from "lucide-react";
 import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
 
 export function NewsDetail() {
   const { slug } = useParams();
   const [article, setArticle] = useState(null);
+  const [showScrollTop, setShowScrollTop] = useState(false);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      if (window.scrollY > 300) {
+        setShowScrollTop(true);
+      } else {
+        setShowScrollTop(false);
+      }
+    };
+
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
+
+  const scrollToTop = () => {
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  };
 
   useEffect(() => {
     const fetchArticle = async () => {
@@ -155,6 +173,17 @@ export function NewsDetail() {
         </article>
 
       </div>
+
+      {/* SCROLL TO TOP BUTTON */}
+      <button
+        onClick={scrollToTop}
+        className={`fixed bottom-8 right-8 bg-[#AE8737] hover:bg-[#8F6D2C] text-white p-3 rounded-full shadow-lg transition-all duration-300 z-50 flex items-center justify-center ${
+          showScrollTop ? "opacity-100 translate-y-0" : "opacity-0 translate-y-10 pointer-events-none"
+        }`}
+        aria-label="Scroll to top"
+      >
+        <ArrowUp className="w-6 h-6" />
+      </button>
     </section>
   );
 }
