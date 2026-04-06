@@ -149,8 +149,20 @@ if (existing) {
   const year = new Date().getFullYear();
   const number = String((count || 0) + 1).padStart(3, '0');
 
-  return DOC-${year}-${number};
+  return `DOC-${year}-${number}`;
 };
+
+const { data: existing } = await supabase
+  .from('documents')
+  .select('id')
+  .eq('code', formData.code)
+  .single();
+
+if (existing) {
+  alert('Code sudah ada, coba lagi');
+  setLoading(false);
+  return;
+}
 
   // ======================
   // DELETE
