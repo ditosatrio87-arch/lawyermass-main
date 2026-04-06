@@ -146,7 +146,7 @@ const generateCode = async () => {
   const count = data?.length || 0;
   const number = String(count + 1).padStart(3, '0');
 
-  return `DOC-${year}-${number}`;
+  return `MAS-${year}-${number}`;
 };
 
   // ======================
