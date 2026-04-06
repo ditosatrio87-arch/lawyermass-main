@@ -105,64 +105,49 @@ export function DocumentVerification() {
   alert('Upload berhasil');
 };
 
-  // ======================
-  // CREATE / UPDATE
-  // ======================
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    setLoading(true);
+// ======================
+// CREATE / UPDATE
+// ======================
+const handleSubmit = async (e) => {
+  e.preventDefault();
+  setLoading(true);
 
-    if (editingDoc) {
-      await supabase
-        .from('documents')
-        .update(formData)
-        .eq('id', editingDoc.id);
-    } else {
-      await supabase
-        .from('documents')
-        .insert([formData]);
-    }
+  let finalData = { ...formData };
 
-    setLoading(false);
-    setShowForm(false);
-    setEditingDoc(null);
-    resetForm();
-    fetchDocuments();
-  };
-
-if (existing) {
-  alert('Code sudah ada, coba lagi');
-  setLoading(false);
-  return;
-}
-
-  const generateCode = async () => {
-  const { count, error } = await supabase
-    .from('documents')
-    .select('*', { count: 'exact', head: true });
-
-  if (error) {
-    console.error(error);
-    return '';
+  if (!editingDoc) {
+    const newCode = await generateCode(); // 🔥 WAJIB await
+    finalData.code = newCode;
   }
 
+  if (editingDoc) {
+    await supabase
+      .from('documents')
+      .update(finalData)
+      .eq('id', editingDoc.id);
+  } else {
+    await supabase
+      .from('documents')
+      .insert([finalData]);
+  }
+
+  setLoading(false);
+  setShowForm(false);
+  resetForm();
+  fetchDocuments();
+};
+
+const generateCode = async () => {
   const year = new Date().getFullYear();
-  const number = String((count || 0) + 1).padStart(3, '0');
+
+  const { data } = await supabase
+    .from('documents')
+    .select('id');
+
+  const count = data?.length || 0;
+  const number = String(count + 1).padStart(3, '0');
 
   return `DOC-${year}-${number}`;
 };
-
-const { data: existing } = await supabase
-  .from('documents')
-  .select('id')
-  .eq('code', formData.code)
-  .single();
-
-if (existing) {
-  alert('Code sudah ada, coba lagi');
-  setLoading(false);
-  return;
-}
 
   // ======================
   // DELETE
@@ -217,19 +202,22 @@ if (existing) {
           </p>
         </div>
 
-        <Button
-  onClick={async () => {
-    const code = await generateCode();
+  <Button
+    onClick={async () => {
+      const code = await generateCode();
 
-    setFormData(prev => ({
-      ...prev,
-      code
-    }));
+      setFormData(prev => ({
+        ...prev,
+        code
+      }));
 
-    setShowForm(true);
-  }}
-  className="bg-[#AE8737] text-[#191919]"
-        </Button>
+      setShowForm(true);
+    }}
+    className="bg-[#AE8737] text-[#191919]"
+  >
+    <Plus className="w-4 mr-2" />
+    Add Document
+  </Button>
       </div>
 
       {/* FORM */}
