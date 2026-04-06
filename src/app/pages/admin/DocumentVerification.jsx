@@ -130,12 +130,6 @@ export function DocumentVerification() {
     fetchDocuments();
   };
 
-  const { data: existing } = await supabase
-  .from('documents')
-  .select('id')
-  .eq('code', formData.code)
-  .single();
-
 if (existing) {
   alert('Code sudah ada, coba lagi');
   setLoading(false);
