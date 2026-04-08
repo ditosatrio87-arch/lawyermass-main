@@ -4,6 +4,7 @@ import { supabase } from "../../lib/supabase";
 import { Calendar, Clock, ArrowUp } from "lucide-react";
 import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
+import { Link } from "react-router-dom";
 
 export function NewsDetail() {
   const { slug } = useParams();
@@ -39,6 +40,7 @@ export function NewsDetail() {
         console.error(error);
       } else {
         setArticle(data);
+fetchRelated(data);
       }
     };
 
@@ -53,6 +55,23 @@ export function NewsDetail() {
     );
   }
 
+const [relatedNews, setRelatedNews] = useState([]);
+const fetchRelated = async (currentArticle) => {
+  if (!currentArticle) return;
+
+  const { data, error } = await supabase
+    .from("news")
+    .select("*")
+    .neq("id", currentArticle.id) // exclude artikel sekarang
+    .eq("status", "Published")
+    .limit(3);
+
+  if (error) {
+    console.error(error);
+  } else {
+    setRelatedNews(data);
+  }
+};
   const imageSrc = article.image_url || article.image || null;
 
   // reading time
@@ -171,8 +190,36 @@ export function NewsDetail() {
           </ReactMarkdown>
 
         </article>
+{/* RELATED NEWS */}
+<div className="mt-20">
+  <h3 className="text-2xl font-bold mb-6 text-[#191919]">
+    Artikel Lainnya
+  </h3>
 
-      </div>
+  <div className="grid md:grid-cols-3 gap-6">
+    {relatedNews.map((item) => (
+      <Link
+        key={item.id}
+        to={`/news/${item.slug}`}
+        className="group border rounded-xl overflow-hidden hover:shadow-lg transition"
+      >
+        <div className="h-40 overflow-hidden">
+          <img
+            src={item.image_url}
+            alt={item.title}
+            className="w-full h-full object-cover group-hover:scale-105 transition"
+          />
+        </div>
+
+        <div className="p-4">
+          <h4 className="font-semibold text-sm text-[#191919] group-hover:text-[#AE8737] line-clamp-2">
+            {item.title}
+          </h4>
+        </div>
+      </Link>
+    ))}
+  </div>
+</div>
 
       {/* SCROLL TO TOP BUTTON */}
       <button
