@@ -66,13 +66,8 @@ export function NewsDetail() {
 
   const imageSrc = article.image_url || article.image || null;
   const words = article.content?.split(" ").length || 0;
-  const readingTime = Math.ceil(words / 200);
-
-  return (
-    <section className="bg-white py-20">
-
+  const readingTime = Math.cei
       <div className="max-w-3xl mx-auto px-6">
-
         {/* CATEGORY */}
         {article.category && (
           <div className="mb-6">
@@ -113,61 +108,53 @@ export function NewsDetail() {
 
         {/* CONTENT */}
         <article className="text-[18px] leading-relaxed text-slate-700">
+          <ReactMarkdown
+            remarkPlugins={[remarkGfm]}
+            components={{
+              p: ({ children }) => (
+                <p className="mb-5 leading-relaxed">{children}</p>
+              ),
 
-  <ReactMarkdown
-    remarkPlugins={[remarkGfm]}
-    components={{
+              h2: ({ children }) => (
+                <h2 className="text-2xl font-bold mt-10 mb-4 text-[#191919]">
+                  {children}
+                </h2>
+              ),
 
-      p: ({ children }) => (
-        <p className="mb-5 leading-relaxed">{children}</p>
-      ),
+              h3: ({ children }) => (
+                <h3 className="text-xl font-semibold mt-8 mb-3 text-[#191919]">
+                  {children}
+                </h3>
+              ),
 
-      h2: ({ children }) => (
-        <h2 className="text-2xl font-bold mt-10 mb-4 text-[#191919]">
-          {children}
-        </h2>
-      ),
+              ul: ({ children }) => (
+                <ul className="list-disc pl-6 mb-5 space-y-2">{children}</ul>
+              ),
 
-      h3: ({ children }) => (
-        <h3 className="text-xl font-semibold mt-8 mb-3 text-[#191919]">
-          {children}
-        </h3>
-      ),
+              ol: ({ children }) => (
+                <ol className="list-decimal pl-6 mb-5 space-y-2">{children}</ol>
+              ),
 
-      ul: ({ children }) => (
-        <ul className="list-disc pl-6 mb-5 space-y-2">
-          {children}
-        </ul>
-      ),
+              li: ({ children }) => (
+                <li className="leading-relaxed">{children}</li>
+              ),
 
-      ol: ({ children }) => (
-        <ol className="list-decimal pl-6 mb-5 space-y-2">
-          {children}
-        </ol>
-      ),
+              strong: ({ children }) => (
+                <strong className="font-semibold text-[#191919]">
+                  {children}
+                </strong>
+              ),
 
-      li: ({ children }) => (
-        <li className="leading-relaxed">{children}</li>
-      ),
-
-      strong: ({ children }) => (
-        <strong className="font-semibold text-[#191919]">
-          {children}
-        </strong>
-      ),
-
-      blockquote: ({ children }) => (
-        <blockquote className="border-l-4 border-[#AE8737] pl-4 italic my-6 text-slate-600">
-          {children}
-        </blockquote>
-      ),
-
-    }}
-  >
-    {article.content}
-  </ReactMarkdown>
-
-</article>
+              blockquote: ({ children }) => (
+                <blockquote className="border-l-4 border-[#AE8737] pl-4 italic my-6 text-slate-600">
+                  {children}
+                </blockquote>
+              ),
+            }}
+          >
+            {article.content}
+          </ReactMarkdown>
+        </article>
 
         {/* RELATED NEWS */}
         <div className="mt-20">
@@ -191,21 +178,36 @@ export function NewsDetail() {
                 </div>
 
                 <div className="p-4">
-                  <h4 className="text-sm font-semibold">
-                    {item.title}
-                  </h4>
+                  <h4 className="text-sm font-semibold">{item.title}</h4>
                 </div>
               </Link>
             ))}
           </div>
         </div>
-
-      </div> {/* ✅ INI YANG KURANG TADI */}
-
+      </div>{" "}
+      {/* ✅ INI YANG KURANG TADI */}
       {/* SCROLL BUTTON */}
       <button
         onClick={scrollToTop}
         className={`fixed bottom-8 right-8 bg-[#AE8737] text-white p-3 rounded-full ${
+          showScrollTop ? "opacity-100" : "opacity-0"
+        }`}
+      >
+        <ArrowUp />
+      </button>
+    </section>
+  );
+}
+Name={`fixed bottom-8 right-8 bg-[#AE8737] text-white p-3 rounded-full ${
+          showScrollTop ? "opacity-100" : "opacity-0"
+        }`}
+      >
+        <ArrowUp />
+      </button>
+
+    </section>
+  );
+}ull ${
           showScrollTop ? "opacity-100" : "opacity-0"
         }`}
       >
