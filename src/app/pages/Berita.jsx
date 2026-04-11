@@ -66,6 +66,8 @@ export function Berita() {
   return (
     <section className="py-24 bg-white">
       <div className="container mx-auto px-6">
+
+        {/* HEADER */}
         <div className="text-center mb-16">
           <div className="inline-block w-12 h-1 bg-[#AE8737] mb-6"></div>
           <h2 className="mb-4 text-[#191919] text-2xl font-bold">Berita & Insight Hukum</h2>
@@ -88,6 +90,7 @@ export function Berita() {
           />
         </div>
 
+        {/* SLIDER */}
         <div className="relative max-w-[1400px] mx-auto w-full px-2 sm:px-4">
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
             {currentNews.map((article) => (
@@ -153,6 +156,13 @@ export function Berita() {
             >
               <ChevronRight className="w-5 h-5 text-slate-600" />
             </button>
+          )}
+
+          {/* EMPTY STATE */}
+          {filteredNews.length === 0 && (
+            <p className="text-center text-slate-500 mt-10">
+              Artikel tidak ditemukan 😢
+            </p>
           )}
         </div>
 
