@@ -188,7 +188,7 @@ export function VerifyDocument() {
     >
       <img
         src={fileUrl}
-        alt={file-${index}}
+        alt={`file-${index}`}
         className="w-32 h-32 object-cover rounded-lg border hover:scale-105 transition"
       />
     </a>
