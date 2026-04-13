@@ -169,39 +169,41 @@ export function VerifyDocument() {
                           {files.map((file, index) => {
   if (!file) return null;
 
-  // 🔥 FIX: convert ke public URL Supabase
+  // 🔥 FIX 1: pastikan file itu string
+  const fileName =
+    typeof file === "string"
+      ? file
+      : file?.name || file?.url || "";
+
+  if (!fileName) return null;
+
+  // 🔥 FIX 2: tambahin folder "documents/"
+  const filePath = fileName.startsWith("documents/")
+    ? fileName
+    : `documents/${fileName}`;
+
+  // 🔥 FIX 3: ambil URL
   const { data } = supabase
     .storage
     .from("document-files")
-    .getPublicUrl(file);
+    .getPublicUrl(filePath);
 
-  const fileUrl = data.publicUrl;
+  const fileUrl = data?.publicUrl;
 
-  const isImage = /\.(jpg|jpeg|png|webp)$/i.test(file);
+  if (!fileUrl) return null;
+
+  const isImage = /\.(jpg|jpeg|png|webp)$/i.test(fileName);
 
   return isImage ? (
-    <a
-      key={index}
-      href={fileUrl}
-      target="_blank"
-      rel="noopener noreferrer"
-    >
+    <a key={index} href={fileUrl} target="_blank">
       <img
         src={fileUrl}
         alt={`file-${index}`}
-        className="w-32 h-32 object-cover rounded-lg border hover:scale-105 transition"
+        className="w-32 h-32 object-cover rounded-lg border"
       />
     </a>
   ) : (
-    <a
-      key={index}
-      href={fileUrl}
-      target="_blank"
-      rel="noopener noreferrer"
-      download
-      className="inline-flex items-center gap-2 text-[#AE8737] font-medium border px-3 py-2 rounded-lg hover:bg-[#AE8737]/10"
-    >
-      <FileText className="w-4 h-4" />
+    <a key={index} href={fileUrl} target="_blank" download>
       Download File {index + 1}
     </a>
   );

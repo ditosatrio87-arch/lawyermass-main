@@ -104,8 +104,7 @@ export function DocumentVerification() {
       .from("document-files")
       .getPublicUrl(`documents/${fileName}`);
 
-    const fileUrl = data.publicUrl;
-    uploadedUrls.push(fileUrl);
+    uploadedUrls.push(fileName);
   }
 
   // ✅ GABUNG FILE LAMA + BARU
