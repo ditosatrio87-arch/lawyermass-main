@@ -59,51 +59,6 @@ export function DocumentVerification() {
   // ======================
   // FILE UPLOAD
   // ======================
-<<<<<<< HEAD
- const handleFileUpload = async (e) => {
-  const files = Array.from(e.target.files);
-
-  const uploadedUrls = [];
-
-  for (let file of files) {
-
-    // Validasi size
-    if (file.size > 5 * 1024 * 1024) {
-      alert(`${file.name} terlalu besar);
-      continue;
-    }
-
-    const fileExt = file.name.split(".").pop();
-    const fileName = `${Date.now()}-${Math.random()
-      .toString(36)
-      .substring(2)}.${fileExt}`;
-
-    const { error } = await supabase.storage
-      .from("document-files")
-      .upload(`documents/${fileName}`, file);
-
-    if (error) {
-      console.error(error);
-      alert(`Upload gagal: ${file.name}`);
-      continue;
-    }
-
-    const { data } = supabase.storage
-      .from("document-files")
-      .getPublicUrl(`documents/${fileName}`);
-
-    uploadedUrls.push(data.publicUrl);
-  }
-
-  // ✅ INI YANG PALING PENTING
-  setFormData((prev) => ({
-    ...prev,
-    files: [...(prev.files || []), ...uploadedUrls],
-  }));
-
-  alert("Upload selesai");
-};
-=======
   const handleFileUpload = async (e) => {
     const file = e.target.files[0];
     if (!file) return;
@@ -152,7 +107,6 @@ export function DocumentVerification() {
 
     alert("Upload berhasil");
   };
->>>>>>> bf3a14cc3ac359e5b6d1a6b2258b6dc075ac69d0
 
   // ======================
   // CREATE / UPDATE
@@ -216,21 +170,12 @@ export function DocumentVerification() {
 
   const resetForm = () => {
     setFormData({
-<<<<<<< HEAD
-      code: '',
-      clientName: '',
-      type: 'Notarial Deed',
-      issueDate: new Date().toISOString().split('T')[0],
-      status: 'Valid',
-      files: []
-=======
       code: "",
       clientName: "",
       type: "Notarial Deed",
       issueDate: new Date().toISOString().split("T")[0],
       status: "Valid",
       fileUrl: "",
->>>>>>> bf3a14cc3ac359e5b6d1a6b2258b6dc075ac69d0
     });
   };
 
