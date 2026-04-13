@@ -164,19 +164,9 @@ export function DocumentVerification() {
     fetchDocuments();
   };
 
-  // ======================
-  // EDIT
-  // ======================
-  const handleEdit = (doc) => {
-    setFormData({
-      code: doc.code,
-      clientName: doc.clientName,
-      type: doc.type,
-      issueDate: doc.issueDate,
-      status: doc.status,
-      files: doc.files || [],
-    })
-
+    // ======================
+    // RESET FORM
+    // ======================
     const resetForm = () => {
       setFormData({
         code: "",
@@ -187,7 +177,23 @@ export function DocumentVerification() {
         files: [], // ✅ kosongin
       });
     };
-
+  
+    // ======================
+    // EDIT
+    // ======================
+    const handleEdit = (doc) => {
+      setEditingDoc(doc);
+      setFormData({
+        code: doc.code,
+        clientName: doc.clientName,
+        type: doc.type,
+        issueDate: doc.issueDate,
+        status: doc.status,
+        files: doc.files || [],
+      });
+      setShowForm(true);
+    };
+  
     // ======================
     // FILTER
     // ======================
@@ -196,7 +202,7 @@ export function DocumentVerification() {
         doc.code.toLowerCase().includes(searchTerm.toLowerCase()) ||
         doc.clientName.toLowerCase().includes(searchTerm.toLowerCase()),
     );
-
+  
     return (
       <div className="space-y-6">
         {/* HEADER */}
@@ -209,16 +215,16 @@ export function DocumentVerification() {
               Manage and verify official legal documents.
             </p>
           </div>
-
+  
           <Button
             onClick={async () => {
               const code = await generateCode();
-
+  
               setFormData((prev) => ({
                 ...prev,
                 code,
               }));
-
+  
               setShowForm(true);
             }}
             className="bg-[#AE8737] text-[#191919]"
@@ -227,7 +233,7 @@ export function DocumentVerification() {
             Add Document
           </Button>
         </div>
-
+  
         {/* FORM */}
         {showForm && (
           <Card>
@@ -239,7 +245,7 @@ export function DocumentVerification() {
                   readOnly
                   className="w-full border p-2 rounded bg-gray-100 cursor-not-allowed"
                 />
-
+  
                 <input
                   name="clientName"
                   placeholder="Client Name"
@@ -248,7 +254,7 @@ export function DocumentVerification() {
                   className="w-full border p-2 rounded"
                   required
                 />
-
+  
                 <input
                   type="date"
                   name="issueDate"
@@ -256,7 +262,7 @@ export function DocumentVerification() {
                   onChange={handleInputChange}
                   className="w-full border p-2 rounded"
                 />
-
+  
                 {/* Upload */}
                 <input
                   type="file"
@@ -264,7 +270,7 @@ export function DocumentVerification() {
                   onChange={handleFileUpload}
                   className="w-full border p-2 rounded"
                 />
-
+  
                 <div className="flex flex-wrap gap-2">
                   {formData.files?.map((file, i) => (
                     <a key={i} href={file} target="_blank" className="text-blue-600 text-sm">
@@ -272,7 +278,7 @@ export function DocumentVerification() {
                     </a>
                   ))}
                 </div>
-
+  
                 <div className="flex gap-3">
                   <Button type="submit" disabled={loading}>
                     {loading ? "Saving..." : "Save"}
@@ -289,7 +295,7 @@ export function DocumentVerification() {
             </CardContent>
           </Card>
         )}
-
+  
         {/* SEARCH */}
         <input
           placeholder="Search..."
@@ -297,7 +303,7 @@ export function DocumentVerification() {
           onChange={(e) => setSearchTerm(e.target.value)}
           className="w-full border p-2 rounded"
         />
-
+  
         {/* TABLE */}
         <Card>
           <CardContent className="p-6">
@@ -322,7 +328,7 @@ export function DocumentVerification() {
                         <XCircle className="text-red-500 w-4" />
                       )}
                     </td>
-
+  
                     <td>
                       {doc.files?.map((file, i) => (
                         <a
@@ -335,7 +341,7 @@ export function DocumentVerification() {
                         </a>
                       ))}
                     </td>
-
+  
                     <td>
                       <button onClick={() => handleEdit(doc)}>
                         <Edit2 className="w-4 inline" />
@@ -351,5 +357,5 @@ export function DocumentVerification() {
           </CardContent>
         </Card>
       </div>
-        );
+    );
   }
