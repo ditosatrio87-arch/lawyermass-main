@@ -22,15 +22,14 @@ export function DocumentVerification() {
   const [loading, setLoading] = useState(false);
 
   const [formData, setFormData] = useState({
-    
-=======
+
+
     code: "",
     clientName: "",
     type: "Notarial Deed",
     issueDate: new Date().toISOString().split("T")[0],
     status: "Valid",
     fileUrl: "",
->>>>>>> bf3a14cc3ac359e5b6d1a6b2258b6dc075ac69d0
   });
 
   // ======================
