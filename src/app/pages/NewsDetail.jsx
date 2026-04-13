@@ -116,7 +116,50 @@ export function NewsDetail() {
 
         {/* CONTENT */}
         <article className="text-lg text-slate-700 leading-relaxed">
-          <ReactMarkdown remarkPlugins={[remarkGfm]}>
+          <ReactMarkdown
+            remarkPlugins={[remarkGfm]}
+            components={{
+              p: ({ children }) => (
+                <p className="mb-5 leading-relaxed">{children}</p>
+              ),
+
+              h2: ({ children }) => (
+                <h2 className="text-2xl font-bold mt-10 mb-4 text-[#191919]">
+                  {children}
+                </h2>
+              ),
+
+              h3: ({ children }) => (
+                <h3 className="text-xl font-semibold mt-8 mb-3 text-[#191919]">
+                  {children}
+                </h3>
+              ),
+
+              ul: ({ children }) => (
+                <ul className="list-disc pl-6 mb-5 space-y-2">{children}</ul>
+              ),
+
+              ol: ({ children }) => (
+                <ol className="list-decimal pl-6 mb-5 space-y-2">{children}</ol>
+              ),
+
+              li: ({ children }) => (
+                <li className="leading-relaxed">{children}</li>
+              ),
+
+              strong: ({ children }) => (
+                <strong className="font-semibold text-[#191919]">
+                  {children}
+                </strong>
+              ),
+
+              blockquote: ({ children }) => (
+                <blockquote className="border-l-4 border-[#AE8737] pl-4 italic my-6 text-slate-600">
+                  {children}
+                </blockquote>
+              ),
+            }}
+          >
             {article.content}
           </ReactMarkdown>
         </article>
@@ -133,27 +176,24 @@ export function NewsDetail() {
                 <Link
                   key={item.id}
                   to={`/news/${item.slug}`}
-                  className="group border rounded-xl overflow-hidden hover:shadow-lg transition"
+                  className="group border rounded-xl overflow-hidden hover:shadow-lg"
                 >
                   <div className="h-40 overflow-hidden">
                     <img
                       src={item.image_url}
                       alt={item.title}
-                      className="w-full h-full object-cover group-hover:scale-105 transition"
+                      className="w-full h-full object-cover group-hover:scale-105"
                     />
                   </div>
-
+                  
                   <div className="p-4">
-                    <h4 className="text-sm font-semibold group-hover:text-[#AE8737] line-clamp-2">
-                      {item.title}
-                    </h4>
+                    <h4 className="text-sm font-semibold">{item.title}</h4>
                   </div>
                 </Link>
               ))}
             </div>
           </div>
         )}
-
       </div>
 
       {/* SCROLL BUTTON */}
