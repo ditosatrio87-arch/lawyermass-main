@@ -1,32 +1,36 @@
-import React, { useState, useEffect } from 'react';
-import { 
-  Search, 
-  Plus, 
-  Edit2, 
-  Trash2, 
-  X, 
-  Upload, 
-  Eye, 
-  CheckCircle, 
-  XCircle } from 'lucide-react';
-import { Card, CardContent } from '../../components/ui/card';
-import { Button } from '../../components/ui/button';
-import { supabase } from '../../../lib/supabase';
+import React, { useState, useEffect } from "react";
+import {
+  Search,
+  Plus,
+  Edit2,
+  Trash2,
+  X,
+  Upload,
+  Eye,
+  CheckCircle,
+  XCircle,
+} from "lucide-react";
+import { Card, CardContent } from "../../components/ui/card";
+import { Button } from "../../components/ui/button";
+import { supabase } from "../../../lib/supabase";
 
 export function DocumentVerification() {
   const [documents, setDocuments] = useState([]);
   const [showForm, setShowForm] = useState(false);
   const [editingDoc, setEditingDoc] = useState(null);
-  const [searchTerm, setSearchTerm] = useState('');
+  const [searchTerm, setSearchTerm] = useState("");
   const [loading, setLoading] = useState(false);
 
   const [formData, setFormData] = useState({
-    code: '',
-    clientName: '',
-    type: 'Notarial Deed',
-    issueDate: new Date().toISOString().split('T')[0],
-    status: 'Valid',
-    files: []
+    
+=======
+    code: "",
+    clientName: "",
+    type: "Notarial Deed",
+    issueDate: new Date().toISOString().split("T")[0],
+    status: "Valid",
+    fileUrl: "",
+>>>>>>> bf3a14cc3ac359e5b6d1a6b2258b6dc075ac69d0
   });
 
   // ======================
@@ -38,9 +42,9 @@ export function DocumentVerification() {
 
   const fetchDocuments = async () => {
     const { data, error } = await supabase
-      .from('documents')
-      .select('*')
-      .order('issueDate', { ascending: false });
+      .from("documents")
+      .select("*")
+      .order("issueDate", { ascending: false });
 
     if (!error) setDocuments(data || []);
   };
@@ -50,12 +54,13 @@ export function DocumentVerification() {
   // ======================
   const handleInputChange = (e) => {
     const { name, value } = e.target;
-    setFormData(prev => ({ ...prev, [name]: value }));
+    setFormData((prev) => ({ ...prev, [name]: value }));
   };
 
   // ======================
   // FILE UPLOAD
   // ======================
+<<<<<<< HEAD
  const handleFileUpload = async (e) => {
   const files = Array.from(e.target.files);
 
@@ -99,61 +104,104 @@ export function DocumentVerification() {
 
   alert("Upload selesai");
 };
+=======
+  const handleFileUpload = async (e) => {
+    const file = e.target.files[0];
+    if (!file) return;
 
-// ======================
-// CREATE / UPDATE
-// ======================
-const handleSubmit = async (e) => {
-  e.preventDefault();
-  setLoading(true);
+    // Validasi PDF
+    if (file.type !== "application/pdf") {
+      alert("File harus PDF");
+      return;
+    }
 
-  let finalData = { ...formData };
+    // Maksimal 5MB
+    if (file.size > 5 * 1024 * 1024) {
+      alert("Ukuran maksimal 5MB");
+      return;
+    }
 
-  if (!editingDoc) {
-    const newCode = await generateCode(); // 🔥 WAJIB await
-    finalData.code = newCode;
-  }
+    // Nama file unik
+    const fileExt = file.name.split(".").pop();
+    const fileName = `${Date.now()}-${Math.random()
+      .toString(36)
+      .substring(2)}.${fileExt}`;
 
-  if (editingDoc) {
-    await supabase
-      .from('documents')
-      .update(finalData)
-      .eq('id', editingDoc.id);
-  } else {
-    await supabase
-      .from('documents')
-      .insert([finalData]);
-  }
+    // Upload ke folder 'documents'
+    const { error: uploadError } = await supabase.storage
+      .from("document-files")
+      .upload(`documents/${fileName}`, file, {
+        contentType: "application/pdf",
+        upsert: false,
+      });
 
-  setLoading(false);
-  setShowForm(false);
-  resetForm();
-  fetchDocuments();
-};
+    if (uploadError) {
+      console.error(uploadError);
+      alert("Upload gagal: " + uploadError.message);
+      return;
+    }
 
-const generateCode = async () => {
-  const year = new Date().getFullYear();
+    // Ambil public URL
+    const { data } = supabase.storage
+      .from("document-files")
+      .getPublicUrl(`documents/${fileName}`);
 
-  const { data } = await supabase
-    .from('documents')
-    .select('id');
+    setFormData((prev) => ({
+      ...prev,
+      fileUrl: data.publicUrl,
+    }));
 
-  const count = data?.length || 0;
-  const number = String(count + 1).padStart(3, '0');
+    alert("Upload berhasil");
+  };
+>>>>>>> bf3a14cc3ac359e5b6d1a6b2258b6dc075ac69d0
 
-  return `DOC-${year}-${number}`;
-};
+  // ======================
+  // CREATE / UPDATE
+  // ======================
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setLoading(true);
+
+    let finalData = { ...formData };
+
+    if (!editingDoc) {
+      const newCode = await generateCode(); // 🔥 WAJIB await
+      finalData.code = newCode;
+    }
+
+    if (editingDoc) {
+      await supabase
+        .from("documents")
+        .update(finalData)
+        .eq("id", editingDoc.id);
+    } else {
+      await supabase.from("documents").insert([finalData]);
+    }
+
+    setLoading(false);
+    setShowForm(false);
+    resetForm();
+    fetchDocuments();
+  };
+
+  const generateCode = async () => {
+    const year = new Date().getFullYear();
+
+    const { data } = await supabase.from("documents").select("id");
+
+    const count = data?.length || 0;
+    const number = String(count + 1).padStart(3, "0");
+
+    return `MAS-${year}-${number}`;
+  };
 
   // ======================
   // DELETE
   // ======================
   const handleDelete = async (id) => {
-    if (!window.confirm('Hapus dokumen ini?')) return;
+    if (!window.confirm("Hapus dokumen ini?")) return;
 
-    await supabase
-      .from('documents')
-      .delete()
-      .eq('id', id);
+    await supabase.from("documents").delete().eq("id", id);
 
     fetchDocuments();
   };
@@ -169,21 +217,31 @@ const generateCode = async () => {
 
   const resetForm = () => {
     setFormData({
+<<<<<<< HEAD
       code: '',
       clientName: '',
       type: 'Notarial Deed',
       issueDate: new Date().toISOString().split('T')[0],
       status: 'Valid',
       files: []
+=======
+      code: "",
+      clientName: "",
+      type: "Notarial Deed",
+      issueDate: new Date().toISOString().split("T")[0],
+      status: "Valid",
+      fileUrl: "",
+>>>>>>> bf3a14cc3ac359e5b6d1a6b2258b6dc075ac69d0
     });
   };
 
   // ======================
   // FILTER
   // ======================
-  const filteredDocs = documents.filter(doc =>
-    doc.code.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    doc.clientName.toLowerCase().includes(searchTerm.toLowerCase())
+  const filteredDocs = documents.filter(
+    (doc) =>
+      doc.code.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      doc.clientName.toLowerCase().includes(searchTerm.toLowerCase()),
   );
 
   return (
@@ -191,28 +249,30 @@ const generateCode = async () => {
       {/* HEADER */}
       <div className="flex justify-between items-center">
         <div>
-          <h2 className="text-2xl font-bold text-[#191919]">Document Verification</h2>
+          <h2 className="text-2xl font-bold text-[#191919]">
+            Document Verification
+          </h2>
           <p className="text-slate-500 text-sm">
             Manage and verify official legal documents.
           </p>
         </div>
 
-  <Button
-    onClick={async () => {
-      const code = await generateCode();
+        <Button
+          onClick={async () => {
+            const code = await generateCode();
 
-      setFormData(prev => ({
-        ...prev,
-        code
-      }));
+            setFormData((prev) => ({
+              ...prev,
+              code,
+            }));
 
-      setShowForm(true);
-    }}
-    className="bg-[#AE8737] text-[#191919]"
-  >
-    <Plus className="w-4 mr-2" />
-    Add Document
-  </Button>
+            setShowForm(true);
+          }}
+          className="bg-[#AE8737] text-[#191919]"
+        >
+          <Plus className="w-4 mr-2" />
+          Add Document
+        </Button>
       </div>
 
       {/* FORM */}
@@ -220,13 +280,12 @@ const generateCode = async () => {
         <Card>
           <CardContent className="p-6 space-y-4">
             <form onSubmit={handleSubmit} className="space-y-4">
-
               <input
-  name="code"
-  value={formData.code}
-  readOnly
-  className="w-full border p-2 rounded bg-gray-100 cursor-not-allowed"
-/>
+                name="code"
+                value={formData.code}
+                readOnly
+                className="w-full border p-2 rounded bg-gray-100 cursor-not-allowed"
+              />
 
               <input
                 name="clientName"
@@ -263,7 +322,7 @@ const generateCode = async () => {
 
               <div className="flex gap-3">
                 <Button type="submit" disabled={loading}>
-                  {loading ? 'Saving...' : 'Save'}
+                  {loading ? "Saving..." : "Save"}
                 </Button>
                 <Button
                   type="button"
@@ -313,7 +372,12 @@ const generateCode = async () => {
 
                   <td>
                     {doc.files?.map((file, i) => (
-                      <a key={i} href={file} target="_blank" rel="noopener noreferrer">
+                      <a
+                        key={i}
+                        href={file}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                      >
                         <Eye className="w-4 inline mr-1" />
                       </a>
                     ))}
@@ -327,7 +391,6 @@ const generateCode = async () => {
                       <Trash2 className="w-4 inline text-red-500" />
                     </button>
                   </td>
-
                 </tr>
               ))}
             </tbody>
