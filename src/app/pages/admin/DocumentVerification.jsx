@@ -64,10 +64,19 @@ export function DocumentVerification() {
     if (!file) return;
 
     // Validasi PDF
-    if (file.type !== "application/pdf") {
-      alert("File harus PDF");
-      return;
-    }
+    const allowedTypes = [
+  "application/pdf",
+  "application/msword",
+  "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+  "image/jpeg",
+  "image/jpg",
+  "image/png"
+];
+
+if (!allowedTypes.includes(file.type)) {
+  alert("Format file tidak didukung");
+  return;
+}
 
     // Maksimal 5MB
     if (file.size > 5 * 1024 * 1024) {
@@ -85,7 +94,7 @@ export function DocumentVerification() {
     const { error: uploadError } = await supabase.storage
       .from("document-files")
       .upload(`documents/${fileName}`, file, {
-        contentType: "application/pdf",
+        contentType: file.type,
         upsert: false,
       });
 
