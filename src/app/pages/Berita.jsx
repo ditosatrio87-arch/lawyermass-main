@@ -73,9 +73,6 @@ export function Berita() {
   };
 
   const paginationItems = getPaginationItems();
-  
-  const words = article.content?.split(" ").length || 0;
-const readingTime = Math.ceil(words / 200);
 
   return (
     <section className="py-24 bg-white">
