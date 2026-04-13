@@ -99,12 +99,12 @@ export function DocumentVerification() {
         continue;
       }
 
-      const { data } = supabase.storage
-        .from("document-files")
-        .getPublicUrl(`documents/${fileName}`);
+      const { data } = supabase
+  .storage
+  .from('document-files') // bucket
+  .getPublicUrl('documents/1775095693467-gyaqr3y9jo5.pdf')
 
-      uploadedUrls.push(data.publicUrl);
-    }
+const fileUrl = data.publicUrl
 
     // ✅ GABUNG FILE LAMA + BARU
     setFormData((prev) => ({

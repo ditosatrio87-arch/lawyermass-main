@@ -167,38 +167,45 @@ export function VerifyDocument() {
 
                         <div className="flex flex-wrap gap-3">
                           {files.map((file, index) => {
-                            if (!file) return null;
+  if (!file) return null;
 
-                            const isImage = /\.(jpg|jpeg|png|webp)$/i.test(
-                              file,
-                            );
+  // 🔥 FIX: convert ke public URL Supabase
+  const { data } = supabase
+    .storage
+    .from("document-files")
+    .getPublicUrl(file);
 
-                            return isImage ? (
-                              <a
-                                key={index}
-                                href={file}
-                                target="_blank"
-                                rel="noopener noreferrer"
-                              >
-                                <img
-                                  src={file}
-                                  alt={`file-${index}`}
-                                  className="w-32 h-32 object-cover rounded-lg border hover:scale-105 transition"
-                                />
-                              </a>
-                            ) : (
-                              <a
-                                key={index}
-                                href={file}
-                                target="_blank"
-                                rel="noopener noreferrer"
-                                className="inline-flex items-center gap-2 text-[#AE8737] font-medium border px-3 py-2 rounded-lg hover:bg-[#AE8737]/10"
-                              >
-                                <FileText className="w-4 h-4" />
-                                Download File {index + 1}
-                              </a>
-                            );
-                          })}
+  const fileUrl = data.publicUrl;
+
+  const isImage = /\.(jpg|jpeg|png|webp)$/i.test(file);
+
+  return isImage ? (
+    <a
+      key={index}
+      href={fileUrl}
+      target="_blank"
+      rel="noopener noreferrer"
+    >
+      <img
+        src={fileUrl}
+        alt={file-${index}}
+        className="w-32 h-32 object-cover rounded-lg border hover:scale-105 transition"
+      />
+    </a>
+  ) : (
+    <a
+      key={index}
+      href={fileUrl}
+      target="_blank"
+      rel="noopener noreferrer"
+      download
+      className="inline-flex items-center gap-2 text-[#AE8737] font-medium border px-3 py-2 rounded-lg hover:bg-[#AE8737]/10"
+    >
+      <FileText className="w-4 h-4" />
+      Download File {index + 1}
+    </a>
+  );
+})}
                         </div>
                       </div>
                     )
