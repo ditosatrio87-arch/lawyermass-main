@@ -58,60 +58,33 @@ export function DocumentVerification() {
   // FILE UPLOAD
   // ======================
   const handleFileUpload = async (e) => {
-    const files = Array.from(e.target.files);
-    if (!files.length) return;
+  const files = Array.from(e.target.files);
+  if (!files.length) return;
 
-    const uploadedUrls = [];
+  const uploadedNames = [];
 
-    for (const file of files) {
-      const allowedTypes = [
-        "application/pdf",
-        "application/msword",
-        "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
-        "image/jpeg",
-        "image/jpg",
-        "image/png",
-      ];
+  for (const file of files) {
+    const fileExt = file.name.split(".").pop();
+    const fileName = `${Date.now()}-${Math.random()
+      .toString(36)
+      .substring(2)}.${fileExt}`;
 
-      if (!allowedTypes.includes(file.type)) {
-        alert("Format file tidak didukung");
-        continue;
-      }
-
-      if (file.size > 5 * 1024 * 1024) {
-        alert("Ukuran maksimal 5MB");
-        continue;
-      }
-
-      const fileExt = file.name.split(".").pop();
-      const fileName = `${Date.now()}-${Math.random()
-        .toString(36)
-        .substring(2)}.${fileExt}`;
-
-      const { error: uploadError } = await supabase.storage
-        .from("document-files")
-        .upload(`documents/${fileName}`, file, {
-          contentType: file.type,
-        });
-
-      if (uploadError) {
-        console.error(uploadError);
-        continue;
-      }
-
-    const { data } = supabase
-      .storage
+    const { error } = await supabase.storage
       .from("document-files")
-      .getPublicUrl(`documents/${fileName}`);
+      .upload(`documents/${fileName}`, file);
 
-    uploadedUrls.push(fileName);
+    if (!error) {
+      uploadedNames.push(fileName);
+    }
   }
 
-  // ✅ GABUNG FILE LAMA + BARU
+  // 🔥 IMPORTANT: langsung update state
   setFormData((prev) => ({
     ...prev,
-    files: [...(prev.files || []), ...uploadedUrls],
+    files: [...(prev.files || []), ...uploadedNames],
   }));
+
+  console.log("FILES:", uploadedNames);
 };
 
   // ======================
@@ -273,11 +246,19 @@ export function DocumentVerification() {
                 />
   
                 <div className="flex flex-wrap gap-2">
-                  {formData.files?.map((file, i) => (
-                    <a key={i} href={file} target="_blank" className="text-blue-600 text-sm">
-                      File {i + 1}
-                    </a>
-                  ))}
+                  {formData.files?.map((file, i) => {
+  const { data } = supabase.storage
+    .from("document-files")
+    .getPublicUrl(`documents/${file}`);
+
+  const url = data.publicUrl;
+
+  return (
+    <a key={i} href={url} target="_blank" className="text-blue-600 text-sm">
+      File {i + 1}
+    </a>
+  );
+})}
                 </div>
   
                 <div className="flex gap-3">
