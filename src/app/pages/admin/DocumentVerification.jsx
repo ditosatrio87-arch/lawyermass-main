@@ -22,15 +22,13 @@ export function DocumentVerification() {
   const [loading, setLoading] = useState(false);
 
   const [formData, setFormData] = useState({
-
-
-    code: "",
-    clientName: "",
-    type: "Notarial Deed",
-    issueDate: new Date().toISOString().split("T")[0],
-    status: "Valid",
-    fileUrl: "",
-  });
+  code: "",
+  clientName: "",
+  type: "Notarial Deed",
+  issueDate: new Date().toISOString().split("T")[0],
+  status: "Valid",
+  files: [], // ✅ WAJIB
+});
 
   // ======================
   // FETCH DATA
@@ -60,62 +58,60 @@ export function DocumentVerification() {
   // FILE UPLOAD
   // ======================
   const handleFileUpload = async (e) => {
-    const file = e.target.files[0];
-    if (!file) return;
+  const files = Array.from(e.target.files);
+  if (!files.length) return;
 
-    // Validasi PDF
+  const uploadedUrls = [];
+
+  for (const file of files) {
     const allowedTypes = [
-  "application/pdf",
-  "application/msword",
-  "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
-  "image/jpeg",
-  "image/jpg",
-  "image/png"
-];
+      "application/pdf",
+      "application/msword",
+      "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+      "image/jpeg",
+      "image/jpg",
+      "image/png",
+    ];
 
-if (!allowedTypes.includes(file.type)) {
-  alert("Format file tidak didukung");
-  return;
-}
-
-    // Maksimal 5MB
-    if (file.size > 5 * 1024 * 1024) {
-      alert("Ukuran maksimal 5MB");
-      return;
+    if (!allowedTypes.includes(file.type)) {
+      alert("Format file tidak didukung");
+      continue;
     }
 
-    // Nama file unik
+    if (file.size > 5 * 1024 * 1024) {
+      alert("Ukuran maksimal 5MB");
+      continue;
+    }
+
     const fileExt = file.name.split(".").pop();
     const fileName = `${Date.now()}-${Math.random()
       .toString(36)
       .substring(2)}.${fileExt}`;
 
-    // Upload ke folder 'documents'
     const { error: uploadError } = await supabase.storage
       .from("document-files")
       .upload(`documents/${fileName}`, file, {
         contentType: file.type,
-        upsert: false,
       });
 
     if (uploadError) {
       console.error(uploadError);
-      alert("Upload gagal: " + uploadError.message);
-      return;
+      continue;
     }
 
-    // Ambil public URL
     const { data } = supabase.storage
       .from("document-files")
       .getPublicUrl(`documents/${fileName}`);
 
-    setFormData((prev) => ({
-      ...prev,
-      fileUrl: data.publicUrl,
-    }));
+    uploadedUrls.push(data.publicUrl);
+  }
 
-    alert("Upload berhasil");
-  };
+  // ✅ GABUNG FILE LAMA + BARU
+  setFormData((prev) => ({
+    ...prev,
+    files: [...(prev.files || []), ...uploadedUrls],
+  }));
+};
 
   // ======================
   // CREATE / UPDATE
@@ -184,7 +180,6 @@ if (!allowedTypes.includes(file.type)) {
       type: "Notarial Deed",
       issueDate: new Date().toISOString().split("T")[0],
       status: "Valid",
-      fileUrl: "",
     });
   };
 
