@@ -153,12 +153,23 @@ export function VerifyDocument() {
                 </p>
 
                 {(() => {
-                  const files =
-                    result.files && result.files.length > 0
-                      ? result.files
-                      : result.files
-                        ? [result.files]
-                        : [];
+  let files = [];
+
+  try {
+    if (typeof result.files === "string") {
+      // 🔥 kalau string JSON
+      files = JSON.parse(result.files);
+    } else if (Array.isArray(result.files)) {
+      files = result.files;
+    } else if (result.files) {
+      files = [result.files];
+    }
+  } catch (e) {
+    console.error("PARSE ERROR:", e);
+    files = [];
+  }
+
+  console.log("FILES FIXED:", files);
 
                   return (
                     files.length > 0 && (
