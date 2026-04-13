@@ -59,11 +59,15 @@ export function DocumentVerification() {
   // ======================
   const handleFileUpload = async (e) => {
   const files = Array.from(e.target.files);
-  if (!files.length) return;
+  const uploadedUrls = [];
 
-  const uploadedNames = [];
+  for (let file of files) {
+    // Validasi size
+    if (file.size > 5 * 1024 * 1024) {
+      alert(`${file.name} terlalu besar`);
+      continue;
+    }
 
-  for (const file of files) {
     const fileExt = file.name.split(".").pop();
     const fileName = `${Date.now()}-${Math.random()
       .toString(36)
@@ -71,20 +75,30 @@ export function DocumentVerification() {
 
     const { error } = await supabase.storage
       .from("document-files")
-      .upload(`documents/${fileName}`, file);
+      .upload(`documents/${fileName}`, file, {
+        contentType: file.type,
+      });
 
-    if (!error) {
-      uploadedNames.push(fileName);
+    if (error) {
+      console.error(error);
+      alert(`Gagal upload: ${file.name}`);
+      continue;
     }
+
+    const { data } = supabase.storage
+      .from("document-files")
+      .getPublicUrl(`documents/${fileName}`);
+
+    uploadedUrls.push(data.publicUrl);
   }
 
-  // 🔥 IMPORTANT: langsung update state
+  // 🔥 INI YANG PALING PENTING
   setFormData((prev) => ({
     ...prev,
-    files: [...(prev.files || []), ...uploadedNames],
+    files: [...(prev.files || []), ...uploadedUrls],
   }));
 
-  console.log("FILES:", uploadedNames);
+  console.log("TOTAL FILE KE-SAVE:", uploadedUrls.length);
 };
 
   // ======================
