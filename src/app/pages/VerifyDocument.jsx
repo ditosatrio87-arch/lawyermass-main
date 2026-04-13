@@ -156,8 +156,8 @@ export function VerifyDocument() {
                   const files =
                     result.files && result.files.length > 0
                       ? result.files
-                      : result.fileUrl
-                        ? [result.fileUrl]
+                      : result.files
+                        ? [result.files]
                         : [];
 
                   return (

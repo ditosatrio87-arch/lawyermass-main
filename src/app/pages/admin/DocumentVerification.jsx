@@ -26,7 +26,7 @@ export function DocumentVerification() {
     type: 'Notarial Deed',
     issueDate: new Date().toISOString().split('T')[0],
     status: 'Valid',
-    fileUrl: ''
+    files: []
   });
 
   // ======================
@@ -57,52 +57,47 @@ export function DocumentVerification() {
   // FILE UPLOAD
   // ======================
  const handleFileUpload = async (e) => {
-  const file = e.target.files[0];
-  if (!file) return;
+  const files = Array.from(e.target.files);
 
-  // Validasi PDF
-  if (file.type !== 'application/pdf') {
-    alert('File harus PDF');
-    return;
+  const uploadedUrls = [];
+
+  for (let file of files) {
+
+    // Validasi size
+    if (file.size > 5 * 1024 * 1024) {
+      alert(`${file.name} terlalu besar);
+      continue;
+    }
+
+    const fileExt = file.name.split(".").pop();
+    const fileName = `${Date.now()}-${Math.random()
+      .toString(36)
+      .substring(2)}.${fileExt}`;
+
+    const { error } = await supabase.storage
+      .from("document-files")
+      .upload(`documents/${fileName}`, file);
+
+    if (error) {
+      console.error(error);
+      alert(`Upload gagal: ${file.name}`);
+      continue;
+    }
+
+    const { data } = supabase.storage
+      .from("document-files")
+      .getPublicUrl(`documents/${fileName}`);
+
+    uploadedUrls.push(data.publicUrl);
   }
 
-  // Maksimal 5MB
-  if (file.size > 5 * 1024 * 1024) {
-    alert('Ukuran maksimal 5MB');
-    return;
-  }
-
-  // Nama file unik
-  const fileExt = file.name.split('.').pop();
-  const fileName = `${Date.now()}-${Math.random()
-    .toString(36)
-    .substring(2)}.${fileExt}`;
-
-  // Upload ke folder 'documents'
-  const { error: uploadError } = await supabase.storage
-    .from('document-files')
-    .upload(`documents/${fileName}`, file, {
-      contentType: 'application/pdf',
-      upsert: false,
-    });
-
-  if (uploadError) {
-    console.error(uploadError);
-    alert('Upload gagal: ' + uploadError.message);
-    return;
-  }
-
-  // Ambil public URL
-  const { data } = supabase.storage
-    .from('document-files')
-    .getPublicUrl(`documents/${fileName}`);
-
-  setFormData(prev => ({
+  // ✅ INI YANG PALING PENTING
+  setFormData((prev) => ({
     ...prev,
-    fileUrl: data.publicUrl,
+    files: [...(prev.files || []), ...uploadedUrls],
   }));
 
-  alert('Upload berhasil');
+  alert("Upload selesai");
 };
 
 // ======================
@@ -179,7 +174,7 @@ const generateCode = async () => {
       type: 'Notarial Deed',
       issueDate: new Date().toISOString().split('T')[0],
       status: 'Valid',
-      fileUrl: ''
+      files: []
     });
   };
 
@@ -258,15 +253,13 @@ const generateCode = async () => {
                 className="w-full border p-2 rounded"
               />
 
-              {formData.fileUrl && (
-                <a
-                  href={formData.fileUrl}
-                  target="_blank"
-                  className="text-blue-600 text-sm"
-                >
-                  Preview File
-                </a>
-              )}
+              <div className="flex flex-wrap gap-2">
+  {formData.files?.map((file, i) => (
+    <a key={i} href={file} target="_blank" className="text-blue-600 text-sm">
+      File {i + 1}
+    </a>
+  ))}
+</div>
 
               <div className="flex gap-3">
                 <Button type="submit" disabled={loading}>
