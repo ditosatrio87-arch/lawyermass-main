@@ -168,20 +168,25 @@ export function DocumentVerification() {
   // EDIT
   // ======================
   const handleEdit = (doc) => {
-    setFormData(doc);
-    setEditingDoc(doc);
-    setShowForm(true);
-  };
+    setFormData({
+  code: doc.code,
+  clientName: doc.clientName,
+  type: doc.type,
+  issueDate: doc.issueDate,
+  status: doc.status,
+  files: doc.files || [],
+})
 
   const resetForm = () => {
-    setFormData({
-      code: "",
-      clientName: "",
-      type: "Notarial Deed",
-      issueDate: new Date().toISOString().split("T")[0],
-      status: "Valid",
-    });
-  };
+  setFormData({
+    code: "",
+    clientName: "",
+    type: "Notarial Deed",
+    issueDate: new Date().toISOString().split("T")[0],
+    status: "Valid",
+    files: [], // ✅ kosongin
+  });
+};
 
   // ======================
   // FILTER
@@ -262,10 +267,10 @@ export function DocumentVerification() {
 
               <div className="flex flex-wrap gap-2">
   {formData.files?.map((file, i) => (
-    <a key={i} href={file} target="_blank" className="text-blue-600 text-sm">
-      File {i + 1}
-    </a>
-  ))}
+  <a key={i} href={file} target="_blank" className="text-blue-600 text-sm">
+    File {i + 1}
+  </a>
+))}
 </div>
 
               <div className="flex gap-3">
