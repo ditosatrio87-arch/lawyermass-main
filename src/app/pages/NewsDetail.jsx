@@ -135,16 +135,16 @@ export function NewsDetail() {
                 </h3>
               ),
 
-              ul: ({ children }) => (
-                <ul className="list-disc pl-6 mb-5 space-y-2">{children}</ul>
+              ul: ({ node, ...props }) => (
+                <ul className="list-disc pl-6 mb-5 space-y-2" {...props} />
               ),
 
-              ol: ({ children }) => (
-                <ol className="list-decimal pl-6 mb-5 space-y-2">{children}</ol>
+              ol: ({ node, ...props }) => (
+                <ol className="list-decimal pl-6 mb-5 space-y-2" {...props} />
               ),
 
-              li: ({ children }) => (
-                <li className="leading-relaxed">{children}</li>
+              li: ({ node, ...props }) => (
+                <li className="leading-relaxed" {...props} />
               ),
 
               strong: ({ children }) => (
