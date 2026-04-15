@@ -153,23 +153,23 @@ export function VerifyDocument() {
                 </p>
 
                 {(() => {
-  let files = [];
+                  let files = [];
 
-  try {
-    if (typeof result.files === "string") {
-      // 🔥 kalau string JSON
-      files = JSON.parse(result.files);
-    } else if (Array.isArray(result.files)) {
-      files = result.files;
-    } else if (result.files) {
-      files = [result.files];
-    }
-  } catch (e) {
-    console.error("PARSE ERROR:", e);
-    files = [];
-  }
+                  try {
+                    if (typeof result.files === "string") {
+                      // 🔥 kalau string JSON
+                      files = JSON.parse(result.files);
+                    } else if (Array.isArray(result.files)) {
+                      files = result.files;
+                    } else if (result.files) {
+                      files = [result.files];
+                    }
+                  } catch (e) {
+                    console.error("PARSE ERROR:", e);
+                    files = [];
+                  }
 
-  console.log("FILES FIXED:", files);
+                  console.log("FILES FIXED:", files);
 
                   return (
                     files.length > 0 && (
@@ -178,47 +178,47 @@ export function VerifyDocument() {
 
                         <div className="flex flex-wrap gap-3">
                           {files.map((file, index) => {
-  if (!file) return null;
+                            if (!file) return null;
 
-  // 🔥 FIX 1: pastikan file itu string
-  const fileName =
-    typeof file === "string"
-      ? file
-      : file?.name || file?.url || "";
+                            // 🔥 FIX 1: pastikan file itu string
+                            const fileName =
+                              typeof file === "string"
+                                ? file
+                                : file?.name || file?.url || "";
 
-  if (!fileName) return null;
+                            if (!fileName) return null;
 
-  // 🔥 FIX 2: tambahin folder "documents/"
-  const filePath = fileName.startsWith("documents/")
-    ? fileName
-    : `documents/${fileName}`;
+                            // 🔥 FIX 2: tambahin folder "documents/"
+                            const filePath = fileName.startsWith("documents/")
+                              ? fileName
+                              : `documents/${fileName}`;
 
-  // 🔥 FIX 3: ambil URL
-  const { data } = supabase
-    .storage
-    .from("document-files")
-    .getPublicUrl(filePath);
+                            // 🔥 FIX 3: ambil URL
+                            const { data } = supabase
+                              .storage
+                              .from("document-files")
+                              .getPublicUrl(filePath);
 
-  const fileUrl = data?.publicUrl;
+                            const fileUrl = data?.publicUrl;
 
-  if (!fileUrl) return null;
+                            if (!fileUrl) return null;
 
-  const isImage = /\.(jpg|jpeg|png|webp)$/i.test(fileName);
+                            const isImage = /\.(jpg|jpeg|png|webp)$/i.test(fileName);
 
-  return isImage ? (
-    <a key={index} href={fileUrl} target="_blank">
-      <img
-        src={fileUrl}
-        alt={`file-${index}`}
-        className="w-32 h-32 object-cover rounded-lg border"
-      />
-    </a>
-  ) : (
-    <a key={index} href={fileUrl} target="_blank" download>
-      Download File {index + 1}
-    </a>
-  );
-})}
+                            return isImage ? (
+                              <a key={index} href={fileUrl} target="_blank" rel="noreferrer">
+                                <img
+                                  src={fileUrl}
+                                  alt={`file-${index}`}
+                                  className="w-32 h-32 object-cover rounded-lg border"
+                                />
+                              </a>
+                            ) : (
+                              <a key={index} href={fileUrl} target="_blank" download rel="noreferrer">
+                                Download File {index + 1}
+                              </a>
+                            );
+                          })}
                         </div>
                       </div>
                     )
