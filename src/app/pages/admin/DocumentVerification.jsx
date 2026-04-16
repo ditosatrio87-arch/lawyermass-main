@@ -58,48 +58,48 @@ export function DocumentVerification() {
   // FILE UPLOAD
   // ======================
   const handleFileUpload = async (e) => {
-  const files = Array.from(e.target.files);
-  const uploadedUrls = [];
+    const files = Array.from(e.target.files);
+    const uploadedUrls = [];
 
-  for (let file of files) {
-    // Validasi size
-    if (file.size > 5 * 1024 * 1024) {
-      alert(`${file.name} terlalu besar`);
-      continue;
+    for (let file of files) {
+      // Validasi size
+      if (file.size > 5 * 1024 * 1024) {
+        alert(`${file.name} terlalu besar`);
+        continue;
+      }
+
+      const fileExt = file.name.split(".").pop();
+      const fileName = `${Date.now()}-${Math.random()
+        .toString(36)
+        .substring(2)}.${fileExt}`;
+
+      const { error } = await supabase.storage
+        .from("document-files")
+        .upload(`documents/${fileName}`, file, {
+          contentType: file.type,
+        });
+
+      if (error) {
+        console.error(error);
+        alert(`Gagal upload: ${file.name}`);
+        continue;
+      }
+
+      const { data } = supabase.storage
+        .from("document-files")
+        .getPublicUrl(`documents/${fileName}`);
+
+      uploadedUrls.push(data.publicUrl);
     }
 
-    const fileExt = file.name.split(".").pop();
-    const fileName = `${Date.now()}-${Math.random()
-      .toString(36)
-      .substring(2)}.${fileExt}`;
+    // 🔥 INI YANG PALING PENTING
+    setFormData((prev) => ({
+      ...prev,
+      files: [...(prev.files || []), ...uploadedUrls],
+    }));
 
-    const { error } = await supabase.storage
-      .from("document-files")
-      .upload(`documents/${fileName}`, file, {
-        contentType: file.type,
-      });
-
-    if (error) {
-      console.error(error);
-      alert(`Gagal upload: ${file.name}`);
-      continue;
-    }
-
-    const { data } = supabase.storage
-      .from("document-files")
-      .getPublicUrl(`documents/${fileName}`);
-
-    uploadedUrls.push(data.publicUrl);
-  }
-
-  // 🔥 INI YANG PALING PENTING
-  setFormData((prev) => ({
-    ...prev,
-    files: [...(prev.files || []), ...uploadedUrls],
-  }));
-
-  console.log("TOTAL FILE KE-SAVE:", uploadedUrls.length);
-};
+    console.log("TOTAL FILE KE-SAVE:", uploadedUrls.length);
+  };
 
   // ======================
   // CREATE / UPDATE
@@ -261,18 +261,18 @@ export function DocumentVerification() {
   
                 <div className="flex flex-wrap gap-2">
                   {formData.files?.map((file, i) => {
-  const { data } = supabase.storage
-    .from("document-files")
-    .getPublicUrl(`documents/${file}`);
+                    const { data } = supabase.storage
+                      .from("document-files")
+                      .getPublicUrl(`documents/${file}`);
 
-  const url = data.publicUrl;
+                    const url = data.publicUrl;
 
-  return (
-    <a key={i} href={url} target="_blank" className="text-blue-600 text-sm">
-      File {i + 1}
-    </a>
-  );
-})}
+                    return (
+                      <a key={i} href={url} target="_blank" rel="noreferrer" className="text-blue-600 text-sm">
+                        File {i + 1}
+                      </a>
+                    );
+                  })}
                 </div>
   
                 <div className="flex gap-3">
@@ -355,3 +355,4 @@ export function DocumentVerification() {
       </div>
     );
   }
+  
