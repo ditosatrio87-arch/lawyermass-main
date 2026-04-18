@@ -9,61 +9,51 @@ import { Card, CardContent } from "../components/ui/card";
 
 export function Kontak() {
   return (
-    <section className="py-24 bg-gradient-to-b from-[#0f0f0f] to-[#1a1a1a] text-white">
+    <section className="py-24 bg-white">
       <div className="container mx-auto px-6">
 
-        {/* HERO */}
+        {/* HEADER */}
         <div className="text-center mb-16">
-          <h2 className="text-3xl md:text-4xl font-bold mb-4">
-            Butuh Bantuan Hukum?
+          <div className="inline-block w-12 h-1 bg-[#AE8737] mb-6"></div>
+          <h2 className="mb-4 text-2xl font-bold text-[#191919]">
+            Konsultasi Gratis Sekarang!
           </h2>
-          <p className="text-gray-400 max-w-xl mx-auto text-lg">
-            Konsultasi GRATIS sekarang, respon cepat dalam hitungan menit ⚡
-          </p>
-
-          {/* CTA UTAMA */}
-          <a
-            href="https://wa.me/6289530407021"
-            target="_blank"
-            className="inline-block mt-6 bg-[#25D366] text-white px-8 py-4 rounded-xl text-lg font-semibold shadow-lg hover:scale-105 transition"
-          >
-            Chat WhatsApp Sekarang 🚀
-          </a>
-
-          <p className="text-red-400 text-sm mt-3">
-            🔥 Respon rata-rata {"<"} 5 menit
+          <p className="text-slate-600 max-w-2xl mx-auto text-lg">
+            Kami siap membantu kebutuhan hukum bisnis Anda dengan respon cepat dan profesional
           </p>
         </div>
 
         {/* CONTACT CARDS */}
-        <div className="grid md:grid-cols-3 gap-8 max-w-5xl mx-auto">
+        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8 max-w-5xl mx-auto">
 
-          {/* PHONE */}
-          <a href="tel:6289530407021">
-            <Card className="bg-[#1a1a1a] border border-[#AE8737] hover:-translate-y-2 hover:shadow-[0_0_25px_rgba(174,135,55,0.4)] transition-all duration-300 group">
+          {/* TELEPON */}
+          <a href="tel:6289530407021" className="block">
+            <Card className="bg-white border border-slate-200 hover:-translate-y-2 hover:shadow-xl transition-all duration-300 group">
               <CardContent className="p-8 text-center">
-                <div className="w-16 h-16 mx-auto mb-6 rounded-full bg-[#AE8737]/10 flex items-center justify-center group-hover:scale-110 transition">
-                  <Phone className="w-8 h-8 text-[#AE8737]" />
+                <div className="w-16 h-16 bg-[#AE8737]/5 rounded-full flex items-center justify-center mb-6 mx-auto group-hover:scale-110 transition">
+                  <Phone className="w-7 h-7 text-[#AE8737]" />
                 </div>
-                <h3 className="text-xl font-semibold mb-2 group-hover:text-[#AE8737]">
+                <h3 className="text-lg font-semibold text-[#191919] mb-2">
                   Telepon
                 </h3>
-                <p className="text-gray-400">+62 895 3040 7021</p>
+                <p className="text-slate-600">
+                  +62 895 3040 7021
+                </p>
               </CardContent>
             </Card>
           </a>
 
           {/* EMAIL */}
-          <a href="mailto:kantorpengacaramas@gmail.com">
-            <Card className="bg-[#1a1a1a] border border-[#AE8737] hover:-translate-y-2 hover:shadow-[0_0_25px_rgba(174,135,55,0.4)] transition-all duration-300 group">
+          <a href="mailto:kantorpengacaramas@gmail.com" className="block">
+            <Card className="bg-white border border-slate-200 hover:-translate-y-2 hover:shadow-xl transition-all duration-300 group">
               <CardContent className="p-8 text-center">
-                <div className="w-16 h-16 mx-auto mb-6 rounded-full bg-[#AE8737]/10 flex items-center justify-center group-hover:scale-110 transition">
-                  <Mail className="w-8 h-8 text-[#AE8737]" />
+                <div className="w-16 h-16 bg-[#AE8737]/5 rounded-full flex items-center justify-center mb-6 mx-auto group-hover:scale-110 transition">
+                  <Mail className="w-7 h-7 text-[#AE8737]" />
                 </div>
-                <h3 className="text-xl font-semibold mb-2 group-hover:text-[#AE8737]">
+                <h3 className="text-lg font-semibold text-[#191919] mb-2">
                   Email
                 </h3>
-                <p className="text-gray-400 break-all">
+                <p className="text-slate-600 break-all">
                   kantorpengacaramas@gmail.com
                 </p>
               </CardContent>
@@ -75,17 +65,18 @@ export function Kontak() {
             href="https://wa.me/6289530407021"
             target="_blank"
             rel="noopener noreferrer"
+            className="block"
           >
-            <Card className="bg-[#1a1a1a] border border-[#25D366] hover:-translate-y-2 hover:shadow-[0_0_30px_rgba(37,211,102,0.5)] transition-all duration-300 group">
+            <Card className="bg-white border border-slate-200 hover:-translate-y-2 hover:shadow-xl transition-all duration-300 group">
               <CardContent className="p-8 text-center">
-                <div className="w-16 h-16 mx-auto mb-6 rounded-full bg-[#25D366]/10 flex items-center justify-center group-hover:scale-110 transition">
-                  <MessageCircle className="w-8 h-8 text-[#25D366]" />
+                <div className="w-16 h-16 bg-[#AE8737]/5 rounded-full flex items-center justify-center mb-6 mx-auto group-hover:scale-110 transition">
+                  <MessageCircle className="w-7 h-7 text-[#AE8737]" />
                 </div>
-                <h3 className="text-xl font-semibold mb-2 text-[#25D366]">
+                <h3 className="text-lg font-semibold text-[#191919] mb-2">
                   WhatsApp
                 </h3>
-                <p className="text-gray-400">
-                  Chat langsung sekarang
+                <p className="text-slate-600">
+                  Chat Sekarang
                 </p>
               </CardContent>
             </Card>
@@ -93,55 +84,80 @@ export function Kontak() {
 
         </div>
 
-        {/* INFO */}
+        {/* ADDRESS & HOURS */}
         <div className="mt-16 max-w-5xl mx-auto">
-          <Card className="bg-[#111] border border-[#AE8737] overflow-hidden">
-            <CardContent className="p-8 grid md:grid-cols-2 gap-10">
+          <Card className="bg-white border border-slate-200 shadow-sm">
+            <CardContent className="p-8 md:p-10">
+              <div className="grid md:grid-cols-2 gap-10">
 
-              {/* ADDRESS */}
-              <div className="flex gap-4">
-                <MapPin className="text-[#AE8737] w-6 h-6 mt-1" />
+                {/* ALAMAT */}
                 <div>
-                  <h3 className="text-lg font-semibold mb-2">
-                    Alamat Kantor
-                  </h3><a
-  href="https://maps.app.goo.gl/U7Vhbspoe4EM16p5A"
-  target="_blank"
-  rel="noopener noreferrer"
-  className="text-gray-400 hover:text-[#AE8737] transition leading-relaxed block"
->
-  Ruko Estrela, Banjar Wijaya No.6<br />
-  Cipete, Pinang, Tangerang<br />
-  Banten 15142
-</a>
-                  
-                </div>
-              </div>
+                  <div className="flex items-start gap-4">
+                    <div className="w-12 h-12 bg-[#AE8737]/5 rounded-full flex items-center justify-center">
+                      <MapPin className="w-5 h-5 text-[#AE8737]" />
+                    </div>
 
-              {/* HOURS */}
-              <div className="flex gap-4">
-                <Clock className="text-[#AE8737] w-6 h-6 mt-1" />
+                    <div>
+                      <h3 className="text-lg font-semibold text-[#191919] mb-2">
+                        Alamat Kantor
+                      </h3>
+
+                      <a
+                        href="https://maps.google.com/?q=Ruko+Estrela+Banjar+Wijaya+No.6+Tangerang"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="text-slate-600 hover:text-[#AE8737] transition leading-relaxed"
+                      >
+                        Unit BC, Ruko Estrela,
+                        <br />
+                        Banjar Wijaya No.6, Cipete,
+                        <br />
+                        Kec. Pinang, Kota Tangerang
+                      </a>
+                    </div>
+                  </div>
+                </div>
+
+                {/* JAM */}
                 <div>
-                  <h3 className="text-lg font-semibold mb-2">
-                    Jam Operasional
-                  </h3>
-                  <p className="text-gray-400">
-                    Senin - Jumat: 09.00 - 17.00<br />
-                    Sabtu: 09.00 - 14.00<br />
-                    <span className="text-red-400">Minggu: Tutup</span>
-                  </p>
-                </div>
-              </div>
+                  <div className="flex items-start gap-4">
+                    <div className="w-12 h-12 bg-[#AE8737]/5 rounded-full flex items-center justify-center">
+                      <Clock className="w-5 h-5 text-[#AE8737]" />
+                    </div>
 
+                    <div>
+                      <h3 className="text-lg font-semibold text-[#191919] mb-2">
+                        Jam Operasional
+                      </h3>
+
+                      <div className="text-slate-600 space-y-1">
+                        <div className="flex justify-between max-w-[220px]">
+                          <span>Senin - Jumat</span>
+                          <span className="font-medium text-[#191919]">
+                            09.00 - 17.00
+                          </span>
+                        </div>
+
+                        <div className="flex justify-between max-w-[220px]">
+                          <span>Sabtu</span>
+                          <span className="font-medium text-[#191919]">
+                            09.00 - 14.00
+                          </span>
+                        </div>
+
+                        <div className="flex justify-between max-w-[220px] text-red-500">
+                          <span>Minggu</span>
+                          <span>Tutup</span>
+                        </div>
+                      </div>
+
+                    </div>
+                  </div>
+                </div>
+
+              </div>
             </CardContent>
           </Card>
-        </div>
-
-        {/* TRUST */}
-        <div className="text-center mt-12">
-          <p className="text-gray-500 text-sm">
-            Dipercaya oleh klien UMKM & perusahaan di Indonesia
-          </p>
         </div>
 
       </div>
