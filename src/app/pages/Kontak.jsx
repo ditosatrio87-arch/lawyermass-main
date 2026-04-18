@@ -104,12 +104,17 @@ export function Kontak() {
                 <div>
                   <h3 className="text-lg font-semibold mb-2">
                     Alamat Kantor
-                  </h3>
-                  <p className="text-gray-400">
-                    Ruko Estrela, Banjar Wijaya No.6<br />
-                    Cipete, Pinang, Tangerang<br />
-                    Banten 15142
-                  </p>
+                  </h3><a
+  href="https://maps.app.goo.gl/U7Vhbspoe4EM16p5A"
+  target="_blank"
+  rel="noopener noreferrer"
+  className="text-gray-400 hover:text-[#AE8737] transition leading-relaxed block"
+>
+  Ruko Estrela, Banjar Wijaya No.6<br />
+  Cipete, Pinang, Tangerang<br />
+  Banten 15142
+</a>
+                  
                 </div>
               </div>
 
