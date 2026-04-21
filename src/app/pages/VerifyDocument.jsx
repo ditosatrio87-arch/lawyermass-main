@@ -24,6 +24,14 @@ export function VerifyDocument() {
     }
   }, []);
 
+  const getFileName = (url) => {
+  try {
+    return decodeURIComponent(url.split("/").pop());
+  } catch {
+    return "Dokumen";
+  }
+};
+
   const verifyDocument = async (docCode) => {
     setLoading(true);
     setResult(null);
@@ -214,9 +222,16 @@ export function VerifyDocument() {
                                 />
                               </a>
                             ) : (
-                              <a key={index} href={fileUrl} target="_blank" download rel="noreferrer">
-                                Download File {index + 1}
-                              </a>
+                              <a
+  key={index}
+  href={fileUrl}
+  target="_blank"
+  download
+  rel="noreferrer"
+  className="text-[#AE8737] hover:underline text-sm"
+>
+  📄 {getFileName(fileUrl)}
+</a>
                             );
                           })}
                         </div>
