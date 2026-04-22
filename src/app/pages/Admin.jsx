@@ -109,7 +109,7 @@ export function Admin() {
         ${sidebarOpen ? "translate-x-0" : "-translate-x-full lg:translate-x-0"}`}
       >
         <div>
-          <div className="p-6 border-b bg-gray-200">
+          <div className="p-6 border-b bg-gray-300">
             <h1 className="font-bold text-[#AE8737]">ADMIN PANEL</h1>
           </div>
 
