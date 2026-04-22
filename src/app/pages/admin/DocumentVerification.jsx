@@ -270,7 +270,7 @@ export function DocumentVerification() {
                       href={file}
                       target="_blank"
                       rel="noreferrer"
-                      className="text-blue-600 text-sm"
+                      className="inline-flex items-center text-blue-600 text-sm border border-gray-300 rounded-md px-2 py-1 hover:bg-gray-50 transition-colors"
                     >
                       {fileName}
                     </a>
@@ -337,7 +337,7 @@ export function DocumentVerification() {
                           href={file}
                           target="_blank"
                           rel="noopener noreferrer"
-                          className="text-blue-600 text-sm mr-2"
+                          className="inline-flex items-center text-blue-600 text-sm border border-gray-300 rounded-md px-2 py-1 hover:bg-gray-50 transition-colors"
                         >
                           <Eye className="w-4 inline mr-1" />
                           {fileName}
