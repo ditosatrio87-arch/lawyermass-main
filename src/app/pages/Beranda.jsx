@@ -11,6 +11,15 @@ import { Link } from "react-router-dom";
 import VisiMisi from "../components/VisiMisi";
 
 export function Beranda() {
+
+  const articles = [
+    {
+      title: "Bukan Sekadar Gelar: Mengapa Penguasaan Hard Skill di Luar Kampus Semakin Krusial",
+      slug: "bukan-sekadar-gelar-mengapa-penguasaan-hard-skill-di-luar-kampus-semakin-krusial",
+    },
+  ];
+  
+  
   return (
     <>
       <section className="relative bg-white py-28 md:py-36">
@@ -158,6 +167,32 @@ export function Beranda() {
           </div>
         </div>
       </section>
+
+{/* ARTIKEL TERBARU */}
+<section className="py-20 bg-gray-50">
+  <div className="container mx-auto px-6">
+    <div className="text-center mb-12">
+      <h2 className="text-3xl font-bold mb-4">Artikel Terbaru</h2>
+      <p className="text-slate-600">
+        Insight dan informasi terbaru seputar hukum & bisnis
+      </p>
+    </div>
+
+    <div className="max-w-3xl mx-auto">
+      {articles.map((article, index) => (
+        <Link
+          key={index}
+          to={`/news/${article.slug}`}
+          className="block p-6 bg-white rounded-lg shadow mb-4"
+        >
+          <h3 className="text-lg font-semibold">
+            {article.title}
+          </h3>
+        </Link>
+      ))}
+    </div>
+  </div>
+</section>
 
       {/* VISI MISI */}
       <VisiMisi />
