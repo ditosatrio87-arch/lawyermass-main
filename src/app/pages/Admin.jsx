@@ -1,198 +1,219 @@
-import { useEffect, useState } from "react";
-import {
-  LayoutDashboard,
-  Newspaper,
-  ShieldCheck,
-  Settings,
-  LogOut,
-  Menu,
-  X,
-} from "lucide-react";
-import { supabase } from "../../lib/supabase";
-import { useNavigate } from "react-router-dom";
-import { toast } from "sonner";
+import React, { useState, useEffect } from 'react';
+import { Save, Globe, Mail, Phone, MapPin, Image } from 'lucide-react';
+import { Card, CardContent } from '../../components/ui/card';
+import { Button } from '../../components/ui/button';
+import { supabase } from '../../../lib/supabase';
 
-// IMPORT COMPONENT
-import { DashboardOverview } from "./admin/DashboardOverview";
-import { ManageNews } from "./admin/ManageNews";
-import { DocumentVerification } from "./admin/DocumentVerification";
-import { SiteSettings } from "./admin/SiteSettings";
+export function SiteSettings() {
+  const [loading, setLoading] = useState(false);
 
-export function Admin() {
-  const [sidebarOpen, setSidebarOpen] = useState(false);
-  const [activeTab, setActiveTab] = useState("dashboard");
-  const [loading, setLoading] = useState(true);
+  const [settings, setSettings] = useState({
+    site_name: '',
+    contact_email: '',
+    contact_phone: '',
+    address: '',
+    logo_url: '',
+    meta_title: '',
+    meta_description: ''
+  });
 
-  const navigate = useNavigate();
-
-  // ===============================
-  // ADMIN THEME
-  // ===============================
   useEffect(() => {
-    document.body.classList.add("admin-theme");
-    return () => document.body.classList.remove("admin-theme");
+    fetchSettings();
   }, []);
 
-  // ===============================
-  // STATE DATA
-  // ===============================
-  const [newsArticles, setNewsArticles] = useState([]);
-  const [documents, setDocuments] = useState([]);
+  const fetchSettings = async () => {
+    const { data } = await supabase
+      .from('site_settings')
+      .select('*')
+      .eq('id', 1)
+      .single();
 
-  // ===============================
-  // FETCH DATA
-  // ===============================
-  useEffect(() => {
-    fetchData();
-  }, []);
+    if (data) setSettings(data);
+  };
 
-  const fetchData = async () => {
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setSettings(prev => ({ ...prev, [name]: value }));
+  };
+
+  const handleLogoUpload = async (e) => {
+    const file = e.target.files[0];
+    if (!file) return;
+
+    const fileName = `logo-${Date.now()}.${file.name.split('.').pop()}`;
+
+    await supabase.storage
+      .from('site-assets')
+      .upload(fileName, file, { upsert: true });
+
+    const { data } = supabase.storage
+      .from('site-assets')
+      .getPublicUrl(fileName);
+
+    setSettings(prev => ({
+      ...prev,
+      logo_url: data.publicUrl
+    }));
+  };
+
+  const handleSave = async (e) => {
+    e.preventDefault();
     setLoading(true);
 
-    try {
-      const { data: newsData } = await supabase
-        .from("news")
-        .select("*")
-        .order("date", { ascending: false });
-
-      const { data: docData } = await supabase
-        .from("documents")
-        .select("*")
-        .order("issue_date", { ascending: false });
-
-      setNewsArticles(newsData || []);
-      setDocuments(docData || []);
-    } catch (err) {
-      console.error(err);
-      toast.error("Failed to load data");
-    }
+    await supabase
+      .from('site_settings')
+      .update(settings)
+      .eq('id', 1);
 
     setLoading(false);
+    alert('Settings saved!');
   };
-
-  // ===============================
-  // SIGN OUT
-  // ===============================
-  const handleSignOut = async () => {
-    const { error } = await supabase.auth.signOut();
-    if (!error) {
-      navigate("/login");
-      toast.success("Logged out");
-    }
-  };
-
-  // ===============================
-  // SIDEBAR MENU
-  // ===============================
-  const sidebarItems = [
-    { id: "dashboard", icon: LayoutDashboard, label: "Dashboard" },
-    { id: "news", icon: Newspaper, label: "Manage News" },
-    { id: "verification", icon: ShieldCheck, label: "Document Verification" },
-    { id: "settings", icon: Settings, label: "Site Settings" },
-  ];
 
   return (
-    <div className="min-h-screen flex bg-gray-50">
+    <div className="space-y-8">
 
-      {/* MOBILE BUTTON */}
-      <button
-        className="lg:hidden fixed top-4 right-4 z-50 p-2 bg-gray-300 rounded-md"
-        onClick={() => setSidebarOpen(!sidebarOpen)}
-      >
-        {sidebarOpen ? <X /> : <Menu />}
-      </button>
+      {/* HEADER */}
+      <div>
+        <h2 className="text-2xl font-bold text-[#191919]">Site Settings</h2>
+        <p className="text-slate-500 text-sm">
+          Manage website identity, branding, and SEO.
+        </p>
+      </div>
 
-      {/* SIDEBAR */}
-      <aside
-        className={`fixed lg:sticky top-0 left-0 h-screen w-64 bg-gray-100 flex flex-col justify-between
-        transform transition-transform duration-300 z-40
-        ${sidebarOpen ? "translate-x-0" : "-translate-x-full lg:translate-x-0"}`}
-      >
-        <div>
-          <div className="p-6 border-b bg-gray-300">
-            <h1 className="font-bold text-[#AE8737]">ADMIN PANEL</h1>
-          </div>
+      <div className="grid lg:grid-cols-3 gap-6">
 
-          <nav className="p-4">
-            <ul className="space-y-2">
-              {sidebarItems.map((item) => {
-                const Icon = item.icon;
+        {/* LEFT FORM */}
+        <div className="lg:col-span-2 space-y-6">
 
-                return (
-                  <li key={item.id}>
-                    <button
-                      onClick={() => {
-                        setActiveTab(item.id);
-                        setSidebarOpen(false);
-                      }}
-                      className={`w-full flex items-center gap-3 px-4 py-3 rounded-lg transition ${
-                        activeTab === item.id
-                          ? "bg-[#AE8737] text-white"
-                          : "hover:bg-gray-300"
-                      }`}
-                    >
-                      <Icon className="w-5 h-5" />
-                      {item.label}
-                    </button>
-                  </li>
-                );
-              })}
-            </ul>
-          </nav>
+          {/* GENERAL */}
+          <Card>
+            <CardContent className="p-6 space-y-4">
+              <h3 className="font-semibold text-lg flex items-center gap-2">
+                <Globe className="w-5 h-5 text-[#AE8737]" />
+                General Information
+              </h3>
+
+              <input
+                name="site_name"
+                placeholder="Site Name"
+                value={settings.site_name || ''}
+                onChange={handleChange}
+                className="w-full border p-2 rounded"
+              />
+
+              <div className="grid md:grid-cols-2 gap-4">
+                <input
+                  name="contact_email"
+                  placeholder="Email"
+                  value={settings.contact_email || ''}
+                  onChange={handleChange}
+                  className="border p-2 rounded"
+                />
+
+                <input
+                  name="contact_phone"
+                  placeholder="Phone"
+                  value={settings.contact_phone || ''}
+                  onChange={handleChange}
+                  className="border p-2 rounded"
+                />
+              </div>
+
+              <textarea
+                name="address"
+                placeholder="Address"
+                value={settings.address || ''}
+                onChange={handleChange}
+                className="w-full border p-2 rounded"
+              />
+            </CardContent>
+          </Card>
+
+          {/* SEO */}
+          <Card>
+            <CardContent className="p-6 space-y-4">
+              <h3 className="font-semibold text-lg">SEO Settings</h3>
+
+              <input
+                name="meta_title"
+                placeholder="Meta Title"
+                value={settings.meta_title || ''}
+                onChange={handleChange}
+                className="w-full border p-2 rounded"
+              />
+
+              <textarea
+                name="meta_description"
+                placeholder="Meta Description"
+                value={settings.meta_description || ''}
+                onChange={handleChange}
+                className="w-full border p-2 rounded"
+              />
+            </CardContent>
+          </Card>
+
+          {/* SAVE BUTTON */}
+          <Button onClick={handleSave} disabled={loading}>
+            <Save className="w-4 mr-2" />
+            {loading ? 'Saving...' : 'Save Changes'}
+          </Button>
+
         </div>
 
-        <div className="p-4 border-t">
-          <button
-            onClick={handleSignOut}
-            className="w-full flex items-center justify-center gap-2 py-2 rounded-lg bg-red-400/50 hover:bg-red-400"
-          >
-            <LogOut className="w-4 h-4" />
-            Sign Out
-          </button>
+        {/* RIGHT PREVIEW */}
+        <div className="space-y-6">
+
+          {/* LOGO */}
+          <Card>
+            <CardContent className="p-6 text-center space-y-4">
+              <h3 className="font-semibold flex items-center justify-center gap-2">
+                <Image className="w-5 h-5 text-[#AE8737]" />
+                Logo Preview
+              </h3>
+
+              {settings.logo_url ? (
+                <img
+                  src={settings.logo_url}
+                  className="h-16 mx-auto object-contain"
+                />
+              ) : (
+                <p className="text-slate-400 text-sm">No logo uploaded</p>
+              )}
+
+              <input
+                type="file"
+                accept="image/*"
+                onChange={handleLogoUpload}
+                className="text-sm"
+              />
+            </CardContent>
+          </Card>
+
+          {/* LIVE PREVIEW */}
+          <Card>
+            <CardContent className="p-6 space-y-3">
+              <h3 className="font-semibold">Live Preview</h3>
+
+              <div className="border rounded-lg p-4">
+                <div className="flex items-center gap-3 mb-2">
+                  {settings.logo_url && (
+                    <img src={settings.logo_url} className="h-8" />
+                  )}
+                  <span className="font-bold text-[#191919]">
+                    {settings.site_name || 'Your Website'}
+                  </span>
+                </div>
+
+                <p className="text-sm text-slate-500">
+                  {settings.meta_description || 'Website description preview...'}
+                </p>
+              </div>
+            </CardContent>
+          </Card>
+
         </div>
-      </aside>
 
-      {/* MAIN */}
-      <main className="flex-1 p-4 lg:p-8">
-
-        {loading && (
-          <div className="text-center py-20">Loading...</div>
-        )}
-
-        {!loading && (
-          <>
-            {activeTab === "dashboard" && (
-              <DashboardOverview
-                articles={newsArticles}
-                documents={documents}
-              />
-            )}
-
-            {activeTab === "news" && (
-              <ManageNews
-                articles={newsArticles}
-                setArticles={setNewsArticles}
-              />
-            )}
-
-            {activeTab === "verification" && (
-              <DocumentVerification
-                documents={documents}
-                setDocuments={setDocuments}
-              />
-            )}
-
-            {activeTab === "settings" && <SiteSettings />}
-          </>
-        )}
-      </main>
-
-      {sidebarOpen && (
-        <div
-          className="fixed inset-0 bg-black/50"
-          onClick={() => setSidebarOpen(false)}
-        />
-      )}
+      </div>
     </div>
   );
 }
