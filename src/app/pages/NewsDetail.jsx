@@ -1,7 +1,13 @@
 import { useParams, Link } from "react-router-dom";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { supabase } from "../../lib/supabase";
-import { Calendar, Clock, ArrowUp, ChevronRight } from "lucide-react";
+import {
+  Calendar,
+  Clock,
+  ArrowUp,
+  ChevronLeft,
+  ChevronRight,
+} from "lucide-react";
 import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
 
@@ -9,10 +15,12 @@ export function NewsDetail() {
   const { slug } = useParams();
 
   const [article, setArticle] = useState(null);
-  const [recommendedArticles, setRecommendedArticles] = useState([]);
+  const [recommendedNews, setRecommendedNews] = useState([]);
   const [showScrollTop, setShowScrollTop] = useState(false);
 
-  // ================= SCROLL =================
+  const sliderRef = useRef(null);
+
+  // ================= SCROLL TOP =================
   useEffect(() => {
     const handleScroll = () => {
       setShowScrollTop(window.scrollY > 300);
@@ -29,13 +37,13 @@ export function NewsDetail() {
   // ================= FETCH ARTICLE =================
   useEffect(() => {
     const fetchArticle = async () => {
-      const { data, error } = await supabase
+      const { data } = await supabase
         .from("news")
         .select("*")
         .eq("slug", slug)
         .single();
 
-      if (!error && data) {
+      if (data) {
         setArticle(data);
         fetchRecommended(data.id);
       }
@@ -46,16 +54,26 @@ export function NewsDetail() {
 
   // ================= FETCH ALL OTHER ARTICLES =================
   const fetchRecommended = async (currentId) => {
-    const { data, error } = await supabase
+    const { data } = await supabase
       .from("news")
       .select("*")
       .neq("id", currentId)
       .eq("status", "Published")
       .order("date", { ascending: false });
 
-    if (!error) {
-      setRecommendedArticles(data || []);
-    }
+    setRecommendedNews(data || []);
+  };
+
+  // ================= SLIDER =================
+  const scrollSlider = (direction) => {
+    if (!sliderRef.current) return;
+
+    const amount = 320;
+
+    sliderRef.current.scrollBy({
+      left: direction === "left" ? -amount : amount,
+      behavior: "smooth",
+    });
   };
 
   if (!article) {
@@ -119,39 +137,67 @@ export function NewsDetail() {
           </ReactMarkdown>
         </article>
 
-        {/* RECOMMENDED ARTICLES */}
-        {recommendedArticles.length > 0 && (
-          <div className="mt-20 border-t pt-10">
-            <h3 className="text-2xl font-bold mb-6 text-[#191919]">
+      </div>
+
+      {/* RECOMMENDED ARTICLES */}
+      {recommendedNews.length > 0 && (
+        <div className="mt-24 max-w-7xl mx-auto px-6">
+          <div className="flex items-center justify-between mb-6">
+            <h3 className="text-2xl font-bold text-[#191919]">
               Artikel yang Mungkin Kamu Sukai
             </h3>
 
-            <div className="space-y-3">
-              {recommendedArticles.map((item) => (
-                <Link
-                  key={item.id}
-                  to={`/news/${item.slug}`}
-                  className="group flex items-start justify-between gap-4 border rounded-xl px-5 py-4 hover:border-[#AE8737] hover:bg-[#AE8737]/5 transition"
-                >
-                  <div>
-                    <h4 className="font-semibold text-[#191919] group-hover:text-[#AE8737] transition">
-                      {item.title}
-                    </h4>
+            <div className="flex gap-2">
+              <button
+                onClick={() => scrollSlider("left")}
+                className="w-10 h-10 rounded-full border hover:bg-slate-100 flex items-center justify-center"
+              >
+                <ChevronLeft className="w-5 h-5" />
+              </button>
 
-                    <p className="text-sm text-slate-500 mt-1">
-                      {new Date(item.date).toLocaleDateString("id-ID")}
-                    </p>
-                  </div>
-
-                  <ChevronRight className="w-5 h-5 text-slate-400 group-hover:text-[#AE8737]" />
-                </Link>
-              ))}
+              <button
+                onClick={() => scrollSlider("right")}
+                className="w-10 h-10 rounded-full border hover:bg-slate-100 flex items-center justify-center"
+              >
+                <ChevronRight className="w-5 h-5" />
+              </button>
             </div>
           </div>
-        )}
-      </div>
 
-      {/* SCROLL BUTTON */}
+          <div
+            ref={sliderRef}
+            className="flex gap-6 overflow-x-auto scrollbar-hide scroll-smooth pb-2"
+          >
+            {recommendedNews.map((item) => (
+              <Link
+                key={item.id}
+                to={`/news/${item.slug}`}
+                className="min-w-[300px] max-w-[300px] flex-shrink-0 group border rounded-2xl overflow-hidden hover:shadow-xl transition"
+              >
+                <div className="h-44 overflow-hidden">
+                  <img
+                    src={item.image_url}
+                    alt={item.title}
+                    className="w-full h-full object-cover group-hover:scale-105 transition duration-500"
+                  />
+                </div>
+
+                <div className="p-4">
+                  <h4 className="font-semibold text-[#191919] line-clamp-2 group-hover:text-[#AE8737] transition">
+                    {item.title}
+                  </h4>
+
+                  <p className="text-sm text-slate-500 mt-2">
+                    {new Date(item.date).toLocaleDateString("id-ID")}
+                  </p>
+                </div>
+              </Link>
+            ))}
+          </div>
+        </div>
+      )}
+
+      {/* SCROLL TO TOP */}
       <button
         onClick={scrollToTop}
         className={`fixed bottom-8 right-8 bg-[#AE8737] text-white p-3 rounded-full shadow-lg transition ${
