@@ -4,22 +4,38 @@ import {
   Building2,
   ShieldCheck,
   FileText,
+  Calendar,
 } from "lucide-react";
 import { Button } from "../components/ui/button";
 import { Link } from "react-router-dom";
 // import heroBackground from "../hero.jpg"; // File is in public folder
 import VisiMisi from "../components/VisiMisi";
+import { useEffect, useState } from "react";
+import { Card, CardContent } from "../components/ui/card";
+import { supabase } from "../../lib/supabase";
 
 export function Beranda() {
+  const [latestNews, setLatestNews] = useState([]);
 
-  const articles = [
-    {
-      title: "Bukan Sekadar Gelar: Mengapa Penguasaan Hard Skill di Luar Kampus Semakin Krusial",
-      slug: "bukan-sekadar-gelar-mengapa-penguasaan-hard-skill-di-luar-kampus-semakin-krusial",
-    },
-  ];
-  
-  
+  useEffect(() => {
+    const fetchLatestNews = async () => {
+      const { data, error } = await supabase
+        .from("news")
+        .select("*")
+        .eq("status", "Published")
+        .lte("date", new Date().toISOString())
+        .order("date", { ascending: false })
+        .limit(4);
+
+      if (error) {
+        console.error("Error fetching latest news:", error);
+      } else {
+        setLatestNews(data || []);
+      }
+    };
+
+    fetchLatestNews();
+  }, []);
   return (
     <>
       <section className="relative bg-white py-28 md:py-36">
@@ -168,31 +184,70 @@ export function Beranda() {
         </div>
       </section>
 
-{/* ARTIKEL TERBARU */}
-<section className="py-20 bg-gray-50">
-  <div className="container mx-auto px-6">
-    <div className="text-center mb-12">
-      <h2 className="text-3xl font-bold mb-4">Artikel Terbaru</h2>
-      <p className="text-slate-600">
-        Insight dan informasi terbaru seputar hukum & bisnis
-      </p>
-    </div>
+      {/* ARTIKEL TERBARU */}
+      <section className="py-20 bg-gray-50">
+        <div className="container mx-auto px-6">
+          <div className="text-center mb-12">
+            <h2 className="text-3xl font-bold mb-4">Artikel Terbaru</h2>
+            <p className="text-slate-600">
+              Insight dan informasi terbaru seputar hukum & bisnis
+            </p>
+          </div>
 
-    <div className="max-w-3xl mx-auto">
-      {articles.map((article, index) => (
-        <Link
-          key={index}
-          to={`/news/${article.slug}`}
-          className="block p-6 bg-white rounded-lg shadow mb-4"
-        >
-          <h3 className="text-lg font-semibold">
-            {article.title}
-          </h3>
-        </Link>
-      ))}
-    </div>
-  </div>
-</section>
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+            {latestNews.map((article) => (
+              <Card
+                key={article.id}
+                className="border border-slate-200 shadow-sm hover:shadow-xl transition-all duration-300 overflow-hidden group"
+              >
+                <div className="aspect-[16/10] overflow-hidden bg-slate-100">
+                  <img
+                    src={article.image_url || "/no-image.jpg"}
+                    alt={article.title}
+                    className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500 ease-out"
+                  />
+                </div>
+                <CardContent className="p-6">
+                  <div className="flex items-center gap-2 text-[#AE8737] mb-3">
+                    <Calendar className="w-4 h-4" />
+                    <span className="text-sm">
+                      {new Date(article.date).toLocaleDateString("id-ID", {
+                        day: "numeric",
+                        month: "short",
+                        year: "numeric",
+                      })}
+                    </span>
+                  </div>
+                  <h3 className="mb-3 text-[#191919] font-semibold leading-snug line-clamp-2 group-hover:text-[#AE8737] transition">
+                    {article.title}
+                  </h3>
+                  <p className="text-slate-600 mb-5 leading-relaxed line-clamp-3 min-h-[72px]">
+                    {article.summary || "Tidak ada ringkasan artikel."}
+                  </p>
+                  <Link
+                    to={`/news/${article.slug}`}
+                    className="text-[#AE8737] hover:text-[#8f6e2d] inline-flex items-center gap-1 font-medium"
+                  >
+                    Baca Selengkapnya
+                    <ArrowRight className="w-4 h-4" />
+                  </Link>
+                </CardContent>
+              </Card>
+            ))}
+          </div>
+
+          <div className="text-center mt-12">
+            <Link to="/berita">
+              <Button
+                variant="outline"
+                className="border-[#AE8737] text-[#AE8737] hover:bg-[#AE8737] hover:text-white px-8"
+              >
+                Lihat Semua Artikel
+              </Button>
+            </Link>
+          </div>
+        </div>
+      </section>
 
       {/* VISI MISI */}
       <VisiMisi />
