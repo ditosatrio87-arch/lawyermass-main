@@ -194,45 +194,18 @@ export function Beranda() {
             </p>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+          <div className="max-w-4xl mx-auto flex flex-col gap-4">
             {latestNews.map((article) => (
-              <Card
+              <Link
                 key={article.id}
-                className="border border-slate-200 shadow-sm hover:shadow-xl transition-all duration-300 overflow-hidden group"
+                to={`/news/${article.slug}`}
+                className="flex items-center justify-between p-6 bg-white border border-slate-200 rounded-lg shadow-sm hover:shadow-md hover:border-[#AE8737] transition-all duration-300 group"
               >
-                <div className="aspect-[16/10] overflow-hidden bg-slate-100">
-                  <img
-                    src={article.image_url || "/no-image.jpg"}
-                    alt={article.title}
-                    className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500 ease-out"
-                  />
-                </div>
-                <CardContent className="p-6">
-                  <div className="flex items-center gap-2 text-[#AE8737] mb-3">
-                    <Calendar className="w-4 h-4" />
-                    <span className="text-sm">
-                      {new Date(article.date).toLocaleDateString("id-ID", {
-                        day: "numeric",
-                        month: "short",
-                        year: "numeric",
-                      })}
-                    </span>
-                  </div>
-                  <h3 className="mb-3 text-[#191919] font-semibold leading-snug line-clamp-2 group-hover:text-[#AE8737] transition">
-                    {article.title}
-                  </h3>
-                  <p className="text-slate-600 mb-5 leading-relaxed line-clamp-3 min-h-[72px]">
-                    {article.summary || "Tidak ada ringkasan artikel."}
-                  </p>
-                  <Link
-                    to={`/news/${article.slug}`}
-                    className="text-[#AE8737] hover:text-[#8f6e2d] inline-flex items-center gap-1 font-medium"
-                  >
-                    Baca Selengkapnya
-                    <ArrowRight className="w-4 h-4" />
-                  </Link>
-                </CardContent>
-              </Card>
+                <h3 className="text-[17px] font-medium text-[#191919] group-hover:text-[#AE8737] transition-colors line-clamp-2 pr-4">
+                  {article.title}
+                </h3>
+                <ArrowRight className="w-6 h-6 text-black group-hover:text-[#AE8737] transition-colors flex-shrink-0" strokeWidth={2.5} />
+              </Link>
             ))}
           </div>
 
