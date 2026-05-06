@@ -130,7 +130,7 @@ export function NewsDetail() {
         )}
 
         {/* CONTENT */}
-        <article className="prose prose-lg prose-slate text-lg leading-relaxed prose-headings:text-[#191919] prose-strong:text-[#191919] prose-strong:font-semibold prose-p:text-slate-700 prose-li:text-slate-700 prose-ul:list-disc prose-ol:list-decimal prose-a:text-[#AE8737]">
+        <article className="prose prose-lg prose-slate text-lg leading-relaxed prose-headings:text-[#191919] prose-headings:font-bold prose-headings:mt-8 prose-headings:mb-4 prose-strong:text-[#191919] prose-strong:font-semibold prose-p:text-slate-700 prose-p:mb-4 prose-ul:list-disc prose-ul:my-4 prose-ul:pl-6 prose-ol:list-decimal prose-ol:my-4 prose-ol:pl-6 prose-li:text-slate-700 prose-li:my-2 prose-a:text-[#AE8737]">
           <ReactMarkdown remarkPlugins={[remarkGfm]}>
             {article.content}
           </ReactMarkdown>
