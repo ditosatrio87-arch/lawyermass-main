@@ -91,7 +91,6 @@ export function NewsDetail() {
   return (
     <section className="bg-white py-20">
       <div className="max-w-3xl mx-auto px-6">
-
         {/* CATEGORY */}
         {article.category && (
           <div className="mb-6">
@@ -131,12 +130,11 @@ export function NewsDetail() {
         )}
 
         {/* CONTENT */}
-        <article className="text-lg text-slate-700 leading-relaxed">
+        <article className="prose prose-lg prose-slate text-lg leading-relaxed prose-headings:text-[#191919] prose-strong:text-[#191919] prose-strong:font-semibold prose-p:text-slate-700 prose-li:text-slate-700 prose-ul:list-disc prose-ol:list-decimal prose-a:text-[#AE8737]">
           <ReactMarkdown remarkPlugins={[remarkGfm]}>
             {article.content}
           </ReactMarkdown>
         </article>
-
       </div>
 
       {/* RECOMMENDED ARTICLES */}
