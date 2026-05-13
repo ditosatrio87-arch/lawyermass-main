@@ -184,43 +184,82 @@ export function Beranda() {
         </div>
       </section>
 
-      {/* ARTIKEL TERBARU */}
-      <section className="py-20 bg-gray-50">
-        <div className="container mx-auto px-6">
-          <div className="text-center mb-12">
-            <h2 className="text-3xl font-bold mb-4">Artikel Terbaru</h2>
-            <p className="text-slate-600">
-              Insight dan informasi terbaru seputar hukum & bisnis
-            </p>
+{/* ARTIKEL TERBARU */}
+<section className="py-24 bg-white border-t border-slate-100">
+  <div className="container mx-auto px-6">
+
+    {/* Header */}
+    <div className="flex items-end justify-between mb-12 flex-wrap gap-4">
+      <div>
+        <div className="w-12 h-1 bg-[#AE8737] mb-5"></div>
+
+        <h2 className="text-3xl font-bold text-[#191919] mb-3">
+          Artikel Terbaru
+        </h2>
+
+        <p className="text-slate-600 max-w-xl">
+          Informasi hukum, bisnis, dan insight terbaru dari MAS Law Firm.
+        </p>
+      </div>
+
+      <Link
+        to="/berita"
+        className="text-[#AE8737] font-medium hover:underline"
+      >
+        Lihat Semua
+      </Link>
+    </div>
+
+    {/* List Artikel */}
+    <div className="max-w-4xl mx-auto divide-y divide-slate-200 border border-slate-200 rounded-2xl overflow-hidden bg-white shadow-sm">
+
+      {latestNews.slice(0, 3).map((article, index) => (
+        <Link
+          key={article.id}
+          to={`/news/${article.slug}`}
+          className="group flex items-center justify-between px-6 py-6 hover:bg-[#AE8737]/5 transition-all duration-300"
+        >
+
+          <div className="flex-1 min-w-0">
+
+            {/* Number */}
+            <div className="flex items-center gap-4 mb-2">
+              <span className="text-[#AE8737] font-bold text-sm">
+                0{index + 1}
+              </span>
+
+              <span className="text-xs text-slate-400 uppercase tracking-wider">
+                Artikel
+              </span>
+            </div>
+
+            {/* Title */}
+            <h3 className="text-lg md:text-xl font-semibold text-[#191919] group-hover:text-[#AE8737] transition-colors line-clamp-2">
+              {article.title}
+            </h3>
+
+            {/* Date */}
+            <div className="flex items-center gap-2 mt-3 text-sm text-slate-500">
+              <Calendar className="w-4 h-4 text-[#AE8737]" />
+
+              {new Date(article.date).toLocaleDateString("id-ID", {
+                day: "numeric",
+                month: "long",
+                year: "numeric",
+              })}
+            </div>
           </div>
 
-          <div className="max-w-4xl mx-auto flex flex-col gap-4">
-            {latestNews.map((article) => (
-              <Link
-                key={article.id}
-                to={`/news/${article.slug}`}
-                className="flex items-center justify-between p-6 bg-white border border-slate-200 rounded-lg shadow-sm hover:shadow-md hover:border-[#AE8737] transition-all duration-300 group"
-              >
-                <h3 className="text-[17px] font-medium text-[#191919] group-hover:text-[#AE8737] transition-colors line-clamp-2 pr-4">
-                  {article.title}
-                </h3>
-                <ArrowRight className="w-6 h-6 text-black group-hover:text-[#AE8737] transition-colors flex-shrink-0" strokeWidth={2.5} />
-              </Link>
-            ))}
+          {/* Arrow */}
+          <div className="ml-6 flex-shrink-0">
+            <ArrowRight className="w-6 h-6 text-slate-400 group-hover:text-[#AE8737] group-hover:translate-x-1 transition-all duration-300" />
           </div>
 
-          <div className="text-center mt-12">
-            <Link to="/berita">
-              <Button
-                variant="outline"
-                className="border-[#AE8737] text-[#AE8737] hover:bg-[#AE8737] hover:text-white px-8"
-              >
-                Lihat Semua Artikel
-              </Button>
-            </Link>
-          </div>
-        </div>
-      </section>
+        </Link>
+      ))}
+    </div>
+  </div>
+</section>
 
       {/* VISI MISI */}
       <VisiMisi />
